@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/BusyCallback.Winforms/BusyCallback.Winforms.csproj" />
+  <Project Path="samples/InMemoryLayers.Winforms/InMemoryLayers.Winforms.csproj" />
+  <Project Path="samples/LayerAddRemove.Winforms/LayerAddRemove.Winforms.csproj" />
+  <Project Path="samples/LayerEvents.Winforms/LayerEvents.Winforms.csproj" />
+  <Project Path="samples/LayerExtent.Winforms/LayerExtent.Winforms.csproj" />
+  <Project Path="samples/LayerLoadCancel.Winforms/LayerLoadCancel.Winforms.csproj" />
+  <Project Path="samples/LayerLoadOptions.Winforms/LayerLoadOptions.Winforms.csproj" />
+  <Project Path="samples/LayerRefresh.Winforms/LayerRefresh.Winforms.csproj" />
+  <Project Path="samples/LayerReorder.Winforms/LayerReorder.Winforms.csproj" />
+  <Project Path="samples/LayerVisibility.Winforms/LayerVisibility.Winforms.csproj" />
+  <Project Path="samples/LayerZoomTo.Winforms/LayerZoomTo.Winforms.csproj" />
+  <Project Path="samples/MultiWindowSync.Winforms/MultiWindowSync.Winforms.csproj" />
+</Solution>

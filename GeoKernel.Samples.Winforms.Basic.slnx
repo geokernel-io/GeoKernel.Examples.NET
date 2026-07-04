@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/AddLayers.Winforms/AddLayers.Winforms.csproj" />
+  <Project Path="samples/HelloMap.Winforms/HelloMap.Winforms.csproj" />
+  <Project Path="samples/Minimap.Winforms/Minimap.Winforms.csproj" />
+  <Project Path="samples/Project.Winforms/Project.Winforms.csproj" />
+  <Project Path="samples/Scalebar.Winforms/Scalebar.Winforms.csproj" />
+</Solution>

@@ -1,0 +1,28 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/AddPointInteractive.Wpf/AddPointInteractive.Wpf.csproj" />
+  <Project Path="samples/AddPointProgrammatic.Wpf/AddPointProgrammatic.Wpf.csproj" />
+  <Project Path="samples/AddPolygonInteractive.Wpf/AddPolygonInteractive.Wpf.csproj" />
+  <Project Path="samples/AddPolygonProgrammatic.Wpf/AddPolygonProgrammatic.Wpf.csproj" />
+  <Project Path="samples/AddPolylineInteractive.Wpf/AddPolylineInteractive.Wpf.csproj" />
+  <Project Path="samples/AddPolylineProgrammatic.Wpf/AddPolylineProgrammatic.Wpf.csproj" />
+  <Project Path="samples/AddWithAttributes.Wpf/AddWithAttributes.Wpf.csproj" />
+  <Project Path="samples/CanEditCheck.Wpf/CanEditCheck.Wpf.csproj" />
+  <Project Path="samples/DeleteFeature.Wpf/DeleteFeature.Wpf.csproj" />
+  <Project Path="samples/DeleteVertex.Wpf/DeleteVertex.Wpf.csproj" />
+  <Project Path="samples/EditAndSave.Wpf/EditAndSave.Wpf.csproj" />
+  <Project Path="samples/EditDirtyState.Wpf/EditDirtyState.Wpf.csproj" />
+  <Project Path="samples/EditSession.Wpf/EditSession.Wpf.csproj" />
+  <Project Path="samples/EditSessionSignals.Wpf/EditSessionSignals.Wpf.csproj" />
+  <Project Path="samples/EditVerticesTool.Wpf/EditVerticesTool.Wpf.csproj" />
+  <Project Path="samples/InsertVertex.Wpf/InsertVertex.Wpf.csproj" />
+  <Project Path="samples/MoveFeatureProgrammatic.Wpf/MoveFeatureProgrammatic.Wpf.csproj" />
+  <Project Path="samples/MoveFeatureTool.Wpf/MoveFeatureTool.Wpf.csproj" />
+  <Project Path="samples/MultiLayerEdit.Wpf/MultiLayerEdit.Wpf.csproj" />
+  <Project Path="samples/SetAttributes.Wpf/SetAttributes.Wpf.csproj" />
+  <Project Path="samples/SnappingEnabled.Wpf/SnappingEnabled.Wpf.csproj" />
+  <Project Path="samples/UndoRedo.Wpf/UndoRedo.Wpf.csproj" />
+</Solution>

@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/GeoJsonRead.Wpf/GeoJsonRead.Wpf.csproj" />
+  <Project Path="samples/GeoJsonWrite.Wpf/GeoJsonWrite.Wpf.csproj" />
+  <Project Path="samples/WkbRead.Wpf/WkbRead.Wpf.csproj" />
+  <Project Path="samples/WkbWrite.Wpf/WkbWrite.Wpf.csproj" />
+  <Project Path="samples/WktOverlay.Wpf/WktOverlay.Wpf.csproj" />
+  <Project Path="samples/WktReadPoint.Wpf/WktReadPoint.Wpf.csproj" />
+  <Project Path="samples/WktReadPolygon.Wpf/WktReadPolygon.Wpf.csproj" />
+  <Project Path="samples/WktReadPolyline.Wpf/WktReadPolyline.Wpf.csproj" />
+  <Project Path="samples/WktRoundtrip.Wpf/WktRoundtrip.Wpf.csproj" />
+  <Project Path="samples/WktWrite.Wpf/WktWrite.Wpf.csproj" />
+</Solution>

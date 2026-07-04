@@ -1,0 +1,77 @@
+<Window x:Class="GeoKernel.InsertVertex.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="InsertVertex"
+        Width="1200"
+        Height="800"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Background="#F4F6F5"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Style x:Key="ToolbarButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Background" Value="#F1F1F1" />
+            <Setter Property="BorderBrush" Value="#D0D0D0" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="ToolbarToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#F1F1F1">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton x:Name="panButton" Style="{StaticResource ToolbarToggleStyle}" Click="Pan_Click" Content="Pan" />
+                <ToggleButton x:Name="selectButton" Style="{StaticResource ToolbarToggleStyle}" IsChecked="True" Click="Select_Click" Content="Select" />
+                <TextBlock Margin="10,0,4,0" VerticalAlignment="Center" Text="Part" />
+                <TextBox x:Name="partTextBox" Width="36" Height="24" VerticalContentAlignment="Center" Text="0" />
+                <TextBlock Margin="10,0,4,0" VerticalAlignment="Center" Text="Insert index" />
+                <TextBox x:Name="insertIndexTextBox" Width="44" Height="24" VerticalContentAlignment="Center" Text="2" TextChanged="InsertIndexTextBox_TextChanged" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="InsertVertex_Click" Content="Insert Vertex" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="ResetShape_Click" Content="Reset Shape" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="FullExtent_Click" Content="Full Extent" />
+                <Border Width="1" Height="24" Margin="4,4" Background="#C8C8C8" />
+                <TextBlock x:Name="countText" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="Vertex count: 0" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="infoTextBox"
+                     Grid.Column="0"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto" />
+
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="1"
+                                       MapBackgroundColor="#F4F6F5" />
+        </Grid>
+
+        <StatusBar Grid.Row="2">
+            <TextBlock x:Name="statusText" Text="Ready" />
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <GeoKernelSamplesRoot>$(MSBuildThisFileDirectory)</GeoKernelSamplesRoot>
+    <GeoKernelRoot Condition="'$(GeoKernelRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\GeoKernel\'))</GeoKernelRoot>
+    <GeoKernelDotNetRoot Condition="'$(GeoKernelDotNetRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\GeoKernel.NET\'))</GeoKernelDotNetRoot>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">
+    <VcpkgXUseBuiltInApplocalDeps>true</VcpkgXUseBuiltInApplocalDeps>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <BaseOutputPath>$(GeoKernelSamplesRoot)outputs\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(GeoKernelSamplesRoot)intermediates\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

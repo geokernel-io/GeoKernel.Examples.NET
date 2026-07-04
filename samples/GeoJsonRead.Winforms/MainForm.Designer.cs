@@ -1,0 +1,153 @@
+namespace GeoKernel.GeoJsonRead.Winforms;
+
+partial class MainForm
+{
+    private System.ComponentModel.IContainer components = null;
+    private Panel inputPanel;
+    private Label modeLabel;
+    private ComboBox modeComboBox;
+    private Label geoJsonLabel;
+    private TextBox geoJsonTextBox;
+    private Button readButton;
+    private Button resetButton;
+    private SplitContainer splitContainer;
+    private global::GeoKernel.NET.WinForms.GeoKernelViewerControl geoKernelViewerControl;
+    private TextBox detailsTextBox;
+    private StatusStrip statusStrip;
+    private ToolStripStatusLabel statusLabel;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && components is not null)
+            components.Dispose();
+
+        base.Dispose(disposing);
+    }
+
+    private void InitializeComponent()
+    {
+        components = new System.ComponentModel.Container();
+        inputPanel = new Panel();
+        modeLabel = new Label();
+        modeComboBox = new ComboBox();
+        geoJsonLabel = new Label();
+        geoJsonTextBox = new TextBox();
+        readButton = new Button();
+        resetButton = new Button();
+        splitContainer = new SplitContainer();
+        geoKernelViewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
+        detailsTextBox = new TextBox();
+        statusStrip = new StatusStrip();
+        statusLabel = new ToolStripStatusLabel();
+        inputPanel.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+        splitContainer.Panel1.SuspendLayout();
+        splitContainer.Panel2.SuspendLayout();
+        splitContainer.SuspendLayout();
+        statusStrip.SuspendLayout();
+        SuspendLayout();
+        inputPanel.Controls.Add(modeLabel);
+        inputPanel.Controls.Add(modeComboBox);
+        inputPanel.Controls.Add(geoJsonLabel);
+        inputPanel.Controls.Add(geoJsonTextBox);
+        inputPanel.Controls.Add(readButton);
+        inputPanel.Controls.Add(resetButton);
+        inputPanel.Dock = DockStyle.Top;
+        inputPanel.Location = new Point(0, 0);
+        inputPanel.Name = "inputPanel";
+        inputPanel.Padding = new Padding(6, 4, 6, 4);
+        inputPanel.Size = new Size(1120, 34);
+        inputPanel.TabIndex = 0;
+        modeLabel.AutoSize = true;
+        modeLabel.Location = new Point(8, 9);
+        modeLabel.Name = "modeLabel";
+        modeLabel.Size = new Size(41, 15);
+        modeLabel.TabIndex = 0;
+        modeLabel.Text = "Mode:";
+        modeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+        modeComboBox.Items.AddRange(new object[] { "Point", "LineString", "Polygon" });
+        modeComboBox.Location = new Point(55, 5);
+        modeComboBox.Name = "modeComboBox";
+        modeComboBox.Size = new Size(118, 23);
+        modeComboBox.TabIndex = 1;
+        modeComboBox.SelectedIndexChanged += modeComboBox_SelectedIndexChanged;
+        geoJsonLabel.AutoSize = true;
+        geoJsonLabel.Location = new Point(181, 9);
+        geoJsonLabel.Name = "geoJsonLabel";
+        geoJsonLabel.Size = new Size(58, 15);
+        geoJsonLabel.TabIndex = 2;
+        geoJsonLabel.Text = "GeoJSON:";
+        geoJsonTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        geoJsonTextBox.Location = new Point(245, 5);
+        geoJsonTextBox.Name = "geoJsonTextBox";
+        geoJsonTextBox.Size = new Size(649, 23);
+        geoJsonTextBox.TabIndex = 3;
+        geoJsonTextBox.KeyDown += geoJsonTextBox_KeyDown;
+        readButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        readButton.Location = new Point(900, 4);
+        readButton.Name = "readButton";
+        readButton.Size = new Size(122, 25);
+        readButton.TabIndex = 4;
+        readButton.Text = "Read Point";
+        readButton.UseVisualStyleBackColor = true;
+        readButton.Click += readButton_Click;
+        resetButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        resetButton.Location = new Point(1028, 4);
+        resetButton.Name = "resetButton";
+        resetButton.Size = new Size(86, 25);
+        resetButton.TabIndex = 5;
+        resetButton.Text = "Reset";
+        resetButton.UseVisualStyleBackColor = true;
+        resetButton.Click += resetButton_Click;
+        splitContainer.Dock = DockStyle.Fill;
+        splitContainer.Location = new Point(0, 34);
+        splitContainer.Name = "splitContainer";
+        splitContainer.Panel1.Controls.Add(geoKernelViewerControl);
+        splitContainer.Panel2.Controls.Add(detailsTextBox);
+        splitContainer.Size = new Size(1120, 664);
+        splitContainer.SplitterDistance = 715;
+        splitContainer.TabIndex = 1;
+        geoKernelViewerControl.Dock = DockStyle.Fill;
+        geoKernelViewerControl.Location = new Point(0, 0);
+        geoKernelViewerControl.Name = "geoKernelViewerControl";
+        geoKernelViewerControl.Size = new Size(715, 664);
+        geoKernelViewerControl.TabIndex = 0;
+        detailsTextBox.Dock = DockStyle.Fill;
+        detailsTextBox.Location = new Point(0, 0);
+        detailsTextBox.Multiline = true;
+        detailsTextBox.Name = "detailsTextBox";
+        detailsTextBox.ReadOnly = true;
+        detailsTextBox.ScrollBars = ScrollBars.Vertical;
+        detailsTextBox.Size = new Size(401, 664);
+        detailsTextBox.TabIndex = 0;
+        statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
+        statusStrip.Location = new Point(0, 698);
+        statusStrip.Name = "statusStrip";
+        statusStrip.Size = new Size(1120, 22);
+        statusStrip.TabIndex = 2;
+        statusLabel.Name = "statusLabel";
+        statusLabel.Size = new Size(0, 17);
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1120, 720);
+        Controls.Add(splitContainer);
+        Controls.Add(statusStrip);
+        Controls.Add(inputPanel);
+        MinimumSize = new Size(840, 520);
+        Name = "MainForm";
+        StartPosition = FormStartPosition.CenterScreen;
+        Text = "GeoJsonRead";
+        Shown += MainForm_Shown;
+        inputPanel.ResumeLayout(false);
+        inputPanel.PerformLayout();
+        splitContainer.Panel1.ResumeLayout(false);
+        splitContainer.Panel2.ResumeLayout(false);
+        splitContainer.Panel2.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+        splitContainer.ResumeLayout(false);
+        statusStrip.ResumeLayout(false);
+        statusStrip.PerformLayout();
+        ResumeLayout(false);
+        PerformLayout();
+    }
+}

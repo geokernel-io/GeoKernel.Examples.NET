@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>GeoKernel.UndoRedo.Winforms</RootNamespace>
+    <AssemblyName>UndoRedo.Winforms</AssemblyName>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <GeoKernelSkipNativeRuntimeBuild>true</GeoKernelSkipNativeRuntimeBuild>
+    <GeoKernelSdkConfiguration Condition="'$(GeoKernelSdkConfiguration)' == ''">Release</GeoKernelSdkConfiguration>
+  </PropertyGroup>
+
+    <ItemGroup>
+    <Reference Include="GeoKernel.NET.WinForms.Controls">
+      <HintPath>$(GeoKernelDotNetRoot)outputs\GeoKernel.NET.WinForms.Controls\$(GeoKernelSdkConfiguration)\net10.0-windows\GeoKernel.NET.WinForms.Controls.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="CopyGeoKernelNativeBinaries" AfterTargets="Build">
+    <ItemGroup>
+      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\GeoKernel.Core\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll" Condition="Exists('$(GeoKernelRoot)outputs\GeoKernel.Core\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll')" />
+      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\GeoKernel.Formats\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll" Condition="Exists('$(GeoKernelRoot)outputs\GeoKernel.Formats\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll')" />
+      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\GeoKernel.Viewer\$(GeoKernelSdkConfiguration)\*.dll" Condition="Exists('$(GeoKernelRoot)outputs\GeoKernel.Viewer\$(GeoKernelSdkConfiguration)\GeoKernel.Viewer.dll')" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GeoKernelNativeBinaries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" Condition="'@(GeoKernelNativeBinaries)' != ''" />
+  </Target>
+
+</Project>
+

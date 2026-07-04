@@ -1,0 +1,56 @@
+<Project>
+  <ItemDefinitionGroup Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">
+    <ClCompile>
+      <ProgramDataBaseFileName>$(IntDir)$(MSBuildProjectName).compile.pdb</ProgramDataBaseFileName>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <ProgramDatabaseFile>$(OutDir)$(MSBuildProjectName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <Compile Remove="$(MSBuildProjectDirectory)\obj\**\*.cs" />
+    <EmbeddedResource Remove="$(MSBuildProjectDirectory)\obj\**\*" />
+    <None Remove="$(MSBuildProjectDirectory)\obj\**\*" />
+  </ItemGroup>
+
+  <Target
+    Name="BuildGeoKernelNativeRuntime"
+    BeforeTargets="CopyGeoKernelNativeRuntime"
+    Condition="'$(MSBuildProjectExtension)' == '.csproj'
+      and '$(DesignTimeBuild)' != 'true'
+      and '$(MSBuildRuntimeType)' != 'Core'
+      and '$(GeoKernelSkipNativeRuntimeBuild)' != 'true'
+      and Exists('$(GeoKernelRoot)src\GeoKernel\GeoKernel.Viewer\GeoKernel.Viewer.vcxproj')">
+    <MSBuild
+      Projects="$(GeoKernelRoot)src\GeoKernel\GeoKernel.Viewer\GeoKernel.Viewer.vcxproj"
+      Targets="Build"
+      Properties="Configuration=$(Configuration);Platform=x64"
+      BuildInParallel="false" />
+  </Target>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <GeoKernelQtDir Condition="'$(GeoKernelQtDir)' == ''">C:\Qt\6.11.0\msvc2022_64\</GeoKernelQtDir>
+  </PropertyGroup>
+
+  <Target
+    Name="CopyGeoKernelQtRuntime"
+    AfterTargets="CopyGeoKernelNativeRuntime"
+    Condition="'$(MSBuildProjectExtension)' == '.csproj'
+      and '$(DesignTimeBuild)' != 'true'
+      and Exists('$(TargetDir)GeoKernel.Viewer.dll')
+      and Exists('$(GeoKernelQtDir)bin\Qt6Core.dll')">
+    <ItemGroup>
+      <GeoKernelQtBinaries Include="$(GeoKernelQtDir)bin\Qt6Core.dll" />
+      <GeoKernelQtBinaries Include="$(GeoKernelQtDir)bin\Qt6Gui.dll" />
+      <GeoKernelQtBinaries Include="$(GeoKernelQtDir)bin\Qt6Widgets.dll" />
+      <GeoKernelQtBinaries Include="$(GeoKernelQtDir)bin\Qt6OpenGL.dll" />
+      <GeoKernelQtBinaries Include="$(GeoKernelQtDir)bin\Qt6OpenGLWidgets.dll" />
+      <GeoKernelQtPlatformPlugins Include="$(GeoKernelQtDir)plugins\platforms\qwindows.dll" Condition="Exists('$(GeoKernelQtDir)plugins\platforms\qwindows.dll')" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(GeoKernelQtBinaries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(GeoKernelQtPlatformPlugins)" DestinationFolder="$(TargetDir)platforms\" SkipUnchangedFiles="true" Condition="'@(GeoKernelQtPlatformPlugins)' != ''" />
+  </Target>
+</Project>

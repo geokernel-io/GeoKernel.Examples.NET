@@ -1,0 +1,19 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/AllFeaturesAtPoint.Winforms/AllFeaturesAtPoint.Winforms.csproj" />
+  <Project Path="samples/BoxSelect.Winforms/BoxSelect.Winforms.csproj" />
+  <Project Path="samples/ClickHitTest.Winforms/ClickHitTest.Winforms.csproj" />
+  <Project Path="samples/ExtentQuery.Winforms/ExtentQuery.Winforms.csproj" />
+  <Project Path="samples/FeatureAttributes.Winforms/FeatureAttributes.Winforms.csproj" />
+  <Project Path="samples/InfoTool.Winforms/InfoTool.Winforms.csproj" />
+  <Project Path="samples/MapClickedSignal.Winforms/MapClickedSignal.Winforms.csproj" />
+  <Project Path="samples/SelectAdd.Winforms/SelectAdd.Winforms.csproj" />
+  <Project Path="samples/SelectClear.Winforms/SelectClear.Winforms.csproj" />
+  <Project Path="samples/SelectionBoxSignal.Winforms/SelectionBoxSignal.Winforms.csproj" />
+  <Project Path="samples/SelectionSignal.Winforms/SelectionSignal.Winforms.csproj" />
+  <Project Path="samples/WorldTolerance.Winforms/WorldTolerance.Winforms.csproj" />
+  <Project Path="samples/ZoomToSelection.Winforms/ZoomToSelection.Winforms.csproj" />
+</Solution>

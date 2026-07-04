@@ -1,0 +1,30 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/ArcOperations.Winforms/ArcOperations.Winforms.csproj" />
+  <Project Path="samples/BufferAnimated.Winforms/BufferAnimated.Winforms.csproj" />
+  <Project Path="samples/BufferPoint.Winforms/BufferPoint.Winforms.csproj" />
+  <Project Path="samples/BufferPolygon.Winforms/BufferPolygon.Winforms.csproj" />
+  <Project Path="samples/BufferPolyline.Winforms/BufferPolyline.Winforms.csproj" />
+  <Project Path="samples/ConvexHullShape.Winforms/ConvexHullShape.Winforms.csproj" />
+  <Project Path="samples/ConvexHullTwo.Winforms/ConvexHullTwo.Winforms.csproj" />
+  <Project Path="samples/Difference.Winforms/Difference.Winforms.csproj" />
+  <Project Path="samples/ExtentOperations.Winforms/ExtentOperations.Winforms.csproj" />
+  <Project Path="samples/FindDeleteLoops.Winforms/FindDeleteLoops.Winforms.csproj" />
+  <Project Path="samples/GetCrossings.Winforms/GetCrossings.Winforms.csproj" />
+  <Project Path="samples/Intersection.Winforms/Intersection.Winforms.csproj" />
+  <Project Path="samples/ShapeCentroid.Winforms/ShapeCentroid.Winforms.csproj" />
+  <Project Path="samples/ShapeSimplify.Winforms/ShapeSimplify.Winforms.csproj" />
+  <Project Path="samples/SpatialPredicates.Winforms/SpatialPredicates.Winforms.csproj" />
+  <Project Path="samples/SpatialRelate.Winforms/SpatialRelate.Winforms.csproj" />
+  <Project Path="samples/SplitByArc.Winforms/SplitByArc.Winforms.csproj" />
+  <Project Path="samples/SymDifference.Winforms/SymDifference.Winforms.csproj" />
+  <Project Path="samples/ToleranceConfig.Winforms/ToleranceConfig.Winforms.csproj" />
+  <Project Path="samples/TopologyBatch.Winforms/TopologyBatch.Winforms.csproj" />
+  <Project Path="samples/TopologyCheck.Winforms/TopologyCheck.Winforms.csproj" />
+  <Project Path="samples/TopologyFix.Winforms/TopologyFix.Winforms.csproj" />
+  <Project Path="samples/Union.Winforms/Union.Winforms.csproj" />
+  <Project Path="samples/UnionOnList.Winforms/UnionOnList.Winforms.csproj" />
+</Solution>

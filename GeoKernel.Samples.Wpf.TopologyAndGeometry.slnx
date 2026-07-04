@@ -1,0 +1,30 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/ArcOperations.Wpf/ArcOperations.Wpf.csproj" />
+  <Project Path="samples/BufferAnimated.Wpf/BufferAnimated.Wpf.csproj" />
+  <Project Path="samples/BufferPoint.Wpf/BufferPoint.Wpf.csproj" />
+  <Project Path="samples/BufferPolygon.Wpf/BufferPolygon.Wpf.csproj" />
+  <Project Path="samples/BufferPolyline.Wpf/BufferPolyline.Wpf.csproj" />
+  <Project Path="samples/ConvexHullShape.Wpf/ConvexHullShape.Wpf.csproj" />
+  <Project Path="samples/ConvexHullTwo.Wpf/ConvexHullTwo.Wpf.csproj" />
+  <Project Path="samples/Difference.Wpf/Difference.Wpf.csproj" />
+  <Project Path="samples/ExtentOperations.Wpf/ExtentOperations.Wpf.csproj" />
+  <Project Path="samples/FindDeleteLoops.Wpf/FindDeleteLoops.Wpf.csproj" />
+  <Project Path="samples/GetCrossings.Wpf/GetCrossings.Wpf.csproj" />
+  <Project Path="samples/Intersection.Wpf/Intersection.Wpf.csproj" />
+  <Project Path="samples/ShapeCentroid.Wpf/ShapeCentroid.Wpf.csproj" />
+  <Project Path="samples/ShapeSimplify.Wpf/ShapeSimplify.Wpf.csproj" />
+  <Project Path="samples/SpatialPredicates.Wpf/SpatialPredicates.Wpf.csproj" />
+  <Project Path="samples/SpatialRelate.Wpf/SpatialRelate.Wpf.csproj" />
+  <Project Path="samples/SplitByArc.Wpf/SplitByArc.Wpf.csproj" />
+  <Project Path="samples/SymDifference.Wpf/SymDifference.Wpf.csproj" />
+  <Project Path="samples/ToleranceConfig.Wpf/ToleranceConfig.Wpf.csproj" />
+  <Project Path="samples/TopologyBatch.Wpf/TopologyBatch.Wpf.csproj" />
+  <Project Path="samples/TopologyCheck.Wpf/TopologyCheck.Wpf.csproj" />
+  <Project Path="samples/TopologyFix.Wpf/TopologyFix.Wpf.csproj" />
+  <Project Path="samples/Union.Wpf/Union.Wpf.csproj" />
+  <Project Path="samples/UnionOnList.Wpf/UnionOnList.Wpf.csproj" />
+</Solution>

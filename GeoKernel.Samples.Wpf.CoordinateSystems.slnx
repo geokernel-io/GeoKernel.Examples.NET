@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/CoordinateTransform.Wpf/CoordinateTransform.Wpf.csproj" />
+  <Project Path="samples/CrsByAuthority.Wpf/CrsByAuthority.Wpf.csproj" />
+  <Project Path="samples/CrsDatabase.Wpf/CrsDatabase.Wpf.csproj" />
+  <Project Path="samples/OnTheFlyReproject.Wpf/OnTheFlyReproject.Wpf.csproj" />
+  <Project Path="samples/WebMercator.Wpf/WebMercator.Wpf.csproj" />
+  <Project Path="samples/Wgs84Setup.Wpf/Wgs84Setup.Wpf.csproj" />
+</Solution>

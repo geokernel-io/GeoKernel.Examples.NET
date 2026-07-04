@@ -1,0 +1,16 @@
+<Window x:Class="GeoKernel.Scalebar.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="Scalebar"
+        Width="1200"
+        Height="800"
+        MinWidth="640"
+        MinHeight="420"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Background="#F4F6F5"
+        Loaded="Window_Loaded">
+
+    <gk:GeoKernelViewerControl x:Name="viewerControl" MapBackgroundColor="#F4F6F5" />
+</Window>

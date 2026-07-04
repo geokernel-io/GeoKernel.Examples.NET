@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/BusyCallback.Wpf/BusyCallback.Wpf.csproj" />
+  <Project Path="samples/InMemoryLayers.Wpf/InMemoryLayers.Wpf.csproj" />
+  <Project Path="samples/LayerAddRemove.Wpf/LayerAddRemove.Wpf.csproj" />
+  <Project Path="samples/LayerEvents.Wpf/LayerEvents.Wpf.csproj" />
+  <Project Path="samples/LayerExtent.Wpf/LayerExtent.Wpf.csproj" />
+  <Project Path="samples/LayerLoadCancel.Wpf/LayerLoadCancel.Wpf.csproj" />
+  <Project Path="samples/LayerLoadOptions.Wpf/LayerLoadOptions.Wpf.csproj" />
+  <Project Path="samples/LayerRefresh.Wpf/LayerRefresh.Wpf.csproj" />
+  <Project Path="samples/LayerReorder.Wpf/LayerReorder.Wpf.csproj" />
+  <Project Path="samples/LayerVisibility.Wpf/LayerVisibility.Wpf.csproj" />
+  <Project Path="samples/LayerZoomTo.Wpf/LayerZoomTo.Wpf.csproj" />
+  <Project Path="samples/MultiWindowSync.Wpf/MultiWindowSync.Wpf.csproj" />
+</Solution>

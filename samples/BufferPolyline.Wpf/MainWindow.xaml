@@ -1,0 +1,50 @@
+<Window x:Class="GeoKernel.BufferPolyline.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="BufferPolyline"
+        Width="980"
+        Height="680"
+        MinWidth="720"
+        MinHeight="480"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Full Extent"
+                    Click="FullExtent_Click" />
+            <Separator />
+            <TextBlock Text="Distance:"
+                       VerticalAlignment="Center"
+                       Margin="6,0,4,0" />
+            <TextBox x:Name="distanceTextBox"
+                     Width="72"
+                     Text="0.55"
+                     VerticalContentAlignment="Center"
+                     TextChanged="DistanceTextBox_TextChanged" />
+            <TextBlock Text=" units"
+                       VerticalAlignment="Center" />
+        </ToolBar>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="statusText" />
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="280" />
+            </Grid.ColumnDefinitions>
+
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="0" />
+
+            <TextBox x:Name="detailsTextBox"
+                     Grid.Column="1"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto" />
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/CategorizedRenderer.Wpf/CategorizedRenderer.Wpf.csproj" />
+  <Project Path="samples/ClassificationMethods.Wpf/ClassificationMethods.Wpf.csproj" />
+  <Project Path="samples/ClearRenderer.Wpf/ClearRenderer.Wpf.csproj" />
+  <Project Path="samples/GraduatedRenderer.Wpf/GraduatedRenderer.Wpf.csproj" />
+  <Project Path="samples/GraduatedRendererSize.Wpf/GraduatedRendererSize.Wpf.csproj" />
+  <Project Path="samples/RuleBasedRenderer.Wpf/RuleBasedRenderer.Wpf.csproj" />
+  <Project Path="samples/ScaleBasedLayerVisibility.Wpf/ScaleBasedLayerVisibility.Wpf.csproj" />
+  <Project Path="samples/SelectionStyle.Wpf/SelectionStyle.Wpf.csproj" />
+  <Project Path="samples/SimpleStyle.Wpf/SimpleStyle.Wpf.csproj" />
+  <Project Path="samples/StylePerFeature.Wpf/StylePerFeature.Wpf.csproj" />
+</Solution>

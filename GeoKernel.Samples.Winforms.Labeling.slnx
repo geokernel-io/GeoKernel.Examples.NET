@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="samples/BasicLabel.Winforms/BasicLabel.Winforms.csproj" />
+  <Project Path="samples/LabelCollisionOff.Winforms/LabelCollisionOff.Winforms.csproj" />
+  <Project Path="samples/LabelFont.Winforms/LabelFont.Winforms.csproj" />
+  <Project Path="samples/LabelHalo.Winforms/LabelHalo.Winforms.csproj" />
+  <Project Path="samples/LabelOffset.Winforms/LabelOffset.Winforms.csproj" />
+  <Project Path="samples/LabelRotation.Winforms/LabelRotation.Winforms.csproj" />
+</Solution>

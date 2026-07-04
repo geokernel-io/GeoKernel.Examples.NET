@@ -1,0 +1,63 @@
+<Window x:Class="GeoKernel.WktOverlay.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="WktOverlay"
+        Width="1160"
+        Height="740"
+        MinWidth="900"
+        MinHeight="540"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="statusText" />
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="0" />
+
+            <Grid Grid.Column="1"
+                  Margin="6">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="155" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="WKT overlay input (one geometry per line)"
+                           Margin="0,0,0,4" />
+                <TextBox x:Name="wktTextBox"
+                         Grid.Row="1"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="NoWrap" />
+                <StackPanel Grid.Row="2"
+                            Orientation="Horizontal"
+                            Margin="0,6,0,8">
+                    <Button Content="Render Overlay"
+                            Padding="10,2"
+                            Click="RenderOverlay_Click" />
+                    <Button Content="Reset"
+                            Margin="6,0,0,0"
+                            Padding="10,2"
+                            Click="Reset_Click" />
+                </StackPanel>
+                <TextBox x:Name="detailsTextBox"
+                         Grid.Row="3"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>
