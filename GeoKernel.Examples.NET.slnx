@@ -1,0 +1,817 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Common/">
+    <Project Path="examples/Common/Common.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/" />
+  <Folder Name="/Winforms/Basic/">
+    <Project Path="examples/AddLayers.Winforms/AddLayers.Winforms.csproj" />
+    <Project Path="examples/HelloMap.Winforms/HelloMap.Winforms.csproj" />
+    <Project Path="examples/Minimap.Winforms/Minimap.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Project.Winforms/Project.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Scalebar.Winforms/Scalebar.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/CoordinateSystems/">
+    <Project Path="examples/CoordinateTransform.Winforms/CoordinateTransform.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CrsByAuthority.Winforms/CrsByAuthority.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CrsDatabase.Winforms/CrsDatabase.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/OnTheFlyReproject.Winforms/OnTheFlyReproject.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WebMercator.Winforms/WebMercator.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Wgs84Setup.Winforms/Wgs84Setup.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/EditingAndDigitizing/">
+    <Project Path="examples/AddPointInteractive.Winforms/AddPointInteractive.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPointProgrammatic.Winforms/AddPointProgrammatic.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolygonInteractive.Winforms/AddPolygonInteractive.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolygonProgrammatic.Winforms/AddPolygonProgrammatic.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolylineInteractive.Winforms/AddPolylineInteractive.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolylineProgrammatic.Winforms/AddPolylineProgrammatic.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddWithAttributes.Winforms/AddWithAttributes.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CanEditCheck.Winforms/CanEditCheck.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/DeleteFeature.Winforms/DeleteFeature.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/DeleteVertex.Winforms/DeleteVertex.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditAndSave.Winforms/EditAndSave.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditDirtyState.Winforms/EditDirtyState.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditSession.Winforms/EditSession.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditSessionSignals.Winforms/EditSessionSignals.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditVerticesTool.Winforms/EditVerticesTool.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/InsertVertex.Winforms/InsertVertex.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MoveFeatureProgrammatic.Winforms/MoveFeatureProgrammatic.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MoveFeatureTool.Winforms/MoveFeatureTool.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MultiLayerEdit.Winforms/MultiLayerEdit.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SetAttributes.Winforms/SetAttributes.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SnappingEnabled.Winforms/SnappingEnabled.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/UndoRedo.Winforms/UndoRedo.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/Formats/">
+    <Project Path="examples/DxfLoad.Winforms/DxfLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GeoPackageLoad.Winforms/GeoPackageLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/KmlLoad.Winforms/KmlLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MifLoad.Winforms/MifLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapefileLoad.Winforms/ShapefileLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapefileSaveAs.Winforms/ShapefileSaveAs.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TabLoad.Winforms/TabLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/Labeling/">
+    <Project Path="examples/BasicLabel.Winforms/BasicLabel.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelCollisionOff.Winforms/LabelCollisionOff.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelFont.Winforms/LabelFont.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelHalo.Winforms/LabelHalo.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelOffset.Winforms/LabelOffset.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelRotation.Winforms/LabelRotation.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/LayerManagement/">
+    <Project Path="examples/InMemoryLayers.Winforms/InMemoryLayers.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerAddRemove.Winforms/LayerAddRemove.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerEvents.Winforms/LayerEvents.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerExtent.Winforms/LayerExtent.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerLoadCancel.Winforms/LayerLoadCancel.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerLoadOptions.Winforms/LayerLoadOptions.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerRefresh.Winforms/LayerRefresh.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerReorder.Winforms/LayerReorder.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerVisibility.Winforms/LayerVisibility.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerZoomTo.Winforms/LayerZoomTo.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MultiWindowSync.Winforms/MultiWindowSync.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/RasterAndXYZTiles/">
+    <Project Path="examples/GeoTiffLoad.Winforms/GeoTiffLoad.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/OpenStreetMap.Winforms/OpenStreetMap.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterOverview.Winforms/RasterOverview.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterTileCache.Winforms/RasterTileCache.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterWorldTransform.Winforms/RasterWorldTransform.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzAttribution.Winforms/XyzAttribution.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzCustomUrl.Winforms/XyzCustomUrl.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzDiagnostics.Winforms/XyzDiagnostics.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzLocalCache.Winforms/XyzLocalCache.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzMinMaxZoom.Winforms/XyzMinMaxZoom.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzPresets.Winforms/XyzPresets.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzTileSize.Winforms/XyzTileSize.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/RenderAndPerformance/" />
+  <Folder Name="/Winforms/RouteAndNetworkAnalysis/" />
+  <Folder Name="/Winforms/SelectionAndQuery/">
+    <Project Path="examples/AllFeaturesAtPoint.Winforms/AllFeaturesAtPoint.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BoxSelect.Winforms/BoxSelect.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClickHitTest.Winforms/ClickHitTest.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ExtentQuery.Winforms/ExtentQuery.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/FeatureAttributes.Winforms/FeatureAttributes.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/InfoTool.Winforms/InfoTool.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MapClickedSignal.Winforms/MapClickedSignal.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectAdd.Winforms/SelectAdd.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectClear.Winforms/SelectClear.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionBoxSignal.Winforms/SelectionBoxSignal.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionSignal.Winforms/SelectionSignal.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WorldTolerance.Winforms/WorldTolerance.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ZoomToSelection.Winforms/ZoomToSelection.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/Serialization/">
+    <Project Path="examples/GeoJsonRead.Winforms/GeoJsonRead.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GeoJsonWrite.Winforms/GeoJsonWrite.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WkbRead.Winforms/WkbRead.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WkbWrite.Winforms/WkbWrite.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktOverlay.Winforms/WktOverlay.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPoint.Winforms/WktReadPoint.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPolygon.Winforms/WktReadPolygon.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPolyline.Winforms/WktReadPolyline.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktRoundtrip.Winforms/WktRoundtrip.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktWrite.Winforms/WktWrite.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/StyleAndSymbology/">
+    <Project Path="examples/CategorizedRenderer.Winforms/CategorizedRenderer.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClassificationMethods.Winforms/ClassificationMethods.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GraduatedRenderer.Winforms/GraduatedRenderer.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GraduatedRendererSize.Winforms/GraduatedRendererSize.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RuleBasedRenderer.Winforms/RuleBasedRenderer.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ScaleBasedLayerVisibility.Winforms/ScaleBasedLayerVisibility.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionStyle.Winforms/SelectionStyle.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SimpleStyle.Winforms/SimpleStyle.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/StylePerFeature.Winforms/StylePerFeature.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Winforms/TopologyAndGeometry/">
+    <Project Path="examples/ArcOperations.Winforms/ArcOperations.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferAnimated.Winforms/BufferAnimated.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPoint.Winforms/BufferPoint.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPolygon.Winforms/BufferPolygon.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPolyline.Winforms/BufferPolyline.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BusyCallback.Winforms/BusyCallback.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClearRenderer.Winforms/ClearRenderer.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ConvexHullShape.Winforms/ConvexHullShape.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ConvexHullTwo.Winforms/ConvexHullTwo.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Difference.Winforms/Difference.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ExtentOperations.Winforms/ExtentOperations.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/FindDeleteLoops.Winforms/FindDeleteLoops.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GetCrossings.Winforms/GetCrossings.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Intersection.Winforms/Intersection.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapeCentroid.Winforms/ShapeCentroid.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapeSimplify.Winforms/ShapeSimplify.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SpatialPredicates.Winforms/SpatialPredicates.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SpatialRelate.Winforms/SpatialRelate.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SplitByArc.Winforms/SplitByArc.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SymDifference.Winforms/SymDifference.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ToleranceConfig.Winforms/ToleranceConfig.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyBatch.Winforms/TopologyBatch.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyCheck.Winforms/TopologyCheck.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyFix.Winforms/TopologyFix.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Union.Winforms/Union.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/UnionOnList.Winforms/UnionOnList.Winforms.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/" />
+  <Folder Name="/Wpf/Basic/">
+    <Project Path="examples/AddLayers.Wpf/AddLayers.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/HelloMap.Wpf/HelloMap.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Minimap.Wpf/Minimap.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Project.Wpf/Project.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Scalebar.Wpf/Scalebar.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/CoordinateSystems/">
+    <Project Path="examples/WebMercator.Wpf/WebMercator.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Wgs84Setup.Wpf/Wgs84Setup.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CoordinateTransform.Wpf/CoordinateTransform.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CrsByAuthority.Wpf/CrsByAuthority.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CrsDatabase.Wpf/CrsDatabase.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/OnTheFlyReproject.Wpf/OnTheFlyReproject.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/EditingAndDigitizing/">
+    <Project Path="examples/AddPointInteractive.Wpf/AddPointInteractive.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPointProgrammatic.Wpf/AddPointProgrammatic.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolygonInteractive.Wpf/AddPolygonInteractive.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolygonProgrammatic.Wpf/AddPolygonProgrammatic.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolylineInteractive.Wpf/AddPolylineInteractive.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddPolylineProgrammatic.Wpf/AddPolylineProgrammatic.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/AddWithAttributes.Wpf/AddWithAttributes.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/CanEditCheck.Wpf/CanEditCheck.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/DeleteFeature.Wpf/DeleteFeature.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/DeleteVertex.Wpf/DeleteVertex.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditAndSave.Wpf/EditAndSave.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditDirtyState.Wpf/EditDirtyState.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditSession.Wpf/EditSession.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditSessionSignals.Wpf/EditSessionSignals.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/EditVerticesTool.Wpf/EditVerticesTool.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/InsertVertex.Wpf/InsertVertex.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MoveFeatureProgrammatic.Wpf/MoveFeatureProgrammatic.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MoveFeatureTool.Wpf/MoveFeatureTool.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MultiLayerEdit.Wpf/MultiLayerEdit.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SetAttributes.Wpf/SetAttributes.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SnappingEnabled.Wpf/SnappingEnabled.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/UndoRedo.Wpf/UndoRedo.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/SelectionAndQuery/">
+    <Project Path="examples/AllFeaturesAtPoint.Wpf/AllFeaturesAtPoint.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BoxSelect.Wpf/BoxSelect.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClickHitTest.Wpf/ClickHitTest.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ExtentQuery.Wpf/ExtentQuery.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/FeatureAttributes.Wpf/FeatureAttributes.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/InfoTool.Wpf/InfoTool.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MapClickedSignal.Wpf/MapClickedSignal.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectAdd.Wpf/SelectAdd.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectClear.Wpf/SelectClear.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionBoxSignal.Wpf/SelectionBoxSignal.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionSignal.Wpf/SelectionSignal.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WorldTolerance.Wpf/WorldTolerance.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ZoomToSelection.Wpf/ZoomToSelection.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/TopologyAndGeometry/">
+    <Project Path="examples/ArcOperations.Wpf/ArcOperations.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferAnimated.Wpf/BufferAnimated.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPoint.Wpf/BufferPoint.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPolygon.Wpf/BufferPolygon.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BufferPolyline.Wpf/BufferPolyline.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/BusyCallback.Wpf/BusyCallback.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClearRenderer.Wpf/ClearRenderer.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ConvexHullShape.Wpf/ConvexHullShape.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ConvexHullTwo.Wpf/ConvexHullTwo.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Difference.Wpf/Difference.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ExtentOperations.Wpf/ExtentOperations.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/FindDeleteLoops.Wpf/FindDeleteLoops.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GetCrossings.Wpf/GetCrossings.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Intersection.Wpf/Intersection.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapeCentroid.Wpf/ShapeCentroid.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapeSimplify.Wpf/ShapeSimplify.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SpatialPredicates.Wpf/SpatialPredicates.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SpatialRelate.Wpf/SpatialRelate.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SplitByArc.Wpf/SplitByArc.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SymDifference.Wpf/SymDifference.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ToleranceConfig.Wpf/ToleranceConfig.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyBatch.Wpf/TopologyBatch.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyCheck.Wpf/TopologyCheck.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TopologyFix.Wpf/TopologyFix.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/Union.Wpf/Union.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/UnionOnList.Wpf/UnionOnList.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/Labeling/">
+    <Project Path="examples/BasicLabel.Wpf/BasicLabel.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelCollisionOff.Wpf/LabelCollisionOff.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelFont.Wpf/LabelFont.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelHalo.Wpf/LabelHalo.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelOffset.Wpf/LabelOffset.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LabelRotation.Wpf/LabelRotation.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/StyleAndSymbology/">
+    <Project Path="examples/CategorizedRenderer.Wpf/CategorizedRenderer.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ClassificationMethods.Wpf/ClassificationMethods.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GraduatedRenderer.Wpf/GraduatedRenderer.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GraduatedRendererSize.Wpf/GraduatedRendererSize.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RuleBasedRenderer.Wpf/RuleBasedRenderer.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ScaleBasedLayerVisibility.Wpf/ScaleBasedLayerVisibility.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SelectionStyle.Wpf/SelectionStyle.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/SimpleStyle.Wpf/SimpleStyle.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/StylePerFeature.Wpf/StylePerFeature.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/Formats/">
+    <Project Path="examples/DxfLoad.Wpf/DxfLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GeoPackageLoad.Wpf/GeoPackageLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/KmlLoad.Wpf/KmlLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MifLoad.Wpf/MifLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapefileLoad.Wpf/ShapefileLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/ShapefileSaveAs.Wpf/ShapefileSaveAs.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/TabLoad.Wpf/TabLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/Serialization/">
+    <Project Path="examples/GeoJsonRead.Wpf/GeoJsonRead.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/GeoJsonWrite.Wpf/GeoJsonWrite.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WkbRead.Wpf/WkbRead.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WkbWrite.Wpf/WkbWrite.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktOverlay.Wpf/WktOverlay.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPoint.Wpf/WktReadPoint.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPolygon.Wpf/WktReadPolygon.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktReadPolyline.Wpf/WktReadPolyline.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktRoundtrip.Wpf/WktRoundtrip.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/WktWrite.Wpf/WktWrite.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/RasterAndXYZTiles/">
+    <Project Path="examples/GeoTiffLoad.Wpf/GeoTiffLoad.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/OpenStreetMap.Wpf/OpenStreetMap.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterOverview.Wpf/RasterOverview.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterTileCache.Wpf/RasterTileCache.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/RasterWorldTransform.Wpf/RasterWorldTransform.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzAttribution.Wpf/XyzAttribution.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzCustomUrl.Wpf/XyzCustomUrl.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzDiagnostics.Wpf/XyzDiagnostics.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzLocalCache.Wpf/XyzLocalCache.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzMinMaxZoom.Wpf/XyzMinMaxZoom.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzPresets.Wpf/XyzPresets.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/XyzTileSize.Wpf/XyzTileSize.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Wpf/LayerManagement/">
+    <Project Path="examples/InMemoryLayers.Wpf/InMemoryLayers.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerAddRemove.Wpf/LayerAddRemove.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerEvents.Wpf/LayerEvents.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerExtent.Wpf/LayerExtent.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerLoadCancel.Wpf/LayerLoadCancel.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerLoadOptions.Wpf/LayerLoadOptions.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerRefresh.Wpf/LayerRefresh.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerReorder.Wpf/LayerReorder.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerVisibility.Wpf/LayerVisibility.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/LayerZoomTo.Wpf/LayerZoomTo.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+    <Project Path="examples/MultiWindowSync.Wpf/MultiWindowSync.Wpf.csproj">
+      <Build Solution="*|Any CPU" Project="false" />
+    </Project>
+  </Folder>
+</Solution>
