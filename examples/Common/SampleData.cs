@@ -9,6 +9,8 @@ namespace GeoKernel.Examples.Common;
 
 public static class SampleData
 {
+    private const string DataDirectoryEnvironmentVariable = "GEOKERNEL_EXAMPLES_DATA_DIR";
+
     public static string EnsureSampleFile(
         Uri sourceUrl,
         string archiveName,
@@ -17,6 +19,8 @@ public static class SampleData
         WinForms.IWin32Window? owner = null)
     {
         var request = SampleDataRequest.Create(sourceUrl, archiveName, extractFolderName, requiredFileName);
+        request.SeedFromLocalOutputData();
+
         if (File.Exists(request.RequiredPath))
             return request.RequiredPath;
 
@@ -36,6 +40,8 @@ public static class SampleData
         Wpf.Window? owner)
     {
         var request = SampleDataRequest.Create(sourceUrl, archiveName, extractFolderName, requiredFileName);
+        request.SeedFromLocalOutputData();
+
         if (File.Exists(request.RequiredPath))
             return request.RequiredPath;
 
@@ -54,6 +60,24 @@ public static class SampleData
             ? request.RequiredPath
             : string.Empty;
     }
+
+    internal static string ResolveDataDirectory()
+    {
+        var configuredDirectory = Environment.GetEnvironmentVariable(DataDirectoryEnvironmentVariable);
+        if (!string.IsNullOrWhiteSpace(configuredDirectory))
+            return Path.GetFullPath(configuredDirectory);
+
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null)
+        {
+            if (string.Equals(directory.Name, "outputs", StringComparison.OrdinalIgnoreCase))
+                return Path.Combine(directory.FullName, "data");
+
+            directory = directory.Parent;
+        }
+
+        return Path.Combine(AppContext.BaseDirectory, "data");
+    }
 }
 
 internal sealed record SampleDataRequest(
@@ -61,7 +85,9 @@ internal sealed record SampleDataRequest(
     string ArchivePath,
     string ExtractDirectory,
     string RequiredPath,
-    string DataDirectory)
+    string DataDirectory,
+    string LocalExtractDirectory,
+    string LocalRequiredPath)
 {
     public static SampleDataRequest Create(
         Uri sourceUrl,
@@ -69,14 +95,55 @@ internal sealed record SampleDataRequest(
         string extractFolderName,
         string requiredFileName)
     {
-        var dataDirectory = Path.Combine(AppContext.BaseDirectory, "data");
+        var dataDirectory = SampleData.ResolveDataDirectory();
         var extractDirectory = Path.Combine(dataDirectory, extractFolderName);
+        var localExtractDirectory = Path.Combine(AppContext.BaseDirectory, "data", extractFolderName);
+
         return new SampleDataRequest(
             sourceUrl,
             Path.Combine(dataDirectory, archiveName),
             extractDirectory,
             Path.Combine(extractDirectory, requiredFileName),
-            dataDirectory);
+            dataDirectory,
+            localExtractDirectory,
+            Path.Combine(localExtractDirectory, requiredFileName));
+    }
+
+    public void SeedFromLocalOutputData()
+    {
+        if (File.Exists(RequiredPath) || !File.Exists(LocalRequiredPath))
+            return;
+
+        if (SamePath(ExtractDirectory, LocalExtractDirectory))
+            return;
+
+        Directory.CreateDirectory(ExtractDirectory);
+        CopyDirectory(LocalExtractDirectory, ExtractDirectory);
+    }
+
+    private static void CopyDirectory(string sourceDirectory, string destinationDirectory)
+    {
+        foreach (var directory in Directory.EnumerateDirectories(sourceDirectory, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = Path.GetRelativePath(sourceDirectory, directory);
+            Directory.CreateDirectory(Path.Combine(destinationDirectory, relativePath));
+        }
+
+        foreach (var file in Directory.EnumerateFiles(sourceDirectory, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = Path.GetRelativePath(sourceDirectory, file);
+            var destinationPath = Path.Combine(destinationDirectory, relativePath);
+            Directory.CreateDirectory(Path.GetDirectoryName(destinationPath)!);
+            File.Copy(file, destinationPath, overwrite: true);
+        }
+    }
+
+    private static bool SamePath(string left, string right)
+    {
+        static string Normalize(string path) =>
+            Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+        return string.Equals(Normalize(left), Normalize(right), StringComparison.OrdinalIgnoreCase);
     }
 }
 

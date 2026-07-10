@@ -15,4 +15,19 @@
     <None Remove="$(MSBuildProjectDirectory)\obj\**\*" />
   </ItemGroup>
 
+  <Target
+    Name="CleanLegacyGeoKernelProjDataDirectories"
+    BeforeTargets="PrepareForBuild"
+    Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <ItemGroup>
+      <GeoKernelLegacyProjDataName Include="CH;copyright;GL27;ITRF2000;ITRF2008;ITRF2014;ITRF2020;nad27;nad83;usage;world" />
+      <GeoKernelLegacyProjDataDirectory Include="$(TargetDir)proj-data\%(GeoKernelLegacyProjDataName.Identity)" />
+      <GeoKernelLegacyProjDataDirectory Include="$(TargetDir)runtimes\win-x64\native\proj-data\%(GeoKernelLegacyProjDataName.Identity)" />
+    </ItemGroup>
+
+    <RemoveDir
+      Directories="@(GeoKernelLegacyProjDataDirectory)"
+      Condition="Exists('%(GeoKernelLegacyProjDataDirectory.Identity)')" />
+  </Target>
+
 </Project>

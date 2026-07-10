@@ -19,7 +19,6 @@ public sealed partial class MainForm : Form
     {
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         geoKernelViewerControl.ClearLayers();
-        geoKernelViewerControl.AddOpenStreetMapLayer();
 
         if (!AddSampleLayer(
             "world_8km_png.zip",
