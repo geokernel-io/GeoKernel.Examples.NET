@@ -4,9 +4,7 @@
     <Platform Name="x64" />
   </Configurations>
   <Folder Name="/Common/">
-    <Project Path="examples/Common/Common.csproj">
-      <Build Solution="*|Any CPU" Project="false" />
-    </Project>
+    <Project Path="examples/Common/Common.csproj" />
   </Folder>
   <Folder Name="/Winforms/" />
   <Folder Name="/Winforms/Basic/">

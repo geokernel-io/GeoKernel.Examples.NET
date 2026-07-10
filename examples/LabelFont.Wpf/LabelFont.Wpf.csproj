@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-        <GeoKernelSkipNativeRuntimeBuild>true</GeoKernelSkipNativeRuntimeBuild>
-    <GeoKernelSdkConfiguration Condition="'$(GeoKernelSdkConfiguration)' == ''">Release</GeoKernelSdkConfiguration>
 <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
@@ -17,19 +15,8 @@
   <ItemGroup>
     <Resource Include="..\..\images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
   </ItemGroup>
-
-  <Target Name="CopyGeoKernelNativeRuntime" AfterTargets="Build">
-    <ItemGroup>
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll')" />
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll')" />
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\*.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Viewer.dll')" />
-    </ItemGroup>
-    <Copy SourceFiles="@(GeoKernelNativeBinaries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" Condition="'@(GeoKernelNativeBinaries)' != ''" />
-  </Target>
-  <ItemGroup>
-    <Reference Include="GeoKernel.NET.Wpf.Controls">
-      <HintPath>$(GeoKernelDotNetRoot)outputs\GeoKernel.NET.Wpf.Controls\$(GeoKernelSdkConfiguration)\net10.0-windows\GeoKernel.NET.Wpf.Controls.dll</HintPath>
-    </Reference>
+<ItemGroup>
+    <PackageReference Include="GeoKernel.NET.Wpf.Controls" Version="$(GeoKernelDotNetPackageVersion)" />
   </ItemGroup>
 </Project>
 

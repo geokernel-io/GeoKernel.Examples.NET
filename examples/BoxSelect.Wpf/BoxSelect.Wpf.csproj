@@ -8,29 +8,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <GeoKernelSkipNativeRuntimeBuild>true</GeoKernelSkipNativeRuntimeBuild>
-    <GeoKernelSdkConfiguration Condition="'$(GeoKernelSdkConfiguration)' == ''">Release</GeoKernelSdkConfiguration>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoKernel.NET.Wpf.Controls">
-      <HintPath>$(GeoKernelDotNetRoot)outputs\GeoKernel.NET.Wpf.Controls\$(GeoKernelSdkConfiguration)\net10.0-windows\GeoKernel.NET.Wpf.Controls.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
+    <PackageReference Include="GeoKernel.NET.Wpf.Controls" Version="$(GeoKernelDotNetPackageVersion)" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Resource Include="..\..\images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
   </ItemGroup>
-
-  <Target Name="CopyGeoKernelNativeRuntime" AfterTargets="Build">
-    <ItemGroup>
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Core.dll')" />
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Formats.dll')" />
-      <GeoKernelNativeBinaries Include="$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\*.dll" Condition="Exists('$(GeoKernelRoot)outputs\build\$(GeoKernelSdkConfiguration)\GeoKernel.Viewer.dll')" />
-    </ItemGroup>
-    <Copy SourceFiles="@(GeoKernelNativeBinaries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" Condition="'@(GeoKernelNativeBinaries)' != ''" />
-  </Target>
-
 </Project>
 
