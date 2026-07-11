@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <GeoKernelSamplesRoot>$(MSBuildThisFileDirectory)</GeoKernelSamplesRoot>
-    <GeoKernelDotNetPackageVersion>1.0.5</GeoKernelDotNetPackageVersion>
+    <GeoKernelDotNetPackageVersion>1.0.6</GeoKernelDotNetPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.vcxproj'">
