@@ -20,7 +20,6 @@ public partial class MainWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        viewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         viewerControl.ActiveTool = GeoKernelViewerTool.AddPoint;
         viewerControl.LayerEditStateChanged += ViewerControl_LayerEditStateChanged;
 

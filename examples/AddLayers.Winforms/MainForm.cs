@@ -143,5 +143,4 @@ public sealed partial class MainForm : Form
     {
         SetTool(GeoKernelViewerTool.Pan);
     }
-
 }
