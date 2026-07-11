@@ -11,7 +11,7 @@ public sealed partial class MainForm : Form
     }
 
     private void MainForm_Shown(object sender, EventArgs e)
-    {
+    {        
         var shapefilePath = SampleData.EnsureSampleFile(
             new Uri("https://github.com/geokernel-io/GeoKernel.SampleData/releases/download/v1/world_4326.zip"),
             "world_4326.zip",
