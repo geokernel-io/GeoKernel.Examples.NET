@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <PackageReference Include="GeoKernel.NET.Wpf.Controls" Version="$(GeoKernelDotNetPackageVersion)" />
+    <PackageReference Include="GeoKernel.NET.Wpf.Controls" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>

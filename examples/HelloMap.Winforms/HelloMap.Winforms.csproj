@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoKernel.NET.WinForms.Controls" Version="$(GeoKernelDotNetPackageVersion)" />
+    <PackageReference Include="GeoKernel.NET.WinForms.Controls" Version="1.0.7" />
   </ItemGroup>
 
   <ItemGroup>
