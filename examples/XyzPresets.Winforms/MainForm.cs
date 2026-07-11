@@ -6,6 +6,7 @@ public sealed partial class MainForm : Form
 {
     private static readonly string SampleName = "XyzPresets";
     private static readonly string SampleKind = "xyz";
+
     public MainForm()
     {
         InitializeComponent();
@@ -13,11 +14,11 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object? sender, EventArgs e)
     {
-        viewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         LoadSample();
     }
 
     private void primaryButton_Click(object? sender, EventArgs e) => LoadSample();
+
     private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
 
     private void LoadSample()

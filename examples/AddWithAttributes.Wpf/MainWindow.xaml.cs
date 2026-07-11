@@ -22,8 +22,7 @@ public partial class MainWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        attributesGrid.ItemsSource = _rows;
-        viewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
+        attributesGrid.ItemsSource = _rows;        
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         viewerControl.SelectionChanged += ViewerControl_SelectionChanged;
 

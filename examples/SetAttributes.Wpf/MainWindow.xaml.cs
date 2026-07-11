@@ -36,8 +36,7 @@ public partial class MainWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        statusComboBox.ItemsSource = StatusValues;
-        viewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
+        statusComboBox.ItemsSource = StatusValues;        
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         viewerControl.LayerEditStateChanged += ViewerControl_LayerEditStateChanged;
 

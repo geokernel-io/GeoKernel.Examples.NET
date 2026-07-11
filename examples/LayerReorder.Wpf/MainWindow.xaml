@@ -109,7 +109,7 @@
                 </Grid>
             </Border>
 
-            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="1" MapBackgroundColor="#F4F6F5" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="1" />
         </Grid>
 
         <Border Grid.Row="2" Background="#F1F1F1">

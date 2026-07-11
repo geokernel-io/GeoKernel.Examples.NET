@@ -17,7 +17,6 @@ public sealed partial class MainForm : Form
     private void MainForm_Shown(object sender, EventArgs e)
     {
         _loading = true;
-        geoKernelViewerControl.MapBackgroundColor = Color.FromArgb(247, 248, 250);
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         geoKernelViewerControl.AddOpenStreetMapLayer();
 

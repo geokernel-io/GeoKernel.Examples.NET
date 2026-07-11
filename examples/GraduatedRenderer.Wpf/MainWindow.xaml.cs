@@ -20,7 +20,6 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         _loading = true;
-        viewerControl.MapBackgroundColor = Color.FromArgb(247, 248, 250);
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         viewerControl.AddOpenStreetMapLayer();
 

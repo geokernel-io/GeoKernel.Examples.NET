@@ -12,5 +12,5 @@
         Background="#F4F6F5"
         Loaded="Window_Loaded">
 
-    <gk:GeoKernelViewerControl x:Name="viewerControl" MapBackgroundColor="#F4F6F5" />
+    <gk:GeoKernelViewerControl x:Name="viewerControl" />
 </Window>

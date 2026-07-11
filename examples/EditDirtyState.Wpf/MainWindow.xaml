@@ -40,9 +40,7 @@
             </ToolBar>
         </ToolBarTray>
 
-        <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="1"
-                                   MapBackgroundColor="#F7F8FA" />
+        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" />
 
         <TextBox x:Name="logTextBox"
                  Grid.Row="2"

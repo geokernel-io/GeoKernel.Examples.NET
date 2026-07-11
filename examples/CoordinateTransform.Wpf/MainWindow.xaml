@@ -28,9 +28,7 @@
                     Click="FullExtent_Click" />
         </Border>
 
-        <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="1"
-                                   MapBackgroundColor="#F4F6F5" />
+        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" />
 
         <StatusBar Grid.Row="2">
             <TextBlock x:Name="statusTextBlock" Text="EPSG:4326 -> EPSG:3857" />

@@ -75,7 +75,7 @@
             </StackPanel>
         </Border>
 
-        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" MapBackgroundColor="#F4F6F5" />
+        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" />
 
         <Grid Grid.Row="2" Background="#F1F1F1" Margin="0">
             <Grid.ColumnDefinitions>

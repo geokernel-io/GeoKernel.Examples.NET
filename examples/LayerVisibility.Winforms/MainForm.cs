@@ -13,8 +13,6 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
-        geoKernelViewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
-        
         SetTool(GeoKernelViewerTool.Pan);
 
         if (!LoadLayers())

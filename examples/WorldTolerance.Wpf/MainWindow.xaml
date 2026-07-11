@@ -62,7 +62,6 @@
 
             <gk:GeoKernelViewerControl x:Name="viewerControl"
                                        Grid.Column="0"
-                                       MapBackgroundColor="#F4F6F5"
                                        MouseLeftButtonUp="ViewerControl_MouseLeftButtonUp" />
 
             <Grid Grid.Column="1">

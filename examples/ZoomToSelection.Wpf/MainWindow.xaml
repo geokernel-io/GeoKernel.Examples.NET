@@ -1,4 +1,4 @@
-﻿<Window x:Class="GeoKernel.ZoomToSelection.Wpf.MainWindow"
+<Window x:Class="GeoKernel.ZoomToSelection.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
@@ -54,7 +54,6 @@
 
             <gk:GeoKernelViewerControl x:Name="viewerControl"
                                        Grid.Column="0"
-                                       MapBackgroundColor="#F4F6F5"
                                        MouseLeftButtonUp="ViewerControl_MouseLeftButtonUp" />
 
             <DataGrid x:Name="detailsGrid"

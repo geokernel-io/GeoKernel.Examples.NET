@@ -73,9 +73,7 @@
                      TextWrapping="Wrap"
                      VerticalScrollBarVisibility="Auto" />
 
-            <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                       Grid.Column="1"
-                                       MapBackgroundColor="#F4F6F5" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="1" />
         </Grid>
 
         <StatusBar Grid.Row="2">

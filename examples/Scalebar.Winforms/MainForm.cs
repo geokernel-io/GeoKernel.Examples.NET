@@ -11,8 +11,6 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
-        geoKernelViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
-
         var shapefilePath = Path.Combine(FindRepositoryRoot(), "data", "world_4326.shp");
 
         if (!File.Exists(shapefilePath))

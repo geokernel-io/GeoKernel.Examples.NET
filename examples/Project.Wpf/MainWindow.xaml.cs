@@ -22,7 +22,6 @@ public partial class MainWindow
             return;
 
         _projectLoaded = true;
-        viewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         SetTool(GeoKernelViewerTool.Pan);
         LoadProject();
     }

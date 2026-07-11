@@ -14,8 +14,6 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
-        leftViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
-        rightViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         SetTool(GeoKernelViewerTool.Pan);
 
         if (!LoadLayer(leftViewerControl, "World A") ||

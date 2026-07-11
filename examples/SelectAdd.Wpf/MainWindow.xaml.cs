@@ -18,8 +18,7 @@ public partial class MainWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        detailsGrid.ItemsSource = _selectedRows;
-        viewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
+        detailsGrid.ItemsSource = _selectedRows;        
         viewerControl.ActiveTool = GeoKernelViewerTool.Info;
 
         if (!LoadSampleLayers())

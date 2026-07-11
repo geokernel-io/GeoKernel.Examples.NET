@@ -149,5 +149,4 @@ public partial class MainWindow
     }
 
     private static Uri SampleDataUri(string archiveName) => new($"{SampleDataBaseUrl}{archiveName}");
-
 }

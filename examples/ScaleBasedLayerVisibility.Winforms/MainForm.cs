@@ -13,7 +13,6 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
-        geoKernelViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         geoKernelViewerControl.ZoomChanged += (_, e) =>
         {

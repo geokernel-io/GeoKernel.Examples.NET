@@ -24,7 +24,7 @@ public partial class MainWindow
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         _loaded = true;
-        viewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(247, 248, 250);
+        
         RenderScene();
         SetSampleExtent();
     }

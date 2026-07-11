@@ -29,8 +29,7 @@
         </ToolBarTray>
 
         <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="1"
-                                   MapBackgroundColor="#F4F6F5" />
+                                   Grid.Row="1" />
 
         <Grid Grid.Row="2" Background="#F4F4F4">
             <Grid.ColumnDefinitions>

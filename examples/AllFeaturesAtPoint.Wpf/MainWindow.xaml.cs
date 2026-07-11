@@ -21,7 +21,6 @@ public partial class MainWindow
     {
         hitsGrid.ItemsSource = _hitRows;
         attributesGrid.ItemsSource = _details;
-        viewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
         viewerControl.ActiveTool = GeoKernelViewerTool.Info;
 
         if (!LoadSampleLayers())

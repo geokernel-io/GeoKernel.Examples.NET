@@ -14,7 +14,6 @@ public partial class MainWindow
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        viewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
 
         var shapefilePath = Path.Combine(FindRepositoryRoot(), "data", "world_4326.shp");

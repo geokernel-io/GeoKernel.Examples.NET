@@ -37,8 +37,7 @@
         </StackPanel>
 
         <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="2"
-                                   MapBackgroundColor="#F4F6F5" />
+                                   Grid.Row="2" />
 
         <Grid Grid.Row="3" Background="#F4F4F4">
             <Grid.ColumnDefinitions>

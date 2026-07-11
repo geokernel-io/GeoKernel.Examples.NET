@@ -38,10 +38,8 @@
             </ToolBar>
         </ToolBarTray>
 
-        <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="1"
-                                   MapBackgroundColor="#F7F8FA" />
-
+        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" />
+        
         <Border Grid.Row="2" Background="#F4F4F4" BorderBrush="#D0D0D0" BorderThickness="0,1,0,0">
             <TextBlock x:Name="statusText"
                        VerticalAlignment="Center"

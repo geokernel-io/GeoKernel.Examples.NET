@@ -47,10 +47,7 @@
                 <ColumnDefinition Width="356" />
             </Grid.ColumnDefinitions>
 
-            <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                       Grid.Column="0"
-                                       MapBackgroundColor="#F4F6F5"
-                                       MouseLeftButtonUp="ViewerControl_MouseLeftButtonUp" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" MouseLeftButtonUp="ViewerControl_MouseLeftButtonUp" />
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>

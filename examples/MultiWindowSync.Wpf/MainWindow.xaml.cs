@@ -17,8 +17,6 @@ public partial class MainWindow : Window
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        leftViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
-        rightViewerControl.MapBackgroundColor = Color.FromArgb(244, 246, 245);
         SetTool(GeoKernelViewerTool.Pan);
 
         if (!LoadLayer(leftViewerControl, "World A") ||

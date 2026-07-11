@@ -19,8 +19,7 @@ public partial class MainWindow : Window
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        _loading = true;
-        viewerControl.MapBackgroundColor = Color.FromArgb(228, 228, 228);
+        _loading = true;        
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
 
         FillMethods();

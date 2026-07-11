@@ -14,7 +14,7 @@
         <StatusBar DockPanel.Dock="Bottom" Height="22"><TextBlock x:Name="statusText" Text="XyzMinMaxZoom ready." /></StatusBar>
         <Grid>
             <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
-            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" MapBackgroundColor="#F4F6F5" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" />
             <TextBox x:Name="detailsTextBox" Grid.Column="1" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" />
         </Grid>
     </DockPanel>

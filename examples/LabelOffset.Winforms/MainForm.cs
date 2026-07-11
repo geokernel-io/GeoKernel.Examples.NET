@@ -77,7 +77,6 @@ public sealed class MainForm : Form
 
     private void MainForm_Shown(object? sender, EventArgs e)
     {
-        _viewer.MapBackgroundColor = System.Drawing.Color.FromArgb(247, 248, 250);
         _viewer.ActiveTool = GeoKernelViewerTool.Pan;
 
         if (!LoadLayer())

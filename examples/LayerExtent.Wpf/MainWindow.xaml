@@ -17,8 +17,7 @@
         </Grid.RowDefinitions>
 
         <gk:GeoKernelViewerControl x:Name="viewerControl"
-                                   Grid.Row="0"
-                                   MapBackgroundColor="#F4F6F5" />
+                                   Grid.Row="0" />
 
         <Border Grid.Row="1" Background="#F4F4F4" BorderBrush="#D0D0D0" BorderThickness="0,1,0,0">
             <TextBlock x:Name="statusText"

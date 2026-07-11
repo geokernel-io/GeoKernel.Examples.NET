@@ -66,8 +66,7 @@
 
             <gk:GeoKernelViewerControl x:Name="viewerControl"
                                        Grid.Column="1"
-                                       ActiveTool="AddPoint"
-                                       MapBackgroundColor="#F4F6F5" />
+                                       ActiveTool="AddPoint" />
         </Grid>
 
         <StatusBar Grid.Row="2">

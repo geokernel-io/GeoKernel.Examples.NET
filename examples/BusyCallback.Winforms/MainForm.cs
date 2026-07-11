@@ -15,7 +15,6 @@ public sealed partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
-        geoKernelViewerControl.MapBackgroundColor = System.Drawing.Color.FromArgb(244, 246, 245);
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         SetProgress(0);
         SetStatus("Ready. Click Load Large Layer to see busy/progress callbacks.");

@@ -36,7 +36,7 @@
                 <ColumnDefinition Width="400" />
             </Grid.ColumnDefinitions>
 
-            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" MapBackgroundColor="#F4F6F5" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" />
 
             <TextBox x:Name="infoTextBox"
                      Grid.Column="1"
