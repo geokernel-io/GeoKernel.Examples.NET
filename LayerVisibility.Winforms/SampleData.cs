@@ -1,7 +1,7 @@
 using System.IO.Compression;
 using GeoKernel.NET.WinForms;
 
-namespace GeoKernel.LayerAddRemove.Winforms;
+namespace GeoKernel.LayerVisibility.Winforms;
 
 internal sealed record SampleDataProgress(string Message, int? Percentage);
 
@@ -57,7 +57,7 @@ internal static class SampleData
         catch (Exception exception)
         {
             TryDelete(archivePath);
-            MessageBox.Show(owner, $"Sample data could not be prepared.{Environment.NewLine}{Environment.NewLine}{exception.Message}", "LayerAddRemove", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(owner, $"Sample data could not be prepared.{Environment.NewLine}{Environment.NewLine}{exception.Message}", "LayerVisibility", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return string.Empty;
         }
     }
