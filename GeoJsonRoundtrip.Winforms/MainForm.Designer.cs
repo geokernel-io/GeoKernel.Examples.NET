@@ -1,0 +1,155 @@
+namespace GeoKernel.GeoJsonRoundtrip.Winforms;
+
+partial class MainForm
+{
+    private System.ComponentModel.IContainer components = null;
+    private Panel inputPanel;
+    private Label geometryLabel;
+    private ComboBox geometryComboBox;
+    private Label geoJsonLabel;
+    private TextBox geoJsonTextBox;
+    private Button roundtripButton;
+    private Button resetButton;
+    private SplitContainer splitContainer;
+    private global::GeoKernel.NET.WinForms.GeoKernelViewerControl geoKernelViewerControl;
+    private TextBox detailsTextBox;
+    private StatusStrip statusStrip;
+    private ToolStripStatusLabel statusLabel;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && components is not null)
+            components.Dispose();
+
+        base.Dispose(disposing);
+    }
+
+    private void InitializeComponent()
+    {
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        components = new System.ComponentModel.Container();
+        inputPanel = new Panel();
+        geometryLabel = new Label();
+        geometryComboBox = new ComboBox();
+        geoJsonLabel = new Label();
+        geoJsonTextBox = new TextBox();
+        roundtripButton = new Button();
+        resetButton = new Button();
+        splitContainer = new SplitContainer();
+        geoKernelViewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
+        detailsTextBox = new TextBox();
+        statusStrip = new StatusStrip();
+        statusLabel = new ToolStripStatusLabel();
+        inputPanel.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+        splitContainer.Panel1.SuspendLayout();
+        splitContainer.Panel2.SuspendLayout();
+        splitContainer.SuspendLayout();
+        statusStrip.SuspendLayout();
+        SuspendLayout();
+        inputPanel.Controls.Add(geometryLabel);
+        inputPanel.Controls.Add(geometryComboBox);
+        inputPanel.Controls.Add(geoJsonLabel);
+        inputPanel.Controls.Add(geoJsonTextBox);
+        inputPanel.Controls.Add(roundtripButton);
+        inputPanel.Controls.Add(resetButton);
+        inputPanel.Dock = DockStyle.Top;
+        inputPanel.Location = new Point(0, 0);
+        inputPanel.Name = "inputPanel";
+        inputPanel.Padding = new Padding(6, 4, 6, 4);
+        inputPanel.Size = new Size(1160, 34);
+        inputPanel.TabIndex = 0;
+        geometryLabel.AutoSize = true;
+        geometryLabel.Location = new Point(8, 9);
+        geometryLabel.Name = "geometryLabel";
+        geometryLabel.Size = new Size(62, 15);
+        geometryLabel.TabIndex = 0;
+        geometryLabel.Text = "Geometry:";
+        geometryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+        geometryComboBox.Items.AddRange(new object[] { "Point", "Polyline", "Polygon" });
+        geometryComboBox.Location = new Point(76, 5);
+        geometryComboBox.Name = "geometryComboBox";
+        geometryComboBox.Size = new Size(118, 23);
+        geometryComboBox.TabIndex = 1;
+        geometryComboBox.SelectedIndexChanged += geometryComboBox_SelectedIndexChanged;
+        geoJsonLabel.AutoSize = true;
+        geoJsonLabel.Location = new Point(204, 9);
+        geoJsonLabel.Name = "geoJsonLabel";
+        geoJsonLabel.Size = new Size(35, 15);
+        geoJsonLabel.TabIndex = 2;
+        geoJsonLabel.Text = "GeoJSON:";
+        geoJsonTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        geoJsonTextBox.Location = new Point(275, 5);
+        geoJsonTextBox.Name = "geoJsonTextBox";
+        geoJsonTextBox.Size = new Size(652, 23);
+        geoJsonTextBox.TabIndex = 3;
+        geoJsonTextBox.KeyDown += geoJsonTextBox_KeyDown;
+        roundtripButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        roundtripButton.Location = new Point(933, 4);
+        roundtripButton.Name = "roundtripButton";
+        roundtripButton.Size = new Size(126, 25);
+        roundtripButton.TabIndex = 4;
+        roundtripButton.Text = "Run Roundtrip";
+        roundtripButton.UseVisualStyleBackColor = true;
+        roundtripButton.Click += roundtripButton_Click;
+        resetButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        resetButton.Location = new Point(1065, 4);
+        resetButton.Name = "resetButton";
+        resetButton.Size = new Size(89, 25);
+        resetButton.TabIndex = 5;
+        resetButton.Text = "Reset";
+        resetButton.UseVisualStyleBackColor = true;
+        resetButton.Click += resetButton_Click;
+        splitContainer.Dock = DockStyle.Fill;
+        splitContainer.Location = new Point(0, 34);
+        splitContainer.Name = "splitContainer";
+        splitContainer.Panel1.Controls.Add(geoKernelViewerControl);
+        splitContainer.Panel2.Controls.Add(detailsTextBox);
+        splitContainer.Size = new Size(1160, 684);
+        splitContainer.SplitterDistance = 730;
+        splitContainer.TabIndex = 1;
+        geoKernelViewerControl.Dock = DockStyle.Fill;
+        geoKernelViewerControl.Location = new Point(0, 0);
+        geoKernelViewerControl.Name = "geoKernelViewerControl";
+        geoKernelViewerControl.Size = new Size(730, 684);
+        geoKernelViewerControl.TabIndex = 0;
+        detailsTextBox.Dock = DockStyle.Fill;
+        detailsTextBox.Location = new Point(0, 0);
+        detailsTextBox.Multiline = true;
+        detailsTextBox.Name = "detailsTextBox";
+        detailsTextBox.ReadOnly = true;
+        detailsTextBox.ScrollBars = ScrollBars.Vertical;
+        detailsTextBox.Size = new Size(426, 684);
+        detailsTextBox.TabIndex = 0;
+        statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
+        statusStrip.Location = new Point(0, 718);
+        statusStrip.Name = "statusStrip";
+        statusStrip.Size = new Size(1160, 22);
+        statusStrip.TabIndex = 2;
+        statusLabel.Name = "statusLabel";
+        statusLabel.Size = new Size(0, 17);
+        AutoScaleDimensions = new SizeF(7F, 15F);
+        AutoScaleMode = AutoScaleMode.Font;
+        ClientSize = new Size(1160, 740);
+        Controls.Add(splitContainer);
+        Controls.Add(statusStrip);
+        Controls.Add(inputPanel);
+        MinimumSize = new Size(900, 540);
+        Icon = (Icon)resources.GetObject("$this.Icon");
+        Name = "MainForm";
+        StartPosition = FormStartPosition.CenterScreen;
+        Text = "GeoJsonRoundtrip";
+        Shown += MainForm_Shown;
+        inputPanel.ResumeLayout(false);
+        inputPanel.PerformLayout();
+        splitContainer.Panel1.ResumeLayout(false);
+        splitContainer.Panel2.ResumeLayout(false);
+        splitContainer.Panel2.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+        splitContainer.ResumeLayout(false);
+        statusStrip.ResumeLayout(false);
+        statusStrip.PerformLayout();
+        ResumeLayout(false);
+        PerformLayout();
+    }
+}

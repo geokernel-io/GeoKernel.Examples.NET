@@ -114,6 +114,7 @@ partial class MainForm
         button.BackgroundImage = new Bitmap(Path.Combine(AppContext.BaseDirectory, "resources", imageName));
         button.BackgroundImageLayout = ImageLayout.Center;
         button.FlatAppearance.BorderSize = 0;
+        button.TabStop = false;
         button.FlatStyle = FlatStyle.Flat;
         button.Location = new Point(left, 0);
         button.Margin = new Padding(0);

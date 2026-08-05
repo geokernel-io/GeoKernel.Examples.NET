@@ -96,7 +96,7 @@ partial class MainForm
         // 
         zoomInButton.BackColor = SystemColors.Control;
         zoomInButton.BackgroundImage = (Image)resources.GetObject("zoomInButton.Image");
-        zoomInButton.BackgroundImageLayout = ImageLayout.Zoom;
+        zoomInButton.BackgroundImageLayout = ImageLayout.Center;
         zoomInButton.FlatAppearance.BorderSize = 0;
         zoomInButton.FlatStyle = FlatStyle.Flat;
         zoomInButton.Location = new Point(0, 0);
@@ -107,13 +107,14 @@ partial class MainForm
         zoomInButton.TabIndex = 0;
         zoomInButton.Text = "";
         zoomInButton.UseVisualStyleBackColor = false;
+        zoomInButton.TabStop = false;
         zoomInButton.Click += zoomInButton_Click;
         // 
         // zoomOutButton
         // 
         zoomOutButton.BackColor = SystemColors.Control;
         zoomOutButton.BackgroundImage = (Image)resources.GetObject("zoomOutButton.Image");
-        zoomOutButton.BackgroundImageLayout = ImageLayout.Zoom;
+        zoomOutButton.BackgroundImageLayout = ImageLayout.Center;
         zoomOutButton.FlatAppearance.BorderSize = 0;
         zoomOutButton.FlatStyle = FlatStyle.Flat;
         zoomOutButton.Location = new Point(36, 0);
@@ -124,13 +125,14 @@ partial class MainForm
         zoomOutButton.TabIndex = 1;
         zoomOutButton.Text = "";
         zoomOutButton.UseVisualStyleBackColor = false;
+        zoomOutButton.TabStop = false;
         zoomOutButton.Click += zoomOutButton_Click;
         // 
         // fullExtentButton
         // 
         fullExtentButton.BackColor = SystemColors.Control;
         fullExtentButton.BackgroundImage = (Image)resources.GetObject("fullExtentButton.Image");
-        fullExtentButton.BackgroundImageLayout = ImageLayout.Zoom;
+        fullExtentButton.BackgroundImageLayout = ImageLayout.Center;
         fullExtentButton.FlatAppearance.BorderSize = 0;
         fullExtentButton.FlatStyle = FlatStyle.Flat;
         fullExtentButton.Location = new Point(72, 0);
@@ -141,6 +143,7 @@ partial class MainForm
         fullExtentButton.TabIndex = 2;
         fullExtentButton.Text = "";
         fullExtentButton.UseVisualStyleBackColor = false;
+        fullExtentButton.TabStop = false;
         fullExtentButton.Click += fullExtentButton_Click;
         // 
         // toolbarSeparator
@@ -156,7 +159,7 @@ partial class MainForm
         // 
         zoomRectButton.BackColor = SystemColors.Control;
         zoomRectButton.BackgroundImage = (Image)resources.GetObject("zoomRectButton.Image");
-        zoomRectButton.BackgroundImageLayout = ImageLayout.Zoom;
+        zoomRectButton.BackgroundImageLayout = ImageLayout.Center;
         zoomRectButton.FlatAppearance.BorderSize = 0;
         zoomRectButton.FlatStyle = FlatStyle.Flat;
         zoomRectButton.Location = new Point(116, 0);
@@ -167,13 +170,14 @@ partial class MainForm
         zoomRectButton.TabIndex = 4;
         zoomRectButton.Text = "";
         zoomRectButton.UseVisualStyleBackColor = false;
+        zoomRectButton.TabStop = false;
         zoomRectButton.Click += zoomRectButton_Click;
         // 
         // panButton
         // 
         panButton.BackColor = SystemColors.Control;
         panButton.BackgroundImage = (Image)resources.GetObject("panButton.Image");
-        panButton.BackgroundImageLayout = ImageLayout.Zoom;
+        panButton.BackgroundImageLayout = ImageLayout.Center;
         panButton.FlatAppearance.BorderSize = 0;
         panButton.FlatStyle = FlatStyle.Flat;
         panButton.Location = new Point(152, 0);
@@ -184,6 +188,7 @@ partial class MainForm
         panButton.TabIndex = 5;
         panButton.Text = "";
         panButton.UseVisualStyleBackColor = false;
+        panButton.TabStop = false;
         panButton.Click += panButton_Click;
         // 
         // splitContainer
