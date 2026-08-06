@@ -1,0 +1,21 @@
+<Window x:Class="GeoKernel.DxfLoad.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="DxfLoad" Width="1180" Height="760" MinWidth="720" MinHeight="460"
+        WindowStartupLocation="CenterScreen" Icon="Images/GeoKernelAppIcon.ico" Loaded="Window_Loaded">
+    <DockPanel Background="#F4F6F5">
+        <Border DockPanel.Dock="Top" Height="35" Background="#F1F1F1">
+            <StackPanel Orientation="Horizontal">
+                <Button Width="126" Height="25" Margin="4,5,0,5" Click="LoadSample_Click">Load Sample</Button>
+                <Button Width="100" Height="25" Margin="6,5,0,5" Click="FullExtent_Click">Full Extent</Button>
+            </StackPanel>
+        </Border>
+        <StatusBar DockPanel.Dock="Bottom" Height="22"><TextBlock x:Name="statusText" Text="DxfLoad ready." /></StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" />
+            <TextBox x:Name="detailsTextBox" Grid.Column="1" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" />
+        </Grid>
+    </DockPanel>
+</Window>

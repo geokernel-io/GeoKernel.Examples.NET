@@ -1,0 +1,47 @@
+<Window x:Class="GeoKernel.GeoJsonRoundtrip.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="GeoJsonRoundtrip"
+        Width="1160" Height="740" MinWidth="900" MinHeight="540"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="6,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Geometry:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <ComboBox x:Name="geometryComboBox" Grid.Column="1" Width="120"
+                      SelectionChanged="GeometryComboBox_SelectionChanged">
+                <ComboBoxItem Content="Point" IsSelected="True" />
+                <ComboBoxItem Content="Polyline" />
+                <ComboBoxItem Content="Polygon" />
+            </ComboBox>
+            <TextBlock Grid.Column="2" Text="GeoJSON:" VerticalAlignment="Center" Margin="10,0,8,0" />
+            <TextBox x:Name="geoJsonTextBox" Grid.Column="3" VerticalContentAlignment="Center"
+                     KeyDown="GeoJsonTextBox_KeyDown" />
+            <Button Grid.Column="4" Content="Run Roundtrip" Margin="8,0,0,0" Padding="10,2"
+                    Click="RunRoundtrip_Click" />
+            <Button Grid.Column="5" Content="Reset" Margin="6,0,0,0" Padding="10,2"
+                    Click="Reset_Click" />
+        </Grid>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="statusText" />
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="430" />
+            </Grid.ColumnDefinitions>
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" />
+            <TextBox x:Name="detailsTextBox" Grid.Column="1" IsReadOnly="True"
+                     TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" />
+        </Grid>
+    </DockPanel>
+</Window>

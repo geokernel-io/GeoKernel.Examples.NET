@@ -1,0 +1,46 @@
+<Window x:Class="GeoKernel.LayerRefresh.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="LayerRefresh"
+        Width="1200"
+        Height="800"
+        MinWidth="720"
+        MinHeight="480"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+
+        <ToolBarTray Grid.Row="0" Background="#EFEFEF">
+            <ToolBar Height="32"
+                     Background="#EFEFEF"
+                     BorderThickness="0"
+                     Padding="0"
+                     Band="0"
+                     BandIndex="0">
+                <Button Padding="10,0" Click="ChangeFill_Click">Change Fill</Button>
+                <Button Padding="10,0" Click="ChangeOutline_Click">Change Outline</Button>
+                <Button Padding="10,0" Click="ChangeOpacity_Click">Change Opacity</Button>
+                <Separator />
+                <Button Padding="10,0" Click="RefreshLayer_Click">Refresh Layer</Button>
+                <Button Padding="10,0" Click="FullExtent_Click">Full Extent</Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                   Grid.Row="1" />
+
+        <Border Grid.Row="2" Background="#F4F4F4" BorderBrush="#D0D0D0" BorderThickness="0,1,0,0">
+            <TextBlock x:Name="statusText"
+                       VerticalAlignment="Center"
+                       Margin="4,0"
+                       Text="Ready" />
+        </Border>
+    </Grid>
+</Window>

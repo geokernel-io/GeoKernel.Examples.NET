@@ -1,0 +1,33 @@
+<Window x:Class="GeoKernel.Topology.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="Topology" Width="1040" Height="680" MinWidth="760" MinHeight="500"
+        WindowStartupLocation="CenterScreen" Icon="Images/GeoKernelAppIcon.ico" Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="IconButton" TargetType="Button"><Setter Property="Width" Value="36"/><Setter Property="Height" Value="32"/><Setter Property="Padding" Value="4"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Background" Value="Transparent"/><Setter Property="Focusable" Value="False"/></Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="*"/><RowDefinition Height="24"/></Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#F1F1F1">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource IconButton}" Click="Pan_Click" ToolTip="Pan"><Image Source="Images/Pan.png" Stretch="Uniform"/></Button>
+                <Button Style="{StaticResource IconButton}" Click="ZoomBox_Click" ToolTip="Zoom Rect"><Image Source="Images/RectangularZoom.png" Stretch="Uniform"/></Button>
+                <Button Style="{StaticResource IconButton}" Click="FullExtent_Click" ToolTip="Full Extent"><Image Source="Images/FullExtent.png" Stretch="Uniform"/></Button>
+                <TextBlock Margin="10,0,8,0" VerticalAlignment="Center" Text="Operation:"/>
+                <ComboBox x:Name="operationComboBox" Width="250" Height="25" VerticalAlignment="Center" SelectionChanged="OperationComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Buffer A"/><ComboBoxItem Content="Union A + B"/><ComboBoxItem Content="Intersection A / B"/>
+                    <ComboBoxItem Content="Difference A - B"/><ComboBoxItem Content="Sym Difference A / B"/><ComboBoxItem Content="Convex Hull A + B"/>
+                    <ComboBoxItem Content="Crossings Line / B"/><ComboBoxItem Content="Check Invalid Polygon"/><ComboBoxItem Content="Arc Make Connected"/>
+                    <ComboBoxItem Content="Arc Split On Cross"/><ComboBoxItem Content="Predicate Report"/>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="356"/></Grid.ColumnDefinitions>
+            <gk:GeoKernelViewerControl x:Name="viewerControl"/>
+            <TextBox x:Name="detailsTextBox" Grid.Column="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Background="White"/>
+        </Grid>
+        <StatusBar Grid.Row="2"><TextBlock x:Name="statusText"/></StatusBar>
+    </Grid>
+</Window>

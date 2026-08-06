@@ -1,0 +1,56 @@
+<Window x:Class="GeoKernel.DefaultAttributes.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="DefaultAttributes"
+        Width="1200"
+        Height="800"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="39" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="170" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#F2F2F2" BorderBrush="#D0D0D0" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0">
+                <Button Padding="12,4" Content="Add Point With Attributes" Click="AddPoint_Click" />
+                <ToggleButton x:Name="infoButton" Margin="6,0,0,0" Padding="12,4" Content="Info" Click="Info_Click" />
+                <Button Margin="6,0,0,0" Padding="12,4" Content="Clear Points" Click="ClearPoints_Click" />
+                <Button Margin="6,0,0,0" Padding="12,4" Content="Full Extent" Click="FullExtent_Click" />
+                <TextBlock x:Name="pointCountText" Margin="14,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="Feature count: 0" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="350" />
+            </Grid.ColumnDefinitions>
+            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" MapMouseUp="ViewerControl_MapMouseUp" />
+            <TextBox x:Name="infoTextBox" Grid.Column="1" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto" Padding="8" />
+        </Grid>
+
+        <DataGrid x:Name="attributesGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" SelectionUnit="FullRow">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="#" Binding="{Binding ShapeId}" Width="70" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="*" />
+                <DataGridTextColumn Header="Score" Binding="{Binding Score}" Width="*" />
+                <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StatusBar Grid.Row="3">
+            <TextBlock x:Name="statusText" Text="Ready" />
+        </StatusBar>
+    </Grid>
+</Window>
