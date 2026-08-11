@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="$this.Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\geokernel.ico;System.Drawing.Icon, System.Drawing.Common</value>
+    <value>..\Images\GeoKernelAppIcon.ico;System.Drawing.Icon, System.Drawing.Common</value>
   </data>
 </root>

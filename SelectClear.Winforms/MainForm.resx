@@ -1346,15 +1346,15 @@
 </value>
   </data>
   <data name="addButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\Select.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\Select.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
   <data name="panButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\Pan.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\Pan.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
   <data name="clearButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\Delete.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\Delete.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
   <data name="fullExtentButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\FullExtent.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\FullExtent.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
 </root>

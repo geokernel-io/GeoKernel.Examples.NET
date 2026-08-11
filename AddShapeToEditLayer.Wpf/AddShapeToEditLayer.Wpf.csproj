@@ -7,14 +7,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <ApplicationIcon>..\..\GeoKernel.Examples.NET2\images\GeoKernelAppIcon.ico</ApplicationIcon>
+    <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <PackageReference Include="GeoKernel.NET" Version="1.1.28" />
+    <PackageReference Include="GeoKernel.NET" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\FullExtent.png" Link="Images\FullExtent.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
+    <Resource Include="..\Images\FullExtent.png" Link="Images\FullExtent.png" />
+    <Resource Include="..\Images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
   </ItemGroup>
 </Project>

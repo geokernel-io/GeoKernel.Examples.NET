@@ -71,7 +71,7 @@ partial class MainForm
         separator.Location = new Point(112, 4);
         separator.Size = new Size(1, 28);
         ConfigureButton(clearButton, "delete.png", 116, "Clear measurements");
-        ConfigureButton(fullExtentButton, "full-extent.png", 152, "Full extent");
+        ConfigureButton(fullExtentButton, "FullExtent.png", 152, "Full extent");
         panButton.Click += panButton_Click;
         distanceButton.Click += distanceButton_Click;
         areaButton.Click += areaButton_Click;

@@ -10,7 +10,7 @@
     <AssemblyName>SnappingComparison.Winforms</AssemblyName>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <ApplicationIcon>resources\geokernel.ico</ApplicationIcon>
+    <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="MainForm.Designer.cs">
@@ -18,6 +18,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GeoKernel.NET" Version="1.1.21" />
+    <PackageReference Include="GeoKernel.NET" />
   </ItemGroup>
 </Project>

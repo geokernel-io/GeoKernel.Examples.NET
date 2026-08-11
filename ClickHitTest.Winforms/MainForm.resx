@@ -1346,12 +1346,12 @@
 </value>
   </data>
   <data name="hitTestButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\Identify.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\Identify.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
   <data name="panButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\Pan.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\Pan.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
   <data name="fullExtentButton.Image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\FullExtent.png;System.Drawing.Bitmap, System.Drawing.Common</value>
+    <value>..\Images\FullExtent.png;System.Drawing.Bitmap, System.Drawing.Common</value>
   </data>
 </root>

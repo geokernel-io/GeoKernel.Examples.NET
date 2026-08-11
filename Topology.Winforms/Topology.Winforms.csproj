@@ -8,23 +8,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <ApplicationIcon>resources\geokernel.ico</ApplicationIcon>
+    <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GeoKernel.NET" Version="1.1.25" />
+    <PackageReference Include="GeoKernel.NET" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="resources\*.png" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Update="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="resources\**\*">
+    <Content Include="..\Images\**\*">
+      <Link>resources\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
