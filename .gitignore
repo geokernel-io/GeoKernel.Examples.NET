@@ -3,6 +3,7 @@
 **/obj/
 **/out/
 **/publish/
+**/data/
 artifacts/
 
 # Visual Studio and IDE state
