@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <ApplicationIcon>..\..\GeoKernel.Examples.NET2\images\GeoKernelAppIcon.ico</ApplicationIcon>
+    <ApplicationIcon>..\HelloMap.Winforms\resources\geokernel.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\ZoomIn.png" Link="Images\ZoomIn.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\ZoomOut.png" Link="Images\ZoomOut.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\FullExtent.png" Link="Images\FullExtent.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\RectangularZoom.png" Link="Images\RectangularZoom.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\Pan.png" Link="Images\Pan.png" />
-    <Resource Include="..\..\GeoKernel.Examples.NET2\images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
+    <Resource Include="..\HelloMap.Winforms\resources\ZoomIn.png" Link="Images\ZoomIn.png" />
+    <Resource Include="..\HelloMap.Winforms\resources\ZoomOut.png" Link="Images\ZoomOut.png" />
+    <Resource Include="..\HelloMap.Winforms\resources\FullExtent.png" Link="Images\FullExtent.png" />
+    <Resource Include="..\HelloMap.Winforms\resources\RectangularZoom.png" Link="Images\RectangularZoom.png" />
+    <Resource Include="..\HelloMap.Winforms\resources\Pan.png" Link="Images\Pan.png" />
+    <Resource Include="..\HelloMap.Winforms\resources\geokernel.ico" Link="Images\GeoKernelAppIcon.ico" />
   </ItemGroup>
 </Project>
