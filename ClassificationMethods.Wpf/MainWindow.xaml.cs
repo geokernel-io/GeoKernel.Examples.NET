@@ -22,6 +22,7 @@ public partial class MainWindow : Window
     {
         _loading = true;        
         viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+        viewerControl.AddOpenStreetMapLayer();
 
         FillMethods();
 

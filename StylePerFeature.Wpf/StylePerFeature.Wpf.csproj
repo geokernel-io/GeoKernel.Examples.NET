@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="GeoKernel.NET" />
   </ItemGroup>
+  <ItemGroup><ProjectReference Include="..\Common\Common.csproj" /></ItemGroup>
 
   <ItemGroup>
     <Resource Include="..\Images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />

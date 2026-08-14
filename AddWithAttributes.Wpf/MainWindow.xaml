@@ -62,7 +62,9 @@
                 <ColumnDefinition Width="340" />
             </Grid.ColumnDefinitions>
 
-            <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" MouseLeftButtonUp="ViewerControl_MouseLeftButtonUp" />
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="0"
+                                       MapMouseUp="ViewerControl_MapMouseUp" />
 
             <TextBox x:Name="infoTextBox"
                      Grid.Column="1"

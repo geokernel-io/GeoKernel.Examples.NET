@@ -94,8 +94,19 @@ public partial class MainWindow
             .Where(hit => hit.IsValid)
             .ToList();
 
+        var selectionMode = (e.Modifiers & 0x04000000) != 0
+            ? GeoKernelFeatureSelectionMode.Toggle
+            : (e.Modifiers & 0x02000000) != 0
+                ? GeoKernelFeatureSelectionMode.Add
+                : GeoKernelFeatureSelectionMode.Replace;
+
+        viewerControl.SelectFeaturesInScreenRectangle(e.ScreenRectangle, selectionMode);
+        var selectedHits = viewerControl.GetSelectedFeatures()
+            .Where(hit => hit.IsValid)
+            .ToList();
+
         AppendSignalLog(e, hits.Count);
-        ShowHits(hits);
+        ShowHits(selectedHits);
         UpdateStatus($"MapSelectionBoxFinished: rect={RectText(e.ScreenRectangle)} extent={ExtentText(e.WorldExtent)} modifiers={ModifiersText(e.Modifiers)} hits={hits.Count}.");
     }
 

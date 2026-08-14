@@ -1,111 +1,81 @@
 using System.Globalization;
+using GeoKernel.Examples.Common;
 using GeoKernel.NET.WinForms;
 
 namespace GeoKernel.StylePerFeature.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private const string LayerName = "Parcels - style from zone attribute";
+    private const string LayerName = "California counties - style from zone attribute";
     private const string ZoneFieldName = "zone";
-
-    private static readonly string[] Zones =
-    [
-        "Residential",
-        "Commercial",
-        "Industrial",
-        "Park",
-        "Mixed"
-    ];
-
-    private static readonly ParcelDefinition[] Parcels =
-    [
-        new("Parcel A", "Residential", 0.0, 3.0, 3.0, 5.7),
-        new("Parcel B", "Commercial", 3.4, 3.3, 6.8, 5.4),
-        new("Parcel C", "Industrial", 7.1, 3.1, 10.4, 5.7),
-        new("Parcel D", "Park", 1.0, 0.5, 4.8, 2.7),
-        new("Parcel E", "Mixed", 5.2, 0.7, 9.8, 2.8)
-    ];
-
-    private readonly Dictionary<int, ParcelState> _parcelStates = [];
+    private static readonly string[] Zones = ["Residential", "Commercial", "Industrial", "Park", "Mixed"];
+    private readonly Dictionary<int, FeatureState> _featureStates = [];
     private int _layerIndex = -1;
     private bool _loadingSelection;
 
-    public MainForm()
-    {
-        InitializeComponent();
-    }
+    public MainForm() => InitializeComponent();
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
-
         zoneComboBox.Items.AddRange(Zones.Cast<object>().ToArray());
+        featureListView.Items.Add("Preparing California sample data...");
 
-        CreateParcelLayer();
-        ApplyZoneRenderer();
-        RefreshFeatureList(selectedShapeId: 1);
-        geoKernelViewerControl.ViewExtent = new GeoKernelExtent(-0.8, -0.2, 11.2, 6.4);
-        statusLabel.Text = "Per-feature style is driven by each shape's zone attribute.";
-    }
+        var path = SampleData.EnsureSampleFile(
+            new Uri("https://github.com/geokernel-io/GeoKernel.SampleData/releases/download/v1/california.zip"),
+            "california.zip", "california", "california.shp", this);
+        if (string.IsNullOrWhiteSpace(path))
+            return;
 
-    private void CreateParcelLayer()
-    {
-        _layerIndex = geoKernelViewerControl.AddPolygonLayer(
-            LayerName,
-            Parcels.Select(parcel => ParcelRing(parcel)).ToArray(),
-            ParcelStyle("#E5E7EB", "#6B7280"));
-
-        if (_layerIndex < 0)
+        geoKernelViewerControl.AddOpenStreetMapLayer();
+        if (!geoKernelViewerControl.AddLayerFile(path, new GeoKernelLayerLoadOptions
+            {
+                BuildFeatureSource = true,
+                ApplyDefaultStyle = true,
+                DefaultStyle = CountyStyle("#E5E7EB", "#6B7280")
+            }))
         {
-            MessageBox.Show(
-                this,
-                "Parcel layer could not be created.",
-                "StylePerFeature",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+            MessageBox.Show(this, "california.shp could not be loaded.", "StylePerFeature",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        _layerIndex = geoKernelViewerControl.GetLayerInfoByName(LayerName)?.Index ?? _layerIndex;
+        _layerIndex = geoKernelViewerControl.GetLayerInfo(0)?.Index ?? -1;
+        if (_layerIndex < 0)
+            return;
 
-        for (var i = 0; i < Parcels.Length; ++i)
+        geoKernelViewerControl.SetLayerName(_layerIndex, LayerName);
+        geoKernelViewerControl.AddLayerAttributeDefinition(_layerIndex, new GeoKernelAttributeDefinition
+            { Name = "name", Type = GeoKernelAttributeType.String, Length = 120 });
+        geoKernelViewerControl.AddLayerAttributeDefinition(_layerIndex, new GeoKernelAttributeDefinition
+            { Name = ZoneFieldName, Type = GeoKernelAttributeType.String, Length = 32 });
+        SeedFeatureAttributes();
+        ApplyZoneRenderer();
+        RefreshFeatureList(1);
+        geoKernelViewerControl.ZoomToLayer(_layerIndex);
+        statusLabel.Text = "Per-feature style is driven by each shape's zone attribute.";
+    }
+
+    private void SeedFeatureAttributes()
+    {
+        var featureCount = geoKernelViewerControl.GetLayerFeatureCount(_layerIndex);
+        for (var row = 0; row < featureCount; row++)
         {
-            var shapeId = i + 1;
-            var parcel = Parcels[i];
-            _parcelStates[shapeId] = new ParcelState(parcel.Name, parcel.Zone);
+            var shapeId = row + 1;
+            var source = geoKernelViewerControl.GetLayerFeatureAttributes(_layerIndex, row);
+            var name = AttributeText(source, "NAME", AttributeText(source, "name", $"Feature {shapeId}"));
+            _featureStates[shapeId] = new FeatureState(name, Zones[row % Zones.Length]);
         }
 
         if (!geoKernelViewerControl.BeginEditLayer(_layerIndex))
             return;
-
-        try
-        {
-            foreach (var pair in _parcelStates)
-            {
-                geoKernelViewerControl.SetShapeAttributesInEditLayer(
-                    _layerIndex,
-                    pair.Key,
-                    new Dictionary<string, object?>
-                    {
-                        ["name"] = pair.Value.Name,
-                        [ZoneFieldName] = pair.Value.Zone
-                    });
-            }
-
-            geoKernelViewerControl.CommitEditLayer(_layerIndex);
-        }
-        catch (Exception)
-        {
-            geoKernelViewerControl.RollbackEditLayer(_layerIndex);
-            throw;
-        }
+        foreach (var pair in _featureStates)
+            geoKernelViewerControl.SetFeatureAttributesInEditLayer(_layerIndex, 0, pair.Key,
+                new Dictionary<string, object?> { ["name"] = pair.Value.Name, [ZoneFieldName] = pair.Value.Zone });
     }
 
     private void ApplyZoneRenderer()
     {
-        if (_layerIndex < 0)
-            return;
-
         var rules = Zones.Select(zone => new GeoKernelSymbolRule
         {
             FieldName = ZoneFieldName,
@@ -114,108 +84,53 @@ public sealed partial class MainForm : Form
             Label = zone,
             Style = StyleForZone(zone)
         });
-
-        if (!geoKernelViewerControl.SetLayerRuleBasedRenderer(
-                _layerIndex,
-                rules,
-                ParcelStyle("#E5E7EB", "#6B7280")))
-        {
-            MessageBox.Show(
-                this,
-                $"Could not apply rule based renderer from {ZoneFieldName} attribute.",
-                "StylePerFeature",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            return;
-        }
-
-        geoKernelViewerControl.InvalidateRenderCache(clearTileCache: false, clearLayerCache: true);
+        if (!geoKernelViewerControl.SetLayerRuleBasedRenderer(_layerIndex, rules, CountyStyle("#E5E7EB", "#6B7280")))
+            MessageBox.Show(this, $"Could not apply rule based renderer from {ZoneFieldName} attribute.",
+                "StylePerFeature", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        geoKernelViewerControl.InvalidateRenderCache(false, true);
         geoKernelViewerControl.RefreshLayers();
     }
 
     private void RefreshFeatureList(int selectedShapeId)
     {
         _loadingSelection = true;
+        featureListView.BeginUpdate();
         try
         {
-            featureListView.BeginUpdate();
             featureListView.Items.Clear();
             featureImageList.Images.Clear();
-
-            var imageIndex = 0;
-            var rowToSelect = -1;
-            foreach (var pair in _parcelStates.OrderBy(pair => pair.Key))
+            foreach (var pair in _featureStates.OrderBy(pair => pair.Key))
             {
-                var state = pair.Value;
-                featureImageList.Images.Add(CreateLegendBitmap(StyleForZone(state.Zone)));
-
-                var item = new ListViewItem($"{state.Name} - {state.Zone}", imageIndex)
-                {
-                    Tag = pair.Key
-                };
-                featureListView.Items.Add(item);
-
-                if (pair.Key == selectedShapeId)
-                    rowToSelect = featureListView.Items.Count - 1;
-
-                imageIndex++;
+                featureImageList.Images.Add(CreateLegendBitmap(StyleForZone(pair.Value.Zone)));
+                featureListView.Items.Add(new ListViewItem($"{pair.Value.Name} - {pair.Value.Zone}", featureImageList.Images.Count - 1)
+                    { Tag = pair.Key });
             }
-
             UpdateFeatureColumnWidth();
-
-            if (rowToSelect >= 0)
-                featureListView.Items[rowToSelect].Selected = true;
-            else if (featureListView.Items.Count > 0)
-                featureListView.Items[0].Selected = true;
+            var selected = featureListView.Items.Cast<ListViewItem>()
+                .FirstOrDefault(item => item.Tag is int shapeId && shapeId == selectedShapeId);
+            if (selected is not null) selected.Selected = true;
         }
         finally
         {
             featureListView.EndUpdate();
             _loadingSelection = false;
         }
-
         SyncComboToSelectedFeature();
     }
 
     private void featureListView_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (!_loadingSelection)
-            SyncComboToSelectedFeature();
+        if (!_loadingSelection) SyncComboToSelectedFeature();
     }
 
     private void applyButton_Click(object sender, EventArgs e)
     {
         var shapeId = SelectedShapeId();
-        if (shapeId < 0 || _layerIndex < 0 || !_parcelStates.TryGetValue(shapeId, out var state))
+        if (!_featureStates.TryGetValue(shapeId, out var state) || zoneComboBox.SelectedItem is not string zone)
             return;
-
-        var zone = zoneComboBox.SelectedItem as string;
-        if (string.IsNullOrWhiteSpace(zone))
-            return;
-
-        _parcelStates[shapeId] = state with { Zone = zone };
-
-        if (!geoKernelViewerControl.BeginEditLayer(_layerIndex))
-            return;
-
-        try
-        {
-            geoKernelViewerControl.SetShapeAttributesInEditLayer(
-                _layerIndex,
-                shapeId,
-                new Dictionary<string, object?>
-                {
-                    ["name"] = state.Name,
-                    [ZoneFieldName] = zone
-                });
-            geoKernelViewerControl.CommitEditLayer(_layerIndex);
-        }
-        catch (Exception)
-        {
-            geoKernelViewerControl.RollbackEditLayer(_layerIndex);
-            throw;
-        }
-
+        _featureStates[shapeId] = state with { Zone = zone };
+        geoKernelViewerControl.SetFeatureAttributesInEditLayer(_layerIndex, 0, shapeId,
+            new Dictionary<string, object?> { ["name"] = state.Name, [ZoneFieldName] = zone });
         ApplyZoneRenderer();
         RefreshFeatureList(shapeId);
         statusLabel.Text = $"{state.Name} style updated from zone={zone}.";
@@ -223,130 +138,40 @@ public sealed partial class MainForm : Form
 
     private void SyncComboToSelectedFeature()
     {
-        var shapeId = SelectedShapeId();
-        if (shapeId < 0 || !_parcelStates.TryGetValue(shapeId, out var state))
-        {
+        if (_featureStates.TryGetValue(SelectedShapeId(), out var state))
+            zoneComboBox.SelectedItem = state.Zone;
+        else
             zoneComboBox.SelectedIndex = -1;
-            return;
-        }
-
-        var index = zoneComboBox.FindStringExact(state.Zone);
-        if (index >= 0)
-            zoneComboBox.SelectedIndex = index;
     }
 
-    private int SelectedShapeId()
+    private int SelectedShapeId() => featureListView.SelectedItems.Count == 1 &&
+        featureListView.SelectedItems[0].Tag is int id ? id : -1;
+    private void featureListView_Resize(object sender, EventArgs e) => UpdateFeatureColumnWidth();
+    private void UpdateFeatureColumnWidth() => featureListView.Columns[0].Width = Math.Max(80, featureListView.ClientSize.Width - 4);
+    private static string AttributeText(IReadOnlyDictionary<string, object?> values, string key, string fallback) =>
+        values.TryGetValue(key, out var value) && value is not null ? Convert.ToString(value) ?? fallback : fallback;
+
+    private static GeoKernelLayerStyle StyleForZone(string zone) => zone switch
     {
-        return featureListView.SelectedItems.Count == 1 && featureListView.SelectedItems[0].Tag is int shapeId
-            ? shapeId
-            : -1;
-    }
-
-    private void featureListView_Resize(object sender, EventArgs e)
-    {
-        UpdateFeatureColumnWidth();
-    }
-
-    private void UpdateFeatureColumnWidth()
-    {
-        if (featureListView.Columns.Count == 0)
-            return;
-
-        featureListView.Columns[0].Width = Math.Max(80, featureListView.ClientSize.Width - 4);
-    }
-
-    private static GeoKernelLayerStyle StyleForZone(string zone)
-    {
-        return zone switch
-        {
-            "Residential" => ParcelStyle("#F5DFA1", "#A16207"),
-            "Commercial" => ParcelStyle("#9DD7F5", "#0369A1"),
-            "Industrial" => ParcelStyle("#C4B5FD", "#6D28D9"),
-            "Park" => ParcelStyle("#9AD9A8", "#15803D"),
-            "Mixed" => ParcelStyle("#FDBA9A", "#C2410C"),
-            _ => ParcelStyle("#E5E7EB", "#6B7280")
-        };
-    }
-
-    private static GeoKernelLayerStyle ParcelStyle(string fillColor, string lineColor)
-    {
-        return new GeoKernelLayerStyle
-        {
-            FillColor = WithAlpha(fillColor, 170),
-            FillOpacity = 170,
-            LineColor = WithAlpha(lineColor, 235),
-            LineWidth = 2.0
-        };
-    }
-
+        "Residential" => CountyStyle("#F5DFA1", "#A16207"), "Commercial" => CountyStyle("#9DD7F5", "#0369A1"),
+        "Industrial" => CountyStyle("#C4B5FD", "#6D28D9"), "Park" => CountyStyle("#9AD9A8", "#15803D"),
+        "Mixed" => CountyStyle("#FDBA9A", "#C2410C"), _ => CountyStyle("#E5E7EB", "#6B7280")
+    };
+    private static GeoKernelLayerStyle CountyStyle(string fill, string line) => new()
+        { FillColor = WithAlpha(fill, 170), FillOpacity = 170, LineColor = WithAlpha(line, 235), LineWidth = 1.2 };
     private static Bitmap CreateLegendBitmap(GeoKernelLayerStyle style)
     {
-        var bitmap = new Bitmap(46, 22);
-        using var graphics = Graphics.FromImage(bitmap);
-        graphics.Clear(Color.Transparent);
-        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-        using var brush = new SolidBrush(ParseColor(style.FillColor, Color.FromArgb(170, 229, 231, 235)));
-        using var pen = new Pen(ParseColor(style.LineColor, Color.FromArgb(235, 107, 114, 128)), 2.0f);
-        graphics.FillRectangle(brush, 7, 4, 32, 14);
-        graphics.DrawRectangle(pen, 7, 4, 32, 14);
-        return bitmap;
+        var bitmap = new Bitmap(46, 22); using var graphics = Graphics.FromImage(bitmap); graphics.Clear(Color.Transparent);
+        using var brush = new SolidBrush(ParseColor(style.FillColor, Color.LightGray)); using var pen = new Pen(ParseColor(style.LineColor, Color.Gray), 1.2f);
+        graphics.FillRectangle(brush, 7, 4, 32, 14); graphics.DrawRectangle(pen, 7, 4, 32, 14); return bitmap;
     }
-
-    private static GeoKernelPoint[] ParcelRing(ParcelDefinition parcel)
-    {
-        return
-        [
-            new GeoKernelPoint(parcel.XMin, parcel.YMin),
-            new GeoKernelPoint(parcel.XMax, parcel.YMin),
-            new GeoKernelPoint(parcel.XMax, parcel.YMax),
-            new GeoKernelPoint(parcel.XMin, parcel.YMax),
-            new GeoKernelPoint(parcel.XMin, parcel.YMin)
-        ];
-    }
-
-    private static string WithAlpha(string rgb, byte alpha)
-    {
-        var hex = rgb.Trim().TrimStart('#');
-        if (hex.Length != 6)
-            return rgb;
-
-        return $"#{alpha:X2}{hex.ToUpperInvariant()}";
-    }
-
+    private static string WithAlpha(string rgb, byte alpha) => $"#{alpha:X2}{rgb.Trim().TrimStart('#').ToUpperInvariant()}";
     private static Color ParseColor(string? value, Color fallback)
     {
-        if (string.IsNullOrWhiteSpace(value))
-            return fallback;
-
-        var text = value.Trim();
-        if (text.StartsWith('#') && text.Length == 9 &&
-            uint.TryParse(text[1..], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var argb))
-        {
-            return Color.FromArgb(
-                (int)((argb >> 24) & 0xFF),
-                (int)((argb >> 16) & 0xFF),
-                (int)((argb >> 8) & 0xFF),
-                (int)(argb & 0xFF));
-        }
-
-        try
-        {
-            return ColorTranslator.FromHtml(text);
-        }
-        catch (Exception)
-        {
-            return fallback;
-        }
+        var text = value?.Trim() ?? "";
+        if (text.StartsWith('#') && text.Length == 9 && uint.TryParse(text[1..], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var argb))
+            return Color.FromArgb((int)(argb >> 24), (int)((argb >> 16) & 255), (int)((argb >> 8) & 255), (int)(argb & 255));
+        return fallback;
     }
-
-    private sealed record ParcelState(string Name, string Zone);
-
-    private sealed record ParcelDefinition(
-        string Name,
-        string Zone,
-        double XMin,
-        double YMin,
-        double XMax,
-        double YMax);
+    private sealed record FeatureState(string Name, string Zone);
 }

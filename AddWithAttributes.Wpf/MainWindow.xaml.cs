@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using GeoKernel.Examples.Common;
 using GeoKernel.NET.Wpf.Controls;
 
@@ -147,13 +146,12 @@ public partial class MainWindow
         SetSampleExtent();
     }
 
-    private void ViewerControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    private void ViewerControl_MapMouseUp(object? sender, GeoKernelMapMouseEventArgs e)
     {
-        if (viewerControl.ActiveTool != GeoKernelViewerTool.Info)
+        if (e.Tool != GeoKernelViewerTool.Info)
             return;
 
-        var position = e.GetPosition(viewerControl);
-        var result = viewerControl.HitTestTopFeatureAt(position.X, position.Y, 8);
+        var result = viewerControl.HitTestTopFeatureAt(e.ScreenPoint.X, e.ScreenPoint.Y, 8);
         if (result is null || !result.IsValid)
         {
             attributesGrid.SelectedItem = null;

@@ -109,8 +109,19 @@ public sealed partial class MainForm : Form
             .Where(hit => hit.IsValid)
             .ToList();
 
+        var selectionMode = (e.Modifiers & 0x04000000) != 0
+            ? GeoKernelFeatureSelectionMode.Toggle
+            : (e.Modifiers & 0x02000000) != 0
+                ? GeoKernelFeatureSelectionMode.Add
+                : GeoKernelFeatureSelectionMode.Replace;
+
+        geoKernelViewerControl.SelectFeaturesInScreenRectangle(e.ScreenRectangle, selectionMode);
+        var selectedHits = geoKernelViewerControl.GetSelectedFeatures()
+            .Where(hit => hit.IsValid)
+            .ToList();
+
         AppendSignalLog(e, hits.Count);
-        ShowHits(hits);
+        ShowHits(selectedHits);
         UpdateStatus($"MapSelectionBoxFinished: rect={RectText(e.ScreenRectangle)} extent={ExtentText(e.WorldExtent)} modifiers={ModifiersText(e.Modifiers)} hits={hits.Count}.");
     }
 
