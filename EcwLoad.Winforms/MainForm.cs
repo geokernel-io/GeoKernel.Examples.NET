@@ -26,7 +26,6 @@ public sealed partial class MainForm : Form
     private void zoomRectButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.ZoomBox;
     private void panButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
 
-    private void primaryButton_Click(object? sender, EventArgs e) => LoadSample();
     private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
 
     private void LoadSample()

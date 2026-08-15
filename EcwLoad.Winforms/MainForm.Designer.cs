@@ -5,7 +5,6 @@ partial class MainForm
     private System.ComponentModel.IContainer components = null;
     private TableLayoutPanel layoutPanel;
     private Panel toolbarPanel;
-    private Button primaryButton;
     private Button zoomInButton;
     private Button zoomOutButton;
     private Button zoomRectButton;
@@ -32,7 +31,6 @@ partial class MainForm
         System.ComponentModel.ComponentResourceManager resources = new(typeof(MainForm));
         layoutPanel = new TableLayoutPanel();
         toolbarPanel = new Panel();
-        primaryButton = new Button();
         zoomInButton = new Button();
         zoomOutButton = new Button();
         zoomRectButton = new Button();
@@ -72,7 +70,6 @@ partial class MainForm
         toolbarPanel.Controls.Add(secondaryButton);
         toolbarPanel.Controls.Add(zoomRectButton);
         toolbarPanel.Controls.Add(panButton);
-        toolbarPanel.Controls.Add(primaryButton);
         toolbarPanel.Dock = DockStyle.Fill;
         toolbarPanel.Margin = new Padding(0);
                 ConfigureToolbarButton(zoomInButton, resources, "zoomInButton.Image", new Point(4, 0), "Zoom In", zoomInButton_Click);
@@ -80,10 +77,6 @@ partial class MainForm
         ConfigureToolbarButton(secondaryButton, resources, "fullExtentButton.Image", new Point(76, 0), "Full Extent", secondaryButton_Click);
         ConfigureToolbarButton(zoomRectButton, resources, "zoomRectButton.Image", new Point(112, 0), "Zoom Rectangle", zoomRectButton_Click);
         ConfigureToolbarButton(panButton, resources, "panButton.Image", new Point(148, 0), "Pan", panButton_Click);
-        primaryButton.Location = new Point(190, 5);
-        primaryButton.Size = new Size(126, 25);
-        primaryButton.Text = "Load Sample";
-        primaryButton.Click += primaryButton_Click;
         splitContainer.Dock = DockStyle.Fill;
         splitContainer.Margin = new Padding(0);
         splitContainer.Panel1.Controls.Add(viewerControl);

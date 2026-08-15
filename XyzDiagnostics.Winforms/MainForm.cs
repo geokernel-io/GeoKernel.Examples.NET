@@ -4,165 +4,106 @@ namespace GeoKernel.XyzDiagnostics.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private static readonly string SampleName = "XyzDiagnostics";
-    private static readonly string SampleKind = "xyz";
+    private const string OSM_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private readonly System.Windows.Forms.Timer diagnosticsTimer = new() { Interval = 750 };
+    private int xyzLayerIndex = -1;
+
     public MainForm()
     {
         InitializeComponent();
+        diagnosticsTimer.Tick += (_, _) => RefreshDiagnostics();
     }
 
     private void MainForm_Shown(object? sender, EventArgs e)
     {
-        LoadSample();
+        try
+        {
+            var cacheDirectory = Path.Combine(AppContext.BaseDirectory, "XyzDiagnosticsCache", "osm");
+            xyzLayerIndex = viewerControl.AddXyzLayer(
+                "OSM Diagnostics", OSM_URL, 0, 19, 256, "OpenStreetMap", true, cacheDirectory);
+            if (xyzLayerIndex < 0)
+                throw new InvalidOperationException("XYZ diagnostics layer could not be created.");
+
+            ShowDefaultExtent();
+            RefreshDiagnostics();
+            diagnosticsTimer.Start();
+        }
+        catch (Exception ex)
+        {
+            detailsTextBox.Text = $"XYZ diagnostics layer could not be loaded:{Environment.NewLine}{ex.Message}";
+            MessageBox.Show(this, detailsTextBox.Text, "XyzDiagnostics", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void zoomInButton_Click(object? sender, EventArgs e) => viewerControl.ZoomIn();
     private void zoomOutButton_Click(object? sender, EventArgs e) => viewerControl.ZoomOut();
     private void zoomRectButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.ZoomBox;
     private void panButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+    private void secondaryButton_Click(object? sender, EventArgs e) => ShowDefaultExtent();
+    private void refreshButton_Click(object? sender, EventArgs e) => RefreshDiagnostics();
 
-    private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
+    private void ShowDefaultExtent() =>
+        viewerControl.ViewExtent = new GeoKernelExtent(-1400000.0, 4100000.0, 4200000.0, 7800000.0);
 
-    private void LoadSample()
+    private void RefreshDiagnostics()
     {
-        viewerControl.ClearLayers();
-        var details = new List<string> { "XyzDiagnostics sample", "", "API", ApiText(), "" };
+        if (xyzLayerIndex < 0)
+        {
+            detailsTextBox.Text = "XYZ layer is not available.";
+            return;
+        }
+
         try
         {
-            RunSample(details);
-            details.Add("");
-            details.Add("Layers");
-            foreach (var layer in viewerControl.GetLayersInfo())
-                details.Add($"#{layer.Index}: {layer.Name} | features: {layer.FeatureCount} | type: {layer.ShapeType}");
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "XyzDiagnostics loaded.";
+            var snapshot = viewerControl.GetXyzLayerDiagnostics(xyzLayerIndex);
+            if (snapshot is null)
+            {
+                detailsTextBox.Text = "XYZ layer diagnostics are not available.";
+                return;
+            }
+
+            detailsTextBox.Text = DetailsText(snapshot);
+            statusLabel.Text = $"XYZ diagnostics: {snapshot.DownloadsStarted} requests, " +
+                $"{snapshot.DownloadsSucceeded} downloads, {snapshot.DiskHits} disk hits, " +
+                $"{snapshot.MemoryHits} memory hits";
         }
         catch (Exception ex)
         {
-            details.Add(ex.Message);
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "XyzDiagnostics failed.";
-            MessageBox.Show(this, ex.Message, "XyzDiagnostics", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            diagnosticsTimer.Stop();
+            detailsTextBox.Text = $"Diagnostics could not be read:{Environment.NewLine}{ex.Message}";
         }
     }
 
-    private void RunSample(List<string> details)
+    private static string DetailsText(GeoKernelXyzLayerDiagnostics value)
     {
-        switch (SampleKind)
-        {
-            case "osm":
-                viewerControl.AddOpenStreetMapLayer();
-                viewerControl.ViewExtent = EuropeExtent3857();
-                details.Add("viewer.AddOpenStreetMapLayer()");
-                break;
-            case "xyz":
-                AddXyz(details);
-                break;
-            case "rasterOverview":
-                AddRaster(details, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true, RasterOverviewMinimumPixels = 0 });
-                break;
-            case "rasterTileCache":
-                AddRaster(details, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true, RasterTileCachePixelBudget = 64 * 1024 * 1024 });
-                break;
-            case "labelCollision":
-                AddLabelCollision(details);
-                break;
-            default:
-                AddFile(details, "", null);
-                break;
-        }
+        var memoryTotal = value.MemoryHits + value.MemoryMisses;
+        var diskTotal = value.DiskHits + value.DiskMisses;
+        var downloadTotal = value.DownloadsSucceeded + value.DownloadsFailed;
+        return string.Join(Environment.NewLine,
+            "XYZ diagnosticsSnapshot sample", $"Updated: {DateTime.Now:HH:mm:ss.fff}", "",
+            "Layer", $"Name: {value.Name}", $"URL template: {value.UrlTemplate}",
+            $"Tile size: {value.TileSize}", $"Zoom range: {value.MinZoom} - {value.MaxZoom}",
+            $"Local cache: {(value.LocalCacheEnabled ? "enabled" : "disabled")}", $"Cache directory: {value.CacheDirectory}", "",
+            "Memory cache", $"Hits: {value.MemoryHits}", $"Misses: {value.MemoryMisses}", $"Total lookups: {memoryTotal}", "",
+            "Disk cache", $"Hits: {value.DiskHits}", $"Misses: {value.DiskMisses}", $"Total lookups: {diskTotal}",
+            $"Read time total: {value.DiskReadMs} ms", $"Decode time total: {value.DecodeMs} ms",
+            $"Average read: {Average(value.DiskReadMs, value.DiskHits)}", $"Average decode: {Average(value.DecodeMs, value.DiskHits)}", "",
+            "Network", $"Downloads started: {value.DownloadsStarted}", $"Downloads succeeded: {value.DownloadsSucceeded}",
+            $"Downloads failed: {value.DownloadsFailed}", $"Downloads completed: {downloadTotal}",
+            $"Bytes downloaded: {Bytes(value.BytesDownloaded)}", $"Download time total: {value.DownloadMs} ms",
+            $"Average download: {Average(value.DownloadMs, value.DownloadsSucceeded)}", $"Queue depth: {value.NetworkQueueDepth}",
+            $"Max queue depth: {value.MaxNetworkQueueDepth}", "", "How to test",
+            "- Pan or zoom the map to request new tiles.", "- First pass usually increases downloads and disk misses.",
+            "- Revisit the same area to see memory/disk cache hits.");
     }
 
-    private static string ApiText() => SampleKind switch
-    {
-        "osm" => "AddOpenStreetMapLayer()",
-        "xyz" => "AddXyzLayer(name, urlTemplate, minZoom, maxZoom, tileSize, attribution, localCacheEnabled)",
-        "rasterOverview" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true })",
-        "rasterTileCache" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true })",
-        "labelCollision" => "SetLayerStyle(index, new GeoKernelLayerStyle { LabelAllowOverlap = ... })",
-        _ => "AddLayerFile(path); GetLayerInfo(index); GetLayerAttributeDefinitions(index)"
-    };
+    private static string Average(long total, long count) => count == 0 ? "0.00 ms" : $"{(double)total / count:F2} ms";
+    private static string Bytes(long count) => $"{count} bytes ({count / (1024.0 * 1024.0):F2} MiB)";
 
-    private void AddXyz(List<string> details)
+    protected override void OnFormClosed(FormClosedEventArgs e)
     {
-        var index = SampleName switch
-        {
-            "XyzCustomUrl" => viewerControl.AddXyzLayer("Custom OSM", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzLocalCache" => viewerControl.AddXyzLayer("OSM cached", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors", localCacheEnabled: true, cacheDirectory: Path.Combine(AppContext.BaseDirectory, "XyzLocalCache")),
-            "XyzTileSize" => viewerControl.AddXyzLayer("OSM 512 tile request", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileSize: 512, attribution: "OpenStreetMap contributors"),
-            "XyzMinMaxZoom" => viewerControl.AddXyzLayer("OSM min/max zoom", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", minZoom: 2, maxZoom: 12, attribution: "OpenStreetMap contributors"),
-            "XyzAttribution" => viewerControl.AddXyzLayer("OSM attribution", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzDiagnostics" => viewerControl.AddXyzLayer("OSM diagnostics", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            _ => viewerControl.AddXyzLayer("OSM preset", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors")
-        };
-        if (index < 0)
-            throw new InvalidOperationException("XYZ layer could not be added.");
-        viewerControl.ViewExtent = EuropeExtent3857();
-        details.Add("XYZ layer index: " + index);
-        if (SampleName == "XyzDiagnostics")
-        {
-            details.Add("");
-            details.Add("Render backend diagnostics");
-            details.Add(viewerControl.RenderBackendDiagnostics);
-        }
-    }
-
-    private void AddRaster(List<string> details, GeoKernelLayerLoadOptions options)
-    {
-        AddFile(details, "world_8km.tif", options);
-        details.Add("");
-        details.Add("Raster options");
-        details.Add($"PrepareRasterOverviews: {options.PrepareRasterOverviews}");
-        details.Add($"RasterTileCacheEnabled: {options.RasterTileCacheEnabled}");
-        details.Add($"RasterTileCachePixelBudget: {options.RasterTileCachePixelBudget}");
-    }
-
-    private void AddLabelCollision(List<string> details)
-    {
-        AddFile(details, "world_4326.shp", null);
-        AddFile(details, "cities_4326.shp", null, zoom: false);
-        var style = new GeoKernelLayerStyle
-        {
-            PointColor = "#2E86AB",
-            PointSize = 4,
-            ShowLabels = true,
-            LabelField = "CITY_NAME",
-            LabelColor = "#1F2933",
-            LabelFontSize = 8,
-            LabelHaloEnabled = true,
-            LabelHaloColor = "#FFFFFF",
-            LabelHaloWidth = 1.5,
-            LabelAllowOverlap = true
-        };
-        viewerControl.SetLayerStyle(1, style);
-        viewerControl.ViewExtent = new GeoKernelExtent(-1500000, 3500000, 5200000, 8200000);
-        details.Add("Cities labels use labelAllowOverlap = true.");
-    }
-
-    private void AddFile(List<string> details, string relativePath, GeoKernelLayerLoadOptions? options, bool zoom = true)
-    {
-        var path = DataPath(relativePath);
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Sample data file could not be found.", path);
-        var ok = options is null ? viewerControl.AddLayerFile(path) : viewerControl.AddLayerFile(path, options);
-        if (!ok)
-            throw new InvalidOperationException($"Layer could not be loaded: {path}");
-        if (zoom)
-            viewerControl.FullExtent();
-        details.Add("Loaded: " + path);
-    }
-
-    private static GeoKernelExtent EuropeExtent3857() => new(-1400000.0, 4100000.0, 4200000.0, 7800000.0);
-    private static string DataPath(string relativePath) => Path.Combine(FindRepositoryRoot(), "assets", "data", relativePath);
-    private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            if (Directory.Exists(Path.Combine(directory.FullName, "assets", "data")))
-                return directory.FullName;
-            directory = directory.Parent;
-        }
-        return AppContext.BaseDirectory;
+        diagnosticsTimer.Stop();
+        diagnosticsTimer.Dispose();
+        base.OnFormClosed(e);
     }
 }

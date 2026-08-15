@@ -3,124 +3,66 @@ namespace GeoKernel.XyzTileSize.Winforms;
 partial class MainForm
 {
     private System.ComponentModel.IContainer components = null;
-    private TableLayoutPanel layoutPanel;
-    private Panel toolbarPanel;
-    private Button zoomInButton;
-    private Button zoomOutButton;
-    private Button zoomRectButton;
-    private Button panButton;
-    private ToolTip toolbarToolTip;
-    private Button secondaryButton;
-    private SplitContainer splitContainer;
-    private global::GeoKernel.NET.WinForms.GeoKernelViewerControl viewerControl;
+    private TableLayoutPanel rootLayout;
+    private FlowLayoutPanel toolbarPanel;
+    private Button zoomInButton, zoomOutButton, fullExtentButton, zoomRectButton, panButton;
+    private SplitContainer outerSplit, viewerSplit;
+    private TableLayoutPanel leftPanel, rightPanel;
+    private Label leftLabel, rightLabel;
+    private global::GeoKernel.NET.WinForms.GeoKernelViewerControl leftViewerControl, rightViewerControl;
     private TextBox detailsTextBox;
     private StatusStrip statusStrip;
     private ToolStripStatusLabel statusLabel;
+    private ToolTip toolbarToolTip;
 
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing && components is not null)
-            components.Dispose();
-        base.Dispose(disposing);
-    }
+    protected override void Dispose(bool disposing) { if (disposing && components is not null) components.Dispose(); base.Dispose(disposing); }
 
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
-        System.ComponentModel.ComponentResourceManager resources = new(typeof(MainForm));
-        layoutPanel = new TableLayoutPanel();
-        toolbarPanel = new Panel();
-        zoomInButton = new Button();
-        zoomOutButton = new Button();
-        zoomRectButton = new Button();
-        panButton = new Button();
-        toolbarToolTip = new ToolTip(components);
-        secondaryButton = new Button();
-        splitContainer = new SplitContainer();
-        viewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
-        detailsTextBox = new TextBox();
-        statusStrip = new StatusStrip();
-        statusLabel = new ToolStripStatusLabel();
-        layoutPanel.SuspendLayout();
-        toolbarPanel.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
-        splitContainer.Panel1.SuspendLayout();
-        splitContainer.Panel2.SuspendLayout();
-        splitContainer.SuspendLayout();
-        statusStrip.SuspendLayout();
-        SuspendLayout();
-        layoutPanel.ColumnCount = 1;
-        layoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        layoutPanel.Controls.Add(toolbarPanel, 0, 0);
-        layoutPanel.Controls.Add(splitContainer, 0, 1);
-        layoutPanel.Controls.Add(statusStrip, 0, 2);
-        layoutPanel.Dock = DockStyle.Fill;
-        layoutPanel.Location = new Point(0, 0);
-        layoutPanel.Margin = new Padding(0);
-        layoutPanel.RowCount = 3;
-        layoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-        layoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        layoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
-        layoutPanel.Size = new Size(1180, 760);
-        toolbarPanel.BackColor = SystemColors.Control;
-        toolbarPanel.Controls.Add(zoomInButton);
-        toolbarPanel.Controls.Add(zoomOutButton);
-        toolbarPanel.Controls.Add(secondaryButton);
-        toolbarPanel.Controls.Add(zoomRectButton);
-        toolbarPanel.Controls.Add(panButton);
-        toolbarPanel.Dock = DockStyle.Fill;
-        toolbarPanel.Margin = new Padding(0);
-                ConfigureToolbarButton(zoomInButton, resources, "zoomInButton.Image", new Point(4, 0), "Zoom In", zoomInButton_Click);
-        ConfigureToolbarButton(zoomOutButton, resources, "zoomOutButton.Image", new Point(40, 0), "Zoom Out", zoomOutButton_Click);
-        ConfigureToolbarButton(secondaryButton, resources, "fullExtentButton.Image", new Point(76, 0), "Full Extent", secondaryButton_Click);
-        ConfigureToolbarButton(zoomRectButton, resources, "zoomRectButton.Image", new Point(112, 0), "Zoom Rectangle", zoomRectButton_Click);
-        ConfigureToolbarButton(panButton, resources, "panButton.Image", new Point(148, 0), "Pan", panButton_Click);
-        splitContainer.Dock = DockStyle.Fill;
-        splitContainer.Margin = new Padding(0);
-        splitContainer.Panel1.Controls.Add(viewerControl);
-        splitContainer.Panel2.Controls.Add(detailsTextBox);
-        splitContainer.SplitterDistance = 760;
-        viewerControl.Dock = DockStyle.Fill;
-        detailsTextBox.Dock = DockStyle.Fill;
-        detailsTextBox.Multiline = true;
-        detailsTextBox.ReadOnly = true;
-        detailsTextBox.ScrollBars = ScrollBars.Vertical;
-        detailsTextBox.Font = new Font("Consolas", 9F);
-        statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
-        statusLabel.Text = "XyzTileSize ready.";
-        AutoScaleDimensions = new SizeF(7F, 15F);
-        AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1180, 760);
-        Controls.Add(layoutPanel);
-        Icon = (Icon)resources.GetObject("$this.Icon");
-        Name = "MainForm";
-        StartPosition = FormStartPosition.CenterScreen;
-        Text = "XyzTileSize";
-        Shown += MainForm_Shown;
-        layoutPanel.ResumeLayout(false);
-        layoutPanel.PerformLayout();
-        toolbarPanel.ResumeLayout(false);
-        splitContainer.Panel1.ResumeLayout(false);
-        splitContainer.Panel2.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
-        splitContainer.ResumeLayout(false);
-        statusStrip.ResumeLayout(false);
-        statusStrip.PerformLayout();
-        ResumeLayout(false);
+        var resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        rootLayout = new TableLayoutPanel(); toolbarPanel = new FlowLayoutPanel();
+        zoomInButton = new Button(); zoomOutButton = new Button(); fullExtentButton = new Button(); zoomRectButton = new Button(); panButton = new Button();
+        toolbarToolTip = new ToolTip(components); outerSplit = new SplitContainer(); viewerSplit = new SplitContainer();
+        leftPanel = new TableLayoutPanel(); rightPanel = new TableLayoutPanel(); leftLabel = new Label(); rightLabel = new Label();
+        leftViewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl(); rightViewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
+        detailsTextBox = new TextBox(); statusStrip = new StatusStrip(); statusLabel = new ToolStripStatusLabel();
+
+        rootLayout.Dock = DockStyle.Fill; rootLayout.Margin = Padding.Empty; rootLayout.RowCount = 3; rootLayout.ColumnCount = 1;
+        rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40)); rootLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100)); rootLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 22));
+        rootLayout.Controls.Add(toolbarPanel, 0, 0); rootLayout.Controls.Add(outerSplit, 0, 1); rootLayout.Controls.Add(statusStrip, 0, 2);
+        toolbarPanel.Dock = DockStyle.Fill; toolbarPanel.Margin = Padding.Empty; toolbarPanel.WrapContents = false;
+        ConfigureButton(zoomInButton, resources, "zoomInButton.Image", "Zoom In", zoomInButton_Click);
+        ConfigureButton(zoomOutButton, resources, "zoomOutButton.Image", "Zoom Out", zoomOutButton_Click);
+        ConfigureButton(fullExtentButton, resources, "fullExtentButton.Image", "Full Extent", fullExtentButton_Click);
+        ConfigureButton(zoomRectButton, resources, "zoomRectButton.Image", "Zoom Rectangle", zoomRectButton_Click);
+        ConfigureButton(panButton, resources, "panButton.Image", "Pan", panButton_Click);
+        toolbarPanel.Controls.AddRange(new Control[] { zoomInButton, zoomOutButton, fullExtentButton, zoomRectButton, panButton });
+
+        outerSplit.Dock = DockStyle.Fill; outerSplit.Panel2Collapsed = true;
+        outerSplit.Panel1.Controls.Add(viewerSplit); outerSplit.Panel2.Controls.Add(detailsTextBox);
+        viewerSplit.Dock = DockStyle.Fill;
+        viewerSplit.Panel1.Controls.Add(leftPanel); viewerSplit.Panel2.Controls.Add(rightPanel);
+        ConfigureViewerPanel(leftPanel, leftLabel, leftViewerControl, "256 px tiles | tileSize: 256");
+        ConfigureViewerPanel(rightPanel, rightLabel, rightViewerControl, "512 px tiles | tileSize: 512");
+        detailsTextBox.Dock = DockStyle.Fill; detailsTextBox.Multiline = true; detailsTextBox.ReadOnly = true; detailsTextBox.ScrollBars = ScrollBars.Vertical; detailsTextBox.Font = new Font("Consolas", 9F);
+        statusStrip.Items.Add(statusLabel); statusLabel.Text = "XyzTileSize ready.";
+        ClientSize = new Size(1280, 800); Controls.Add(rootLayout); Icon = (Icon)resources.GetObject("$this.Icon");
+        StartPosition = FormStartPosition.CenterScreen; Text = "XyzTileSize"; Shown += MainForm_Shown; Resize += MainForm_Resize;
     }
 
-    private void ConfigureToolbarButton(Button button, System.ComponentModel.ComponentResourceManager resources, string imageKey, Point location, string tooltip, EventHandler handler)
+    private void ConfigureButton(Button button, System.ComponentModel.ComponentResourceManager resources, string key, string tooltip, EventHandler handler)
     {
-        button.BackgroundImage = (Image)resources.GetObject(imageKey);
-        button.BackgroundImageLayout = ImageLayout.Center;
-        button.FlatStyle = FlatStyle.Flat;
-        button.FlatAppearance.BorderSize = 0;
-        button.Location = location;
-        button.Size = new Size(36, 35);
-        button.TabStop = false;
-        button.Text = "";
-        button.AccessibleName = tooltip;
-        toolbarToolTip.SetToolTip(button, tooltip);
-        button.Click += handler;
+        button.BackgroundImage = (Image)resources.GetObject(key); button.BackgroundImageLayout = ImageLayout.Center;
+        button.FlatStyle = FlatStyle.Flat; button.FlatAppearance.BorderSize = 0; button.Size = new Size(38, 38); button.Margin = Padding.Empty; button.TabStop = false;
+        toolbarToolTip.SetToolTip(button, tooltip); button.Click += handler;
+    }
+
+    private static void ConfigureViewerPanel(TableLayoutPanel panel, Label label, Control viewer, string text)
+    {
+        panel.Dock = DockStyle.Fill; panel.Margin = Padding.Empty; panel.RowCount = 2; panel.ColumnCount = 1;
+        panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 27)); panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        label.Dock = DockStyle.Fill; label.Text = text; label.BackColor = Color.FromArgb(238, 238, 238); label.Font = new Font(SystemFonts.DefaultFont, FontStyle.Bold); label.Padding = new Padding(6, 6, 0, 0);
+        viewer.Dock = DockStyle.Fill; panel.Controls.Add(label, 0, 0); panel.Controls.Add(viewer, 0, 1);
     }
 }

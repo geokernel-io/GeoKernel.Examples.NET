@@ -11,6 +11,7 @@ partial class MainForm
     private Button panButton;
     private ToolTip toolbarToolTip;
     private Button secondaryButton;
+    private Button refreshButton;
     private SplitContainer splitContainer;
     private global::GeoKernel.NET.WinForms.GeoKernelViewerControl viewerControl;
     private TextBox detailsTextBox;
@@ -36,6 +37,7 @@ partial class MainForm
         panButton = new Button();
         toolbarToolTip = new ToolTip(components);
         secondaryButton = new Button();
+        refreshButton = new Button();
         splitContainer = new SplitContainer();
         viewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
         detailsTextBox = new TextBox();
@@ -68,6 +70,7 @@ partial class MainForm
         toolbarPanel.Controls.Add(secondaryButton);
         toolbarPanel.Controls.Add(zoomRectButton);
         toolbarPanel.Controls.Add(panButton);
+        toolbarPanel.Controls.Add(refreshButton);
         toolbarPanel.Dock = DockStyle.Fill;
         toolbarPanel.Margin = new Padding(0);
                 ConfigureToolbarButton(zoomInButton, resources, "zoomInButton.Image", new Point(4, 0), "Zoom In", zoomInButton_Click);
@@ -75,6 +78,10 @@ partial class MainForm
         ConfigureToolbarButton(secondaryButton, resources, "fullExtentButton.Image", new Point(76, 0), "Full Extent", secondaryButton_Click);
         ConfigureToolbarButton(zoomRectButton, resources, "zoomRectButton.Image", new Point(112, 0), "Zoom Rectangle", zoomRectButton_Click);
         ConfigureToolbarButton(panButton, resources, "panButton.Image", new Point(148, 0), "Pan", panButton_Click);
+        refreshButton.Location = new Point(192, 5);
+        refreshButton.Size = new Size(96, 25);
+        refreshButton.Text = "Refresh Stats";
+        refreshButton.Click += refreshButton_Click;
         splitContainer.Dock = DockStyle.Fill;
         splitContainer.Margin = new Padding(0);
         splitContainer.Panel1.Controls.Add(viewerControl);

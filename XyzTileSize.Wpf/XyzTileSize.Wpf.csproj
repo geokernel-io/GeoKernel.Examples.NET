@@ -12,6 +12,13 @@
   <ItemGroup>
     <PackageReference Include="GeoKernel.NET" />
   </ItemGroup>
-  <ItemGroup><Resource Include="..\Images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" /></ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\Images\GeoKernelAppIcon.ico" Link="Images\GeoKernelAppIcon.ico" />
+    <Resource Include="..\Images\ZoomIn.png" Link="Images\ZoomIn.png" />
+    <Resource Include="..\Images\ZoomOut.png" Link="Images\ZoomOut.png" />
+    <Resource Include="..\Images\FullExtent.png" Link="Images\FullExtent.png" />
+    <Resource Include="..\Images\RectangularZoom.png" Link="Images\RectangularZoom.png" />
+    <Resource Include="..\Images\Pan.png" Link="Images\Pan.png" />
+  </ItemGroup>
   <ItemGroup><ProjectReference Include="..\Common\Common.csproj" /></ItemGroup>
 </Project>
