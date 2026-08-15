@@ -189,7 +189,7 @@ partial class MainForm
         Controls.Add(splitContainer);
         Controls.Add(statusStrip);
         Controls.Add(toolbarPanel);
-        Icon = new Icon(Path.Combine(AppContext.BaseDirectory, "resources", "geokernel.ico"));
+        Icon = new Icon(Path.Combine(AppContext.BaseDirectory, "resources", "GeoKernelAppIcon.ico"));
         MinimumSize = new Size(720, 480);
         Name = "MainForm";
         StartPosition = FormStartPosition.CenterScreen;

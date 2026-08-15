@@ -4,165 +4,58 @@ namespace GeoKernel.XyzLocalCache.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private static readonly string SampleName = "XyzLocalCache";
-    private static readonly string SampleKind = "xyz";
-    public MainForm()
+    private const string Url = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private static readonly GeoKernelExtent DefaultExtent = new(-1400000, 4100000, 4200000, 7800000);
+    public MainForm() => InitializeComponent();
+
+    private void MainForm_Shown(object? s, EventArgs e)
     {
-        InitializeComponent();
+        cachePathTextBox.Text = Path.Combine(AppContext.BaseDirectory, "XyzLocalCacheData", "osm");
+        cacheCheckBox.Checked = true;
+        viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+        ApplyCache();
     }
-
-    private void MainForm_Shown(object? sender, EventArgs e)
+    private void zoomInButton_Click(object? s, EventArgs e) => viewerControl.ZoomIn();
+    private void zoomOutButton_Click(object? s, EventArgs e) => viewerControl.ZoomOut();
+    private void zoomRectButton_Click(object? s, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.ZoomBox;
+    private void panButton_Click(object? s, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+    private void secondaryButton_Click(object? s, EventArgs e) => viewerControl.ViewExtent = DefaultExtent;
+    private void applyButton_Click(object? s, EventArgs e) => ApplyCache();
+    private void refreshButton_Click(object? s, EventArgs e) => UpdateDetails();
+    private void browseButton_Click(object? s, EventArgs e)
     {
-        LoadSample();
+        using var dialog = new FolderBrowserDialog { SelectedPath = CacheDirectory(), Description = "Select XYZ cache directory" };
+        if (dialog.ShowDialog(this) == DialogResult.OK) cachePathTextBox.Text = dialog.SelectedPath;
     }
-
-    private void zoomInButton_Click(object? sender, EventArgs e) => viewerControl.ZoomIn();
-    private void zoomOutButton_Click(object? sender, EventArgs e) => viewerControl.ZoomOut();
-    private void zoomRectButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.ZoomBox;
-    private void panButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
-
-    private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
-
-    private void LoadSample()
+    private void clearButton_Click(object? s, EventArgs e)
     {
-        viewerControl.ClearLayers();
-        var details = new List<string> { "XyzLocalCache sample", "", "API", ApiText(), "" };
+        var path = CacheDirectory();
+        if (MessageBox.Show(this, $"Clear all cached tiles under:\n{path}", "XyzLocalCache", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+        if (Directory.Exists(path)) Directory.Delete(path, true);
+        UpdateDetails(); viewerControl.Invalidate(); statusLabel.Text = "Cache directory cleared.";
+    }
+    private void ApplyCache()
+    {
         try
         {
-            RunSample(details);
-            details.Add("");
-            details.Add("Layers");
-            foreach (var layer in viewerControl.GetLayersInfo())
-                details.Add($"#{layer.Index}: {layer.Name} | features: {layer.FeatureCount} | type: {layer.ShapeType}");
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "XyzLocalCache loaded.";
+            var path = CacheDirectory(); Directory.CreateDirectory(path); cachePathTextBox.Text = path;
+            viewerControl.ClearLayers();
+            var index = viewerControl.AddXyzLayer("OSM with Local Cache", Url, 0, 19, 256, "OpenStreetMap contributors", cacheCheckBox.Checked, path);
+            if (index < 0) throw new InvalidOperationException("XYZ layer could not be loaded.");
+            viewerControl.ViewExtent = DefaultExtent; UpdateDetails();
+            statusLabel.Text = cacheCheckBox.Checked ? "XYZ layer loaded with local disk cache." : "XYZ layer loaded with local cache disabled.";
         }
-        catch (Exception ex)
-        {
-            details.Add(ex.Message);
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "XyzLocalCache failed.";
-            MessageBox.Show(this, ex.Message, "XyzLocalCache", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        catch (Exception ex) { MessageBox.Show(this, ex.Message, "XyzLocalCache", MessageBoxButtons.OK, MessageBoxIcon.Error); }
     }
-
-    private void RunSample(List<string> details)
+    private string CacheDirectory() => Path.GetFullPath(string.IsNullOrWhiteSpace(cachePathTextBox.Text) ? Path.Combine(AppContext.BaseDirectory, "XyzLocalCacheData", "osm") : cachePathTextBox.Text.Trim());
+    private void UpdateDetails()
     {
-        switch (SampleKind)
-        {
-            case "osm":
-                viewerControl.AddOpenStreetMapLayer();
-                viewerControl.ViewExtent = EuropeExtent3857();
-                details.Add("viewer.AddOpenStreetMapLayer()");
-                break;
-            case "xyz":
-                AddXyz(details);
-                break;
-            case "rasterOverview":
-                AddRaster(details, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true, RasterOverviewMinimumPixels = 0 });
-                break;
-            case "rasterTileCache":
-                AddRaster(details, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true, RasterTileCachePixelBudget = 64 * 1024 * 1024 });
-                break;
-            case "labelCollision":
-                AddLabelCollision(details);
-                break;
-            default:
-                AddFile(details, "", null);
-                break;
-        }
+        var path = CacheDirectory(); var files = Directory.Exists(path) ? Directory.EnumerateFiles(path, "*.tile", SearchOption.AllDirectories).ToArray() : [];
+        var bytes = files.Sum(file => new FileInfo(file).Length);
+        detailsTextBox.Text = string.Join(Environment.NewLine, "XYZ local cache sample", "", "URL template:", Url, "",
+            $"Local cache: {(cacheCheckBox.Checked ? "enabled" : "disabled")}", "Configured cache directory:", path, "",
+            "Cache contents:", $"Tile files: {files.Length}", $"Size: {FormatBytes(bytes)}", "", "SDK flow:",
+            "viewerControl.AddXyzLayer(..., localCacheEnabled, cacheDirectory)", "", "Pan or zoom the map to request tiles. Cached tiles are reused on later runs.");
     }
-
-    private static string ApiText() => SampleKind switch
-    {
-        "osm" => "AddOpenStreetMapLayer()",
-        "xyz" => "AddXyzLayer(name, urlTemplate, minZoom, maxZoom, tileSize, attribution, localCacheEnabled)",
-        "rasterOverview" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true })",
-        "rasterTileCache" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true })",
-        "labelCollision" => "SetLayerStyle(index, new GeoKernelLayerStyle { LabelAllowOverlap = ... })",
-        _ => "AddLayerFile(path); GetLayerInfo(index); GetLayerAttributeDefinitions(index)"
-    };
-
-    private void AddXyz(List<string> details)
-    {
-        var index = SampleName switch
-        {
-            "XyzCustomUrl" => viewerControl.AddXyzLayer("Custom OSM", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzLocalCache" => viewerControl.AddXyzLayer("OSM cached", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors", localCacheEnabled: true, cacheDirectory: Path.Combine(AppContext.BaseDirectory, "XyzLocalCache")),
-            "XyzTileSize" => viewerControl.AddXyzLayer("OSM 512 tile request", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileSize: 512, attribution: "OpenStreetMap contributors"),
-            "XyzMinMaxZoom" => viewerControl.AddXyzLayer("OSM min/max zoom", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", minZoom: 2, maxZoom: 12, attribution: "OpenStreetMap contributors"),
-            "XyzAttribution" => viewerControl.AddXyzLayer("OSM attribution", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzDiagnostics" => viewerControl.AddXyzLayer("OSM diagnostics", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            _ => viewerControl.AddXyzLayer("OSM preset", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors")
-        };
-        if (index < 0)
-            throw new InvalidOperationException("XYZ layer could not be added.");
-        viewerControl.ViewExtent = EuropeExtent3857();
-        details.Add("XYZ layer index: " + index);
-        if (SampleName == "XyzDiagnostics")
-        {
-            details.Add("");
-            details.Add("Render backend diagnostics");
-            details.Add(viewerControl.RenderBackendDiagnostics);
-        }
-    }
-
-    private void AddRaster(List<string> details, GeoKernelLayerLoadOptions options)
-    {
-        AddFile(details, "world_8km.tif", options);
-        details.Add("");
-        details.Add("Raster options");
-        details.Add($"PrepareRasterOverviews: {options.PrepareRasterOverviews}");
-        details.Add($"RasterTileCacheEnabled: {options.RasterTileCacheEnabled}");
-        details.Add($"RasterTileCachePixelBudget: {options.RasterTileCachePixelBudget}");
-    }
-
-    private void AddLabelCollision(List<string> details)
-    {
-        AddFile(details, "world_4326.shp", null);
-        AddFile(details, "cities_4326.shp", null, zoom: false);
-        var style = new GeoKernelLayerStyle
-        {
-            PointColor = "#2E86AB",
-            PointSize = 4,
-            ShowLabels = true,
-            LabelField = "CITY_NAME",
-            LabelColor = "#1F2933",
-            LabelFontSize = 8,
-            LabelHaloEnabled = true,
-            LabelHaloColor = "#FFFFFF",
-            LabelHaloWidth = 1.5,
-            LabelAllowOverlap = true
-        };
-        viewerControl.SetLayerStyle(1, style);
-        viewerControl.ViewExtent = new GeoKernelExtent(-1500000, 3500000, 5200000, 8200000);
-        details.Add("Cities labels use labelAllowOverlap = true.");
-    }
-
-    private void AddFile(List<string> details, string relativePath, GeoKernelLayerLoadOptions? options, bool zoom = true)
-    {
-        var path = DataPath(relativePath);
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Sample data file could not be found.", path);
-        var ok = options is null ? viewerControl.AddLayerFile(path) : viewerControl.AddLayerFile(path, options);
-        if (!ok)
-            throw new InvalidOperationException($"Layer could not be loaded: {path}");
-        if (zoom)
-            viewerControl.FullExtent();
-        details.Add("Loaded: " + path);
-    }
-
-    private static GeoKernelExtent EuropeExtent3857() => new(-1400000.0, 4100000.0, 4200000.0, 7800000.0);
-    private static string DataPath(string relativePath) => Path.Combine(FindRepositoryRoot(), "assets", "data", relativePath);
-    private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            if (Directory.Exists(Path.Combine(directory.FullName, "assets", "data")))
-                return directory.FullName;
-            directory = directory.Parent;
-        }
-        return AppContext.BaseDirectory;
-    }
+    private static string FormatBytes(long value) => value >= 1048576 ? $"{value / 1048576d:F2} MB" : value >= 1024 ? $"{value / 1024d:F1} KB" : $"{value} bytes";
 }

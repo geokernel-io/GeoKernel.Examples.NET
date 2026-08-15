@@ -14,20 +14,8 @@ public sealed partial class MainForm : Form
         ConnectBusyEvents();
     }
 
-    private async void MainForm_Shown(object sender, EventArgs e)
+    private void MainForm_Shown(object sender, EventArgs e)
     {
-        var progress = new ControlProgress<SampleDataProgress>(this, value =>
-        {
-            SetStatus(value.Message);
-            progressBar.Style = value.Percentage.HasValue ? ProgressBarStyle.Blocks : ProgressBarStyle.Marquee;
-            if (value.Percentage.HasValue)
-                SetProgress(value.Percentage.Value);
-        });
-        _samplePath = await SampleData.EnsureFileAsync("output_1m_points.zip", "output_1m_points", "output_1m_points.shp", "1M points", this, progress);
-        progressBar.Style = ProgressBarStyle.Blocks;
-        if (string.IsNullOrEmpty(_samplePath))
-            return;
-
         geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.Pan;
         SetProgress(0);
         SetStatus("Ready. Click Load Large Layer to see busy/progress callbacks.");
@@ -45,9 +33,9 @@ public sealed partial class MainForm : Form
         geoKernelViewerControl.LayersChanged += (_, _) => AppendLog($"Event: LayersChanged(count={geoKernelViewerControl.LayerCount})");
     }
 
-    private void loadButton_Click(object sender, EventArgs e)
+    private async void loadButton_Click(object sender, EventArgs e)
     {
-        LoadLargeLayer();
+        await LoadLargeLayerAsync();
     }
 
     private void clearButton_Click(object sender, EventArgs e)
@@ -61,23 +49,48 @@ public sealed partial class MainForm : Form
         AppendLog("Action: ClearLayers()");
     }
 
-    private void LoadLargeLayer()
+    private async Task LoadLargeLayerAsync()
     {
-        var path = _samplePath;
-        if (!File.Exists(path))
-        {
-            MessageBox.Show(
-                this,
-                $"Layer file could not be found:{Environment.NewLine}{path}",
-                "BusyCallback",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+        if (_isLoading)
             return;
-        }
 
         _isLoading = true;
         loadButton.Enabled = false;
         clearButton.Enabled = false;
+
+        if (!File.Exists(_samplePath))
+        {
+            var downloadProgress = new ControlProgress<SampleDataProgress>(this, value =>
+            {
+                SetStatus(value.Message);
+                progressBar.Style = value.Percentage.HasValue
+                    ? ProgressBarStyle.Blocks
+                    : ProgressBarStyle.Marquee;
+                if (value.Percentage.HasValue)
+                    SetProgress(value.Percentage.Value);
+            });
+
+            _samplePath = await SampleData.EnsureFileAsync(
+                "output_1m_points.zip",
+                "output_1m_points",
+                "output_1m_points.shp",
+                "1M points",
+                this,
+                downloadProgress);
+            progressBar.Style = ProgressBarStyle.Blocks;
+
+            if (string.IsNullOrEmpty(_samplePath) || !File.Exists(_samplePath))
+            {
+                _isLoading = false;
+                loadButton.Enabled = true;
+                clearButton.Enabled = true;
+                SetProgress(0);
+                SetStatus("Sample layer could not be prepared.");
+                return;
+            }
+        }
+
+        var path = _samplePath;
         UseWaitCursor = true;
         SetProgress(0);
         SetStatus("Loading output_1m_points.shp...");

@@ -7,7 +7,10 @@
     <DockPanel Background="#F4F6F5">
         <Border DockPanel.Dock="Top" Height="35" Background="#F1F1F1">
             <StackPanel Orientation="Horizontal">
-                <Button Width="100" Height="25" Margin="4,5,0,5" Click="FullExtent_Click">Full Extent</Button>
+                <Button Width="100" Height="25" Margin="4,5,8,5" Click="FullExtent_Click">Full Extent</Button>
+                <TextBlock Text="Preset:" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <ComboBox x:Name="presetComboBox" Width="260" Height="25" VerticalAlignment="Center" DisplayMemberPath="Name" SelectionChanged="PresetComboBox_SelectionChanged" />
+                <CheckBox x:Name="localCacheCheckBox" Content="Local cache" IsChecked="True" VerticalAlignment="Center" Margin="12,0,0,0" Checked="LocalCacheCheckBox_Changed" Unchecked="LocalCacheCheckBox_Changed" />
             </StackPanel>
         </Border>
         <StatusBar DockPanel.Dock="Bottom" Height="22"><TextBlock x:Name="statusText" Text="XyzPresets ready." /></StatusBar>
