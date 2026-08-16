@@ -2,19 +2,36 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
-        Title="RasterOverview" Width="1180" Height="760" MinWidth="720" MinHeight="460"
+        Title="RasterOverview" Width="1200" Height="800" MinWidth="800" MinHeight="520"
         WindowStartupLocation="CenterScreen" Icon="Images/GeoKernelAppIcon.ico" Loaded="Window_Loaded">
-    <DockPanel Background="#F4F6F5">
-        <Border DockPanel.Dock="Top" Height="35" Background="#F1F1F1">
-            <StackPanel Orientation="Horizontal">
-                <Button Width="100" Height="25" Margin="4,5,0,5" Click="FullExtent_Click">Full Extent</Button>
-            </StackPanel>
-        </Border>
-        <StatusBar DockPanel.Dock="Bottom" Height="22"><TextBlock x:Name="statusText" Text="RasterOverview ready." /></StatusBar>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Height="38" Orientation="Horizontal" Background="#F1F1F1">
+            <Button Margin="6,4,8,4" Padding="9,2" Content="Reset Working Copy" Click="Reset_Click" />
+            <Button Margin="0,4,8,4" Padding="9,2" Content="Load Without Overview" Click="LoadWithout_Click" />
+            <Button Margin="0,4,8,4" Padding="9,2" Content="Load With Overview" Click="LoadWith_Click" />
+            <Button Margin="0,4,8,4" Padding="9,2" Content="Run Downsample Benchmark" Click="Benchmark_Click" />
+            <Button Margin="0,4,8,4" Padding="9,2" Content="Full Extent" Click="FullExtent_Click" />
+        </StackPanel>
+        <StatusBar DockPanel.Dock="Bottom" Height="24" Padding="4,2">
+            <DockPanel LastChildFill="True" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StatusBar}}">
+                <ProgressBar x:Name="progressBar" DockPanel.Dock="Right" Width="240" Height="16"
+                             Margin="6,0,6,0" Minimum="0" Maximum="100" Value="0" />
+                <TextBlock x:Name="statusText" Text="Ready." VerticalAlignment="Center" />
+            </DockPanel>
+        </StatusBar>
         <Grid>
-            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="420" /></Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="420" />
+            </Grid.ColumnDefinitions>
             <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Column="0" />
-            <TextBox x:Name="detailsTextBox" Grid.Column="1" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" />
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" Background="#B0B0B0" />
+            <TextBox x:Name="detailsTextBox" Grid.Column="2" IsReadOnly="True" AcceptsReturn="True"
+                     Text="RasterOverview sample&#x0a;&#x0a;Preparing sample data..."
+                     Background="White" BorderBrush="#808080" BorderThickness="1,0,0,0"
+                     TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" />
         </Grid>
     </DockPanel>
 </Window>

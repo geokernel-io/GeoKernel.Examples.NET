@@ -1,183 +1,213 @@
+using System.Diagnostics;
 using GeoKernel.NET.WinForms;
 
 namespace GeoKernel.RasterOverview.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private string _rasterPath = string.Empty;
-    private static readonly string SampleName = "RasterOverview";
-    private static readonly string SampleKind = "rasterOverview";
-    public MainForm()
-    {
-        InitializeComponent();
-    }
+    private string _sourceRasterPath = string.Empty;
+    private string _mode = "Reset";
+    private long _elapsedMilliseconds;
+    private GeoKernelRasterOverviewBenchmark? _withoutOverviewBenchmark;
+    private GeoKernelRasterOverviewBenchmark? _withOverviewBenchmark;
+    private string _lastBenchmarkText = string.Empty;
+    private static string WorkingDirectory => Path.Combine(AppContext.BaseDirectory, "RasterOverviewData");
+    private static string WorkingRasterPath => Path.Combine(WorkingDirectory, "world_8km_overview_test.tif");
+    private static string OverviewPath => WorkingRasterPath + ".ovr";
+
+    public MainForm() => InitializeComponent();
 
     private async void MainForm_Shown(object? sender, EventArgs e)
     {
-        _rasterPath = await SampleData.EnsureFileAsync("world_8km_tif.zip", "world_8km_tif", "world_8km.tif", "World GeoTIFF", this, CreateSampleProgress());
-        downloadProgressBar.Visible = false;
-        if (string.IsNullOrEmpty(_rasterPath))
-            return;
-        LoadSample();
+        EnsureDetailsPanelWidth();
+        viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+        statusLabel.Text = "Preparing sample data...";
+        progressBar.Style = ProgressBarStyle.Blocks;
+        progressBar.Value = 0;
+        _sourceRasterPath = await SampleData.EnsureFileAsync(
+            "world_8km_tif.zip", "world_8km_tif", "world_8km.tif", "World GeoTIFF", this);
+        if (!string.IsNullOrWhiteSpace(_sourceRasterPath)) ResetWorkingCopy();
     }
 
-    private void zoomInButton_Click(object? sender, EventArgs e) => viewerControl.ZoomIn();
-    private void zoomOutButton_Click(object? sender, EventArgs e) => viewerControl.ZoomOut();
-    private void zoomRectButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.ZoomBox;
-    private void panButton_Click(object? sender, EventArgs e) => viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
-
-    private void primaryButton_Click(object? sender, EventArgs e) => LoadSample();
-    private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
-
-    private void LoadSample()
+    protected override void OnResize(EventArgs e)
     {
-        viewerControl.ClearLayers();
-        var details = new List<string> { "RasterOverview sample", "", "API", ApiText(), "" };
+        base.OnResize(e);
+        if (IsHandleCreated) EnsureDetailsPanelWidth();
+    }
+
+    private void EnsureDetailsPanelWidth()
+    {
+        const int detailsWidth = 420;
+        const int minimumMapWidth = 300;
+        if (splitContainer.Width <= detailsWidth + minimumMapWidth + splitContainer.SplitterWidth)
+            return;
+        splitContainer.Panel2Collapsed = false;
+        splitContainer.SplitterDistance = splitContainer.Width - detailsWidth - splitContainer.SplitterWidth;
+    }
+
+    private void resetButton_Click(object? sender, EventArgs e) => ResetWorkingCopy();
+    private void loadWithoutButton_Click(object? sender, EventArgs e) => LoadRaster(false);
+    private void loadWithButton_Click(object? sender, EventArgs e) => LoadRaster(true);
+    private void benchmarkButton_Click(object? sender, EventArgs e) => ShowBenchmarkComparison();
+    private void fullExtentButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
+
+    private bool ResetWorkingCopy()
+    {
         try
         {
-            RunSample(details);
-            details.Add("");
-            details.Add("Layers");
-            foreach (var layer in viewerControl.GetLayersInfo())
-                details.Add($"#{layer.Index}: {layer.Name} | features: {layer.FeatureCount} | type: {layer.ShapeType}");
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "RasterOverview loaded.";
+            viewerControl.ClearLayers();
+            Directory.CreateDirectory(WorkingDirectory);
+            File.Copy(_sourceRasterPath, WorkingRasterPath, true);
+            DeleteIfExists(OverviewPath);
+            DeleteIfExists(WorkingRasterPath + ".aux.xml");
+            _mode = "Reset";
+            _elapsedMilliseconds = 0;
+            _withoutOverviewBenchmark = null;
+            _withOverviewBenchmark = null;
+            _lastBenchmarkText = string.Empty;
+            progressBar.Value = 0;
+            statusLabel.Text = "Working copy reset. Overview file removed.";
+            UpdateDetails();
+            return true;
         }
         catch (Exception ex)
         {
-            details.Add(ex.Message);
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "RasterOverview failed.";
+            statusLabel.Text = "Reset failed.";
+            MessageBox.Show(this, ex.Message, "RasterOverview", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return false;
+        }
+    }
+
+    private void LoadRaster(bool prepareOverview)
+    {
+        if (!File.Exists(WorkingRasterPath) && !ResetWorkingCopy()) return;
+        var mode = prepareOverview ? "Load With Overview" : "Load Without Overview";
+        try
+        {
+            viewerControl.ClearLayers();
+            progressBar.Value = 0;
+            statusLabel.Text = mode;
+            UseWaitCursor = true;
+            var timer = Stopwatch.StartNew();
+            var options = new GeoKernelLayerLoadOptions
+            {
+                PrepareRasterOverviews = prepareOverview,
+                RasterOverviewMinimumPixels = prepareOverview ? 0 : long.MaxValue,
+                RasterOverviewResampling = "AVERAGE"
+            };
+            var progress = new Progress<GeoKernelLayerLoadProgress>(p =>
+            {
+                if (p.Progress.HasValue) progressBar.Value = Math.Clamp(p.Progress.Value, 0, 100);
+                if (!string.IsNullOrWhiteSpace(p.Status)) statusLabel.Text = p.Status;
+                Application.DoEvents();
+            });
+            if (!viewerControl.AddLayerFile(WorkingRasterPath, options, progress))
+                throw new InvalidOperationException($"Raster could not be loaded:{Environment.NewLine}{WorkingRasterPath}");
+            timer.Stop();
+            _mode = mode;
+            _elapsedMilliseconds = timer.ElapsedMilliseconds;
+            _lastBenchmarkText = string.Empty;
+            viewerControl.SetLayerName(0, prepareOverview ? "GeoTIFF - Overview" : "GeoTIFF - No Overview");
+            viewerControl.FullExtent();
+            progressBar.Value = 100;
+            statusLabel.Text = $"{mode} finished in {_elapsedMilliseconds} ms.";
+            UpdateDetails();
+        }
+        catch (Exception ex)
+        {
+            statusLabel.Text = "Load failed.";
+            MessageBox.Show(this, ex.Message, "RasterOverview", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            UpdateDetails();
+        }
+        finally { UseWaitCursor = false; }
+    }
+
+    private void ShowBenchmarkComparison()
+    {
+        if (viewerControl.LayerCount == 0)
+        {
+            statusLabel.Text = "Load a raster first.";
+            return;
+        }
+
+        try
+        {
+            UseWaitCursor = true;
+            statusLabel.Text = "Running downsample benchmark...";
+            Application.DoEvents();
+            var result = RunCurrentBenchmark();
+            _lastBenchmarkText = BenchmarkText(_mode, result);
+            if (_mode == "Load Without Overview")
+                _withoutOverviewBenchmark = result;
+            else if (_mode == "Load With Overview")
+                _withOverviewBenchmark = result;
+
+            statusLabel.Text = _withoutOverviewBenchmark is not null && _withOverviewBenchmark is not null
+                ? ComparisonText(_withoutOverviewBenchmark, _withOverviewBenchmark)
+                : _lastBenchmarkText;
+            UpdateDetails();
+        }
+        catch (Exception ex)
+        {
+            statusLabel.Text = "Benchmark failed.";
             MessageBox.Show(this, ex.Message, "RasterOverview", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally { UseWaitCursor = false; }
     }
 
-    private void RunSample(List<string> details)
+    private GeoKernelRasterOverviewBenchmark RunCurrentBenchmark()
     {
-        switch (SampleKind)
-        {
-            case "osm":
-                viewerControl.AddOpenStreetMapLayer();
-                viewerControl.ViewExtent = EuropeExtent3857();
-                details.Add("viewer.AddOpenStreetMapLayer()");
-                break;
-            case "xyz":
-                AddXyz(details);
-                break;
-            case "rasterOverview":
-                AddRaster(details, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true, RasterOverviewMinimumPixels = 0 });
-                break;
-            case "rasterTileCache":
-                AddRaster(details, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true, RasterTileCachePixelBudget = 64 * 1024 * 1024 });
-                break;
-            case "labelCollision":
-                AddLabelCollision(details);
-                break;
-            default:
-                AddFile(details, "world_8km.tif", null);
-                break;
-        }
+        var diagnostics = viewerControl.GetRasterOverviewDiagnostics(0, true);
+        var benchmark = diagnostics?.Benchmark;
+        if (benchmark is null || !benchmark.Valid)
+            throw new InvalidOperationException(benchmark?.ErrorMessage ?? "Raster overview benchmark returned no result.");
+        return benchmark;
     }
 
-    private static string ApiText() => SampleKind switch
+    private static string ComparisonText(GeoKernelRasterOverviewBenchmark withoutOverview, GeoKernelRasterOverviewBenchmark withOverview)
     {
-        "osm" => "AddOpenStreetMapLayer()",
-        "xyz" => "AddXyzLayer(name, urlTemplate, minZoom, maxZoom, tileSize, attribution, localCacheEnabled)",
-        "rasterOverview" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true })",
-        "rasterTileCache" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true })",
-        "labelCollision" => "SetLayerStyle(index, new GeoKernelLayerStyle { LabelAllowOverlap = ... })",
-        _ => "AddLayerFile(path); GetLayerInfo(index); GetLayerAttributeDefinitions(index)"
-    };
+        var saved = withoutOverview.ElapsedMs - withOverview.ElapsedMs;
+        return saved > 0
+            ? $"Comparison: overview saved {saved} ms ({(saved * 100.0 / withoutOverview.ElapsedMs):0.0}% faster) for this zoomed-out read ({withoutOverview.ElapsedMs} ms without, {withOverview.ElapsedMs} ms with)."
+            : $"Comparison: overview did not win on this run ({withoutOverview.ElapsedMs} ms without, {withOverview.ElapsedMs} ms with). This can happen on small rasters or warm OS cache.";
+    }
 
-    private void AddXyz(List<string> details)
+    private void UpdateDetails()
     {
-        var index = SampleName switch
+        var raster = new FileInfo(WorkingRasterPath);
+        var overview = new FileInfo(OverviewPath);
+        var lines = new List<string>
         {
-            "XyzCustomUrl" => viewerControl.AddXyzLayer("Custom OSM", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzLocalCache" => viewerControl.AddXyzLayer("OSM cached", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors", localCacheEnabled: true, cacheDirectory: Path.Combine(AppContext.BaseDirectory, "XyzLocalCache")),
-            "XyzTileSize" => viewerControl.AddXyzLayer("OSM 512 tile request", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileSize: 512, attribution: "OpenStreetMap contributors"),
-            "XyzMinMaxZoom" => viewerControl.AddXyzLayer("OSM min/max zoom", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", minZoom: 2, maxZoom: 12, attribution: "OpenStreetMap contributors"),
-            "XyzAttribution" => viewerControl.AddXyzLayer("OSM attribution", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzDiagnostics" => viewerControl.AddXyzLayer("OSM diagnostics", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            _ => viewerControl.AddXyzLayer("OSM preset", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors")
+            "RasterOverview sample", "", $"Mode: {_mode}", $"Load elapsed: {_elapsedMilliseconds} ms",
+            $"Working raster: {WorkingRasterPath}", $"Raster file exists: {(raster.Exists ? "yes" : "no")}",
+            $"Raster file size: {(raster.Exists ? raster.Length : 0)} bytes", $"Overview file: {OverviewPath}",
+            $"Overview file exists: {(overview.Exists ? "yes" : "no")}", $"Overview file size: {(overview.Exists ? overview.Length : 0)} bytes", "",
+            "Layer load options", "PrepareRasterOverviews = true/false", "RasterOverviewMinimumPixels = threshold",
+            "RasterOverviewResampling = AVERAGE", "", "Workflow",
+            "1. Reset Working Copy removes the generated .ovr file.",
+            "2. Load Without Overview skips pyramid creation.",
+            "3. Load With Overview forces pyramid creation.",
+            "4. Run Downsample Benchmark performs 40 zoomed-out 128x64 reads in each mode.",
+            "5. This sample raster is small; real gains become clearer on large rasters."
         };
-        if (index < 0)
-            throw new InvalidOperationException("XYZ layer could not be added.");
-        viewerControl.ViewExtent = EuropeExtent3857();
-        details.Add("XYZ layer index: " + index);
-        if (SampleName == "XyzDiagnostics")
+        lines.Insert(15, "Benchmark");
+        lines.Insert(16, string.IsNullOrEmpty(_lastBenchmarkText) ? "Run Downsample Benchmark after loading a raster." : _lastBenchmarkText);
+        if (_withoutOverviewBenchmark is not null)
+            lines.Add(BenchmarkText("Without overview", _withoutOverviewBenchmark));
+        if (_withOverviewBenchmark is not null)
+            lines.Add(BenchmarkText("With overview", _withOverviewBenchmark));
+        if (_withoutOverviewBenchmark is not null && _withOverviewBenchmark is not null)
+            lines.Add(ComparisonText(_withoutOverviewBenchmark, _withOverviewBenchmark));
+        if (viewerControl.LayerCount > 0)
         {
-            details.Add("");
-            details.Add("Render backend diagnostics");
-            details.Add(viewerControl.RenderBackendDiagnostics);
+            var info = viewerControl.GetLayerInfo(0);
+            lines.InsertRange(10, new[] { $"Layer name: {info?.Name}", $"Layer path: {info?.Path}", "" });
         }
+        detailsTextBox.Text = string.Join(Environment.NewLine, lines);
     }
 
-    private void AddRaster(List<string> details, GeoKernelLayerLoadOptions options)
-    {
-        AddFile(details, "world_8km.tif", options);
-        details.Add("");
-        details.Add("Raster options");
-        details.Add($"PrepareRasterOverviews: {options.PrepareRasterOverviews}");
-        details.Add($"RasterTileCacheEnabled: {options.RasterTileCacheEnabled}");
-        details.Add($"RasterTileCachePixelBudget: {options.RasterTileCachePixelBudget}");
-    }
+    private static string BenchmarkText(string mode, GeoKernelRasterOverviewBenchmark result) =>
+        $"{mode}: {result.Passes} reads to {result.TargetWidth}x{result.TargetHeight}, selected overview={result.SelectedOverview}, elapsed={result.ElapsedMs} ms";
 
-    private void AddLabelCollision(List<string> details)
-    {
-        AddFile(details, "world_4326.shp", null);
-        AddFile(details, "cities_4326.shp", null, zoom: false);
-        var style = new GeoKernelLayerStyle
-        {
-            PointColor = "#2E86AB",
-            PointSize = 4,
-            ShowLabels = true,
-            LabelField = "CITY_NAME",
-            LabelColor = "#1F2933",
-            LabelFontSize = 8,
-            LabelHaloEnabled = true,
-            LabelHaloColor = "#FFFFFF",
-            LabelHaloWidth = 1.5,
-            LabelAllowOverlap = true
-        };
-        viewerControl.SetLayerStyle(1, style);
-        viewerControl.ViewExtent = new GeoKernelExtent(-1500000, 3500000, 5200000, 8200000);
-        details.Add("Cities labels use labelAllowOverlap = true.");
-    }
-
-    private void AddFile(List<string> details, string relativePath, GeoKernelLayerLoadOptions? options, bool zoom = true)
-    {
-        var path = DataPath(relativePath);
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Sample data file could not be found.", path);
-        var ok = options is null ? viewerControl.AddLayerFile(path) : viewerControl.AddLayerFile(path, options);
-        if (!ok)
-            throw new InvalidOperationException($"Layer could not be loaded: {path}");
-        if (zoom)
-            viewerControl.FullExtent();
-        details.Add("Loaded: " + path);
-    }
-
-    private static GeoKernelExtent EuropeExtent3857() => new(-1400000.0, 4100000.0, 4200000.0, 7800000.0);
-    private string DataPath(string relativePath) => relativePath.Equals("world_8km.tif", StringComparison.OrdinalIgnoreCase) ? _rasterPath : relativePath;
-    private IProgress<SampleDataProgress> CreateSampleProgress() => new ControlProgress<SampleDataProgress>(this, value =>
-    {
-        statusLabel.Text = value.Message;
-        downloadProgressBar.Visible = true;
-        downloadProgressBar.Style = value.Percentage.HasValue ? ProgressBarStyle.Blocks : ProgressBarStyle.Marquee;
-        if (value.Percentage.HasValue)
-            downloadProgressBar.Value = Math.Clamp(value.Percentage.Value, 0, 100);
-    });
-
-    private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            if (Directory.Exists(Path.Combine(directory.FullName, "assets", "data")))
-                return directory.FullName;
-            directory = directory.Parent;
-        }
-        return AppContext.BaseDirectory;
-    }
+    private static void DeleteIfExists(string path) { if (File.Exists(path)) File.Delete(path); }
 }
