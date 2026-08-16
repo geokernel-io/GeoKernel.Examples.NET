@@ -7,6 +7,7 @@
         Height="720"
         MinWidth="840"
         MinHeight="520"
+        WindowStartupLocation="CenterScreen"
         Icon="Images/GeoKernelAppIcon.ico"
         Loaded="Window_Loaded">
     <DockPanel>
@@ -24,10 +25,13 @@
                 <ComboBoxItem Content="Polyline" />
                 <ComboBoxItem Content="Polygon" />
             </ComboBox>
-            <Button Content="Reset"
+            <Button Content="Clear"
                     Margin="10,0,0,0"
                     Padding="12,2"
-                    Click="Reset_Click" />
+                    Click="Clear_Click" />
+            <TextBlock x:Name="hintText"
+                       VerticalAlignment="Center"
+                       Margin="10,0,0,0" />
         </StackPanel>
 
         <StatusBar DockPanel.Dock="Bottom">
@@ -37,14 +41,22 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="420" />
+                <ColumnDefinition Width="4" />
+                <ColumnDefinition Width="416" />
             </Grid.ColumnDefinitions>
 
             <gk:GeoKernelViewerControl x:Name="viewerControl"
                                        Grid.Column="0" />
 
+            <GridSplitter Grid.Column="1"
+                          Width="4"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          ResizeDirection="Columns"
+                          ResizeBehavior="PreviousAndNext" />
+
             <TextBox x:Name="detailsTextBox"
-                     Grid.Column="1"
+                     Grid.Column="2"
                      IsReadOnly="True"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"

@@ -6,157 +6,189 @@ namespace GeoKernel.WktWrite.Wpf;
 
 public partial class MainWindow
 {
-    private static readonly GeoKernelPoint Point = new(-122.4194, 37.7749);
+    private const string PointLayerName = "Drawn Point";
+    private const string PolylineLayerName = "Drawn Polyline";
+    private const string PolygonLayerName = "Drawn Polygon";
 
-    private static readonly GeoKernelPoint[] Polyline =
-    [
-        new(-123.00, 37.10),
-        new(-122.55, 37.65),
-        new(-122.05, 37.30),
-        new(-121.55, 38.10),
-        new(-120.90, 37.55)
-    ];
-
-    private static readonly GeoKernelPoint[] Polygon =
-    [
-        new(-123.25, 37.15),
-        new(-122.15, 36.95),
-        new(-121.55, 37.65),
-        new(-122.05, 38.35),
-        new(-123.05, 38.15),
-        new(-123.25, 37.15)
-    ];
-
+    private readonly int[] _layerIndexes = [-1, -1, -1];
     private bool _loaded;
+    private bool _drawingSketch;
 
-    public MainWindow()
-    {
-        InitializeComponent();
-    }
+    public MainWindow() => InitializeComponent();
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
-    {        
+    {
+        viewerControl.AddOpenStreetMapLayer();
+        CreateLayer(PointLayerName, GeoKernelShapeType.Point, PointStyle());
+        CreateLayer(PolylineLayerName, GeoKernelShapeType.Polyline, LineStyle());
+        CreateLayer(PolygonLayerName, GeoKernelShapeType.Polygon, PolygonStyle());
+        ResolveLayerIndexes();
+        viewerControl.LayerEditStateChanged += Viewer_LayerEditStateChanged;
+        viewerControl.MapMouseDown += Viewer_MapMouseDown;
         _loaded = true;
-        RenderSelectedGeometry();
+        ActivateSelectedMode();
+        viewerControl.ViewExtent = InitialViewExtent();
+    }
+
+    private int CreateLayer(string name, GeoKernelShapeType shapeType, GeoKernelLayerStyle style)
+    {
+        var index = viewerControl.AddEmptyVectorLayer(name, shapeType, style);
+        if (index >= 0)
+            viewerControl.SetLayerCoordinateSystemPreset(index, GeoKernelCoordinateSystemPreset.Wgs84);
+        return index;
+    }
+
+    private void ResolveLayerIndexes()
+    {
+        _layerIndexes[(int)GeometryMode.Point] = viewerControl.GetLayerInfoByName(PointLayerName)?.Index ?? -1;
+        _layerIndexes[(int)GeometryMode.Polyline] = viewerControl.GetLayerInfoByName(PolylineLayerName)?.Index ?? -1;
+        _layerIndexes[(int)GeometryMode.Polygon] = viewerControl.GetLayerInfoByName(PolygonLayerName)?.Index ?? -1;
     }
 
     private void GeometryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_loaded)
-            RenderSelectedGeometry();
+        if (!_loaded) return;
+        _drawingSketch = false;
+        ClearAllLayers();
+        detailsTextBox.Clear();
+        ActivateSelectedMode();
     }
 
-    private void Reset_Click(object sender, RoutedEventArgs e) => RenderSelectedGeometry();
-
-    private void RenderSelectedGeometry()
+    private void Clear_Click(object sender, RoutedEventArgs e)
     {
-        viewerControl.ClearLayers();
-        viewerControl.AddOpenStreetMapLayer();
+        _drawingSketch = false;
+        ClearAllLayers();
+        detailsTextBox.Clear();
+        ActivateSelectedMode();
+        statusText.Text = "Drawn geometries cleared.";
+    }
 
-        var mode = (GeometryMode)geometryComboBox.SelectedIndex;
-        string apiName;
-        string wkt;
-        GeoKernelExtent viewExtent;
+    private void Viewer_LayerEditStateChanged(object? sender, GeoKernelLayerEventArgs e)
+    {
+        if (e.LayerIndex != ActiveLayerIndex) return;
+        _drawingSketch = false;
+        RefreshMap();
+        WriteWkt();
+    }
 
-        switch (mode)
+    private void Viewer_MapMouseDown(object? sender, GeoKernelMapMouseEventArgs e)
+    {
+        const int leftButton = 1;
+        if ((e.ButtonOrButtons & leftButton) == 0 || e.Tool != ActiveTool)
+            return;
+
+        var startsNewGeometry = CurrentMode == GeometryMode.Point || !_drawingSketch;
+        if (!startsNewGeometry)
+            return;
+
+        if (viewerControl.GetLayerFeatureCount(ActiveLayerIndex) > 0)
         {
-            case GeometryMode.Point:
-                apiName = "GisWktWriter::writePoint(shape)";
-                wkt = viewerControl.WriteWktPoint(Point);
-                var webPoint = ToWebMercator(Point);
-                viewerControl.AddPointLayer("WKT Point", [webPoint], PointStyle());
-                viewExtent = PaddedExtent([webPoint]);
-                break;
-            case GeometryMode.Polyline:
-                apiName = "GisWktWriter::writePolyline(shape)";
-                wkt = viewerControl.WriteWktLineString(Polyline);
-                var webLine = Polyline.Select(ToWebMercator).ToArray();
-                viewerControl.AddPolylineLayer("WKT Polyline", webLine, LineStyle());
-                viewExtent = PaddedExtent(webLine);
-                break;
-            default:
-                apiName = "GisWktWriter::writePolygon(shape)";
-                wkt = viewerControl.WriteWktPolygon(Polygon);
-                var webRing = Polygon.Select(ToWebMercator).ToArray();
-                viewerControl.AddPolygonLayer("WKT Polygon", webRing, PolygonStyle());
-                viewExtent = PaddedExtent(webRing);
-                break;
+            ClearLayer(ActiveLayerIndex);
+            detailsTextBox.Clear();
+            ActivateSelectedMode();
+            RefreshMap();
         }
 
-        viewerControl.ViewExtent = viewExtent;
-        detailsTextBox.Text = DetailsText(mode, apiName, wkt);
-        statusText.Text = $"{apiName} wrote {((ComboBoxItem)geometryComboBox.SelectedItem).Content} WKT.";
+        if (CurrentMode != GeometryMode.Point)
+            _drawingSketch = true;
     }
 
-    private static string DetailsText(GeometryMode mode, string apiName, string wkt) =>
-        string.Join(
-            Environment.NewLine,
-            "WktWrite sample",
-            "",
-            "API",
-            apiName,
-            "",
-            "Geometry",
-            mode,
-            "",
-            "Output WKT",
-            wkt,
-            "",
-            "Workflow",
-            "1. Choose a geometry type.",
-            "2. The sample creates a GeoKernel shape.",
-            "3. The wrapper calls the native GisWktWriter.",
-            "4. The generated WKT is shown here.");
-
-    private static GeoKernelLayerStyle PointStyle() => new()
+    private void ActivateSelectedMode()
     {
-        PointColor = "#D95D39",
-        LineColor = "#8C321D",
-        PointSize = 13.0,
-        LineWidth = 1.4
+        var index = ActiveLayerIndex;
+        if (index < 0)
+        {
+            statusText.Text = "Editable layer could not be created.";
+            return;
+        }
+        if (!viewerControl.IsLayerEditing(index)) viewerControl.BeginEditLayer(index);
+        viewerControl.SetActiveEditLayerIndex(index);
+        viewerControl.ActiveTool = ActiveTool;
+        hintText.Text = HelpText(CurrentMode);
+        statusText.Text = hintText.Text;
+    }
+
+    private void ClearAllLayers()
+    {
+        foreach (var index in _layerIndexes.Where(index => index >= 0))
+            ClearLayer(index);
+        RefreshMap();
+    }
+
+    private void ClearLayer(int index)
+    {
+        viewerControl.RollbackEditLayer(index);
+        viewerControl.BeginEditLayer(index);
+    }
+
+    private void WriteWkt()
+    {
+        var wkt = viewerControl.WriteLayerLastShapeWkt(ActiveLayerIndex);
+        if (string.IsNullOrWhiteSpace(wkt))
+        {
+            ShowEmptyDetails();
+            return;
+        }
+        var api = ApiName(CurrentMode);
+        detailsTextBox.Text = string.Join(Environment.NewLine,
+            "WktWrite sample", "", "API", api, "", "Selected geometry", GeometryName,
+            $"Layer feature count: {viewerControl.GetLayerFeatureCount(ActiveLayerIndex)}", "", "Output WKT", wkt, "",
+            "Workflow", "1. Choose geometry type.", "2. Draw geometry on map.",
+            "3. WKT is written automatically when drawing finishes.");
+        statusText.Text = $"{api} wrote WKT from the drawn {GeometryName}.";
+    }
+
+    private void ShowEmptyDetails() => detailsTextBox.Text =
+        $"{ApiName(CurrentMode)}{Environment.NewLine}{Environment.NewLine}Draw a geometry first. WKT will be written automatically.";
+
+    private void RefreshMap()
+    {
+        viewerControl.InvalidateRenderCache(true, true);
+        viewerControl.RefreshLayers();
+    }
+
+    private GeometryMode CurrentMode => (GeometryMode)geometryComboBox.SelectedIndex;
+    private int ActiveLayerIndex => _layerIndexes[(int)CurrentMode];
+    private string GeometryName => ((ComboBoxItem)geometryComboBox.SelectedItem).Content?.ToString() ?? CurrentMode.ToString();
+    private GeoKernelViewerTool ActiveTool => CurrentMode switch
+    {
+        GeometryMode.Point => GeoKernelViewerTool.AddPoint,
+        GeometryMode.Polyline => GeoKernelViewerTool.AddPolyline,
+        _ => GeoKernelViewerTool.AddPolygon
     };
 
-    private static GeoKernelLayerStyle LineStyle() => new()
+    private static string ApiName(GeometryMode mode) => mode switch
     {
-        LineColor = "#E4572E",
-        LineWidth = 3.4,
-        PointColor = "#F3A712",
-        PointSize = 7.0
+        GeometryMode.Point => "GisWktWriter::writePoint(shape)",
+        GeometryMode.Polyline => "GisWktWriter::writePolyline(shape)",
+        _ => "GisWktWriter::writePolygon(shape)"
     };
 
-    private static GeoKernelLayerStyle PolygonStyle() => new()
+    private static string HelpText(GeometryMode mode) => mode switch
     {
-        FillColor = "#88D18A",
-        FillOpacity = 130,
-        LineColor = "#1F7A4D",
-        LineWidth = 2.4
+        GeometryMode.Point => "Click on the map to draw a point. WKT is written automatically.",
+        GeometryMode.Polyline => "Click line vertices, then press Enter or double-click to finish. WKT is written automatically.",
+        _ => "Click polygon vertices, then press Enter or double-click to finish. WKT is written automatically."
     };
 
-    private static GeoKernelPoint ToWebMercator(GeoKernelPoint lonLat)
+    private static GeoKernelExtent InitialViewExtent()
+    {
+        var min = ToWebMercator(new GeoKernelPoint(-124.8, 32.0));
+        var max = ToWebMercator(new GeoKernelPoint(-114.0, 42.5));
+        return new GeoKernelExtent(min.X, min.Y, max.X, max.Y);
+    }
+
+    private static GeoKernelPoint ToWebMercator(GeoKernelPoint point)
     {
         const double originShift = 20037508.342789244;
-        var lon = Math.Clamp(lonLat.X, -180.0, 180.0);
-        var lat = Math.Clamp(lonLat.Y, -85.05112878, 85.05112878);
-        var x = lon * originShift / 180.0;
-        var y = Math.Log(Math.Tan((90.0 + lat) * Math.PI / 360.0)) * originShift / Math.PI;
-        return new GeoKernelPoint(x, y);
+        var latitude = Math.Clamp(point.Y, -85.05112878, 85.05112878);
+        return new GeoKernelPoint(point.X * originShift / 180.0,
+            Math.Log(Math.Tan((90.0 + latitude) * Math.PI / 360.0)) * originShift / Math.PI);
     }
 
-    private static GeoKernelExtent PaddedExtent(IReadOnlyList<GeoKernelPoint> points)
-    {
-        var xMin = points.Min(point => point.X);
-        var yMin = points.Min(point => point.Y);
-        var xMax = points.Max(point => point.X);
-        var yMax = points.Max(point => point.Y);
-        var paddingX = Math.Max(350_000.0, (xMax - xMin) * 0.45);
-        var paddingY = Math.Max(350_000.0, (yMax - yMin) * 0.45);
-        return new GeoKernelExtent(xMin - paddingX, yMin - paddingY, xMax + paddingX, yMax + paddingY);
-    }
+    private static GeoKernelLayerStyle PointStyle() => new() { PointColor = "#D95D39", LineColor = "#8C321D", PointSize = 13, LineWidth = 1.4 };
+    private static GeoKernelLayerStyle LineStyle() => new() { LineColor = "#E4572E", LineWidth = 3.4, PointColor = "#F3A712", PointSize = 7 };
+    private static GeoKernelLayerStyle PolygonStyle() => new() { FillColor = "#88D18A", FillOpacity = 128, LineColor = "#1F7A4D", LineWidth = 2.4 };
 
-    private enum GeometryMode
-    {
-        Point,
-        Polyline,
-        Polygon
-    }
+    private enum GeometryMode { Point, Polyline, Polygon }
 }
