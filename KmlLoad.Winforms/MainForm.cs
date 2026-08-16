@@ -21,7 +21,6 @@ public sealed partial class MainForm : Form
         LoadSample();
     }
 
-    private void primaryButton_Click(object? sender, EventArgs e) => LoadSample();
     private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
 
     private void LoadSample()

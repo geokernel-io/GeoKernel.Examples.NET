@@ -5,7 +5,6 @@ partial class MainForm
     private System.ComponentModel.IContainer components = null;
     private TableLayoutPanel layoutPanel;
     private Panel toolbarPanel;
-    private Button primaryButton;
     private Button secondaryButton;
     private SplitContainer splitContainer;
     private global::GeoKernel.NET.WinForms.GeoKernelViewerControl viewerControl;
@@ -27,7 +26,6 @@ partial class MainForm
         components = new System.ComponentModel.Container();
         layoutPanel = new TableLayoutPanel();
         toolbarPanel = new Panel();
-        primaryButton = new Button();
         secondaryButton = new Button();
         splitContainer = new SplitContainer();
         viewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
@@ -58,14 +56,9 @@ partial class MainForm
         layoutPanel.Size = new Size(1180, 760);
         toolbarPanel.BackColor = SystemColors.Control;
         toolbarPanel.Controls.Add(secondaryButton);
-        toolbarPanel.Controls.Add(primaryButton);
         toolbarPanel.Dock = DockStyle.Fill;
         toolbarPanel.Margin = new Padding(0);
-        primaryButton.Location = new Point(4, 5);
-        primaryButton.Size = new Size(126, 25);
-        primaryButton.Text = "Load Sample";
-        primaryButton.Click += primaryButton_Click;
-        secondaryButton.Location = new Point(136, 5);
+        secondaryButton.Location = new Point(4, 5);
         secondaryButton.Size = new Size(100, 25);
         secondaryButton.Text = "Full Extent";
         secondaryButton.Click += secondaryButton_Click;

@@ -4,9 +4,8 @@ partial class MainForm
 {
     private System.ComponentModel.IContainer components = null;
     private Panel inputPanel;
-    private Label geometryLabel;
-    private ComboBox geometryComboBox;
-    private Button resetButton;
+    private Button clearButton;
+    private Label hintLabel;
     private SplitContainer splitContainer;
     private global::GeoKernel.NET.WinForms.GeoKernelViewerControl geoKernelViewerControl;
     private TextBox detailsTextBox;
@@ -17,18 +16,16 @@ partial class MainForm
     {
         if (disposing && components is not null)
             components.Dispose();
-
         base.Dispose(disposing);
     }
 
     private void InitializeComponent()
     {
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+        System.ComponentModel.ComponentResourceManager resources = new(typeof(MainForm));
         components = new System.ComponentModel.Container();
         inputPanel = new Panel();
-        geometryLabel = new Label();
-        geometryComboBox = new ComboBox();
-        resetButton = new Button();
+        clearButton = new Button();
+        hintLabel = new Label();
         splitContainer = new SplitContainer();
         geoKernelViewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
         detailsTextBox = new TextBox();
@@ -41,77 +38,62 @@ partial class MainForm
         splitContainer.SuspendLayout();
         statusStrip.SuspendLayout();
         SuspendLayout();
-        inputPanel.Controls.Add(geometryLabel);
-        inputPanel.Controls.Add(geometryComboBox);
-        inputPanel.Controls.Add(resetButton);
+
+        inputPanel.Controls.Add(clearButton);
+        inputPanel.Controls.Add(hintLabel);
         inputPanel.Dock = DockStyle.Top;
-        inputPanel.Location = new Point(0, 0);
-        inputPanel.Name = "inputPanel";
+        inputPanel.Height = 34;
         inputPanel.Padding = new Padding(6, 4, 6, 4);
-        inputPanel.Size = new Size(1120, 34);
-        inputPanel.TabIndex = 0;
-        geometryLabel.AutoSize = true;
-        geometryLabel.Location = new Point(8, 9);
-        geometryLabel.Name = "geometryLabel";
-        geometryLabel.Size = new Size(62, 15);
-        geometryLabel.TabIndex = 0;
-        geometryLabel.Text = "Geometry:";
-        geometryComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-        geometryComboBox.Items.AddRange(new object[] { "Point", "Polyline", "Polygon" });
-        geometryComboBox.Location = new Point(76, 5);
-        geometryComboBox.Name = "geometryComboBox";
-        geometryComboBox.Size = new Size(130, 23);
-        geometryComboBox.TabIndex = 1;
-        geometryComboBox.SelectedIndexChanged += geometryComboBox_SelectedIndexChanged;
-        resetButton.Location = new Point(216, 4);
-        resetButton.Name = "resetButton";
-        resetButton.Size = new Size(90, 25);
-        resetButton.TabIndex = 2;
-        resetButton.Text = "Reset";
-        resetButton.UseVisualStyleBackColor = true;
-        resetButton.Click += resetButton_Click;
+        inputPanel.Name = "inputPanel";
+
+        clearButton.Location = new Point(6, 4);
+        clearButton.Name = "clearButton";
+        clearButton.Size = new Size(75, 25);
+        clearButton.Text = "Clear";
+        clearButton.UseVisualStyleBackColor = true;
+        clearButton.Click += clearButton_Click;
+
+        hintLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        hintLabel.Location = new Point(89, 8);
+        hintLabel.Name = "hintLabel";
+        hintLabel.Size = new Size(1005, 18);
+        hintLabel.Text = "Click polygon vertices, then press Enter or double-click to finish. GeoJSON is written automatically.";
+
         splitContainer.Dock = DockStyle.Fill;
+        splitContainer.FixedPanel = FixedPanel.Panel2;
         splitContainer.Location = new Point(0, 34);
         splitContainer.Name = "splitContainer";
         splitContainer.Panel1.Controls.Add(geoKernelViewerControl);
         splitContainer.Panel2.Controls.Add(detailsTextBox);
-        splitContainer.Size = new Size(1120, 664);
-        splitContainer.SplitterDistance = 700;
-        splitContainer.TabIndex = 1;
+        splitContainer.Size = new Size(1100, 664);
+        splitContainer.SplitterDistance = 666;
+
         geoKernelViewerControl.Dock = DockStyle.Fill;
-        geoKernelViewerControl.Location = new Point(0, 0);
         geoKernelViewerControl.Name = "geoKernelViewerControl";
-        geoKernelViewerControl.Size = new Size(700, 664);
-        geoKernelViewerControl.TabIndex = 0;
+
         detailsTextBox.Dock = DockStyle.Fill;
-        detailsTextBox.Location = new Point(0, 0);
         detailsTextBox.Multiline = true;
         detailsTextBox.Name = "detailsTextBox";
         detailsTextBox.ReadOnly = true;
         detailsTextBox.ScrollBars = ScrollBars.Vertical;
-        detailsTextBox.Size = new Size(416, 664);
-        detailsTextBox.TabIndex = 0;
+        detailsTextBox.Text = "GisGeoJsonWriter::writePolygonString(shape)\r\n\r\nDraw a polygon on the map. The GeoJSON string will appear here.";
+
         statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
-        statusStrip.Location = new Point(0, 698);
         statusStrip.Name = "statusStrip";
-        statusStrip.Size = new Size(1120, 22);
-        statusStrip.TabIndex = 2;
         statusLabel.Name = "statusLabel";
-        statusLabel.Size = new Size(0, 17);
+
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(1120, 720);
+        ClientSize = new Size(1100, 720);
         Controls.Add(splitContainer);
         Controls.Add(statusStrip);
         Controls.Add(inputPanel);
-        MinimumSize = new Size(840, 520);
         Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "MainForm";
         StartPosition = FormStartPosition.CenterScreen;
         Text = "GeoJsonWrite";
         Shown += MainForm_Shown;
         inputPanel.ResumeLayout(false);
-        inputPanel.PerformLayout();
         splitContainer.Panel1.ResumeLayout(false);
         splitContainer.Panel2.ResumeLayout(false);
         splitContainer.Panel2.PerformLayout();

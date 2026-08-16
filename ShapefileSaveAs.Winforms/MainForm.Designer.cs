@@ -7,7 +7,7 @@ partial class MainForm
     private TableLayoutPanel topBar;
     private Button saveButton;
     private ProgressBar saveProgressBar;
-    private SplitContainer mainSplit;
+    private TableLayoutPanel mainContent;
     private global::GeoKernel.NET.WinForms.GeoKernelViewerControl viewerControl;
     private TableLayoutPanel rightLayout;
     private Label stateLabel;
@@ -32,7 +32,7 @@ partial class MainForm
         topBar = new TableLayoutPanel();
         saveButton = new Button();
         saveProgressBar = new ProgressBar();
-        mainSplit = new SplitContainer();
+        mainContent = new TableLayoutPanel();
         viewerControl = new GeoKernel.NET.WinForms.GeoKernelViewerControl();
         rightLayout = new TableLayoutPanel();
         stateLabel = new Label();
@@ -43,10 +43,7 @@ partial class MainForm
         statusLabel = new ToolStripStatusLabel();
         rootLayout.SuspendLayout();
         topBar.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)mainSplit).BeginInit();
-        mainSplit.Panel1.SuspendLayout();
-        mainSplit.Panel2.SuspendLayout();
-        mainSplit.SuspendLayout();
+        mainContent.SuspendLayout();
         rightLayout.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)attributesGrid).BeginInit();
         statusStrip.SuspendLayout();
@@ -55,7 +52,7 @@ partial class MainForm
         rootLayout.ColumnCount = 1;
         rootLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         rootLayout.Controls.Add(topBar, 0, 0);
-        rootLayout.Controls.Add(mainSplit, 0, 1);
+        rootLayout.Controls.Add(mainContent, 0, 1);
         rootLayout.Controls.Add(statusStrip, 0, 2);
         rootLayout.Dock = DockStyle.Fill;
         rootLayout.Margin = new Padding(0);
@@ -85,15 +82,19 @@ partial class MainForm
         saveProgressBar.Margin = new Padding(0);
         saveProgressBar.Maximum = 100;
 
-        mainSplit.Dock = DockStyle.Fill;
-        mainSplit.FixedPanel = FixedPanel.Panel2;
-        mainSplit.Margin = new Padding(0);
-        mainSplit.Panel1.Controls.Add(viewerControl);
-        mainSplit.Panel2.Controls.Add(rightLayout);
-        mainSplit.SplitterDistance = 740;
+        mainContent.ColumnCount = 2;
+        mainContent.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        mainContent.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 320F));
+        mainContent.Controls.Add(viewerControl, 0, 0);
+        mainContent.Controls.Add(rightLayout, 1, 0);
+        mainContent.Dock = DockStyle.Fill;
+        mainContent.Margin = new Padding(0);
+        mainContent.RowCount = 1;
+        mainContent.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
         viewerControl.BackColor = Color.White;
         viewerControl.Dock = DockStyle.Fill;
+        viewerControl.Margin = new Padding(0);
 
         rightLayout.ColumnCount = 1;
         rightLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -149,10 +150,7 @@ partial class MainForm
         rootLayout.PerformLayout();
         topBar.ResumeLayout(false);
         topBar.PerformLayout();
-        mainSplit.Panel1.ResumeLayout(false);
-        mainSplit.Panel2.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)mainSplit).EndInit();
-        mainSplit.ResumeLayout(false);
+        mainContent.ResumeLayout(false);
         rightLayout.ResumeLayout(false);
         rightLayout.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)attributesGrid).EndInit();

@@ -3,32 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
         Title="GeoJsonWrite"
-        Width="1120"
+        Width="1100"
         Height="720"
-        MinWidth="840"
-        MinHeight="520"
         Icon="Images/GeoKernelAppIcon.ico"
         Loaded="Window_Loaded">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top"
-                    Orientation="Horizontal"
-                    Margin="6,4">
-            <TextBlock Text="Geometry:"
-                       VerticalAlignment="Center"
-                       Margin="0,0,8,0" />
-            <ComboBox x:Name="geometryComboBox"
-                      Width="130"
-                      SelectionChanged="GeometryComboBox_SelectionChanged">
-                <ComboBoxItem Content="Point"
-                              IsSelected="True" />
-                <ComboBoxItem Content="Polyline" />
-                <ComboBoxItem Content="Polygon" />
-            </ComboBox>
-            <Button Content="Reset"
-                    Margin="10,0,0,0"
+        <Grid DockPanel.Dock="Top"
+              Margin="6,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Content="Clear"
                     Padding="12,2"
-                    Click="Reset_Click" />
-        </StackPanel>
+                    Click="Clear_Click" />
+            <TextBlock Grid.Column="1"
+                       Margin="8,0,0,0"
+                       VerticalAlignment="Center"
+                       Text="Click polygon vertices, then press Enter or double-click to finish. GeoJSON is written automatically." />
+        </Grid>
 
         <StatusBar DockPanel.Dock="Bottom">
             <TextBlock x:Name="statusText" />
@@ -37,18 +31,17 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="420" />
+                <ColumnDefinition Width="430" />
             </Grid.ColumnDefinitions>
-
             <gk:GeoKernelViewerControl x:Name="viewerControl"
                                        Grid.Column="0" />
-
             <TextBox x:Name="detailsTextBox"
                      Grid.Column="1"
                      IsReadOnly="True"
-                     TextWrapping="Wrap"
                      AcceptsReturn="True"
-                     VerticalScrollBarVisibility="Auto" />
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Text="GisGeoJsonWriter::writePolygonString(shape)&#x0a;&#x0a;Draw a polygon on the map. The GeoJSON string will appear here." />
         </Grid>
     </DockPanel>
 </Window>

@@ -4,174 +4,92 @@ namespace GeoKernel.TabLoad.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private string _samplePath = string.Empty;
-    private static readonly string SampleName = "TabLoad";
-    private static readonly string SampleKind = "file";
-    public MainForm()
-    {
-        InitializeComponent();
-    }
+    public MainForm() => InitializeComponent();
 
     private async void MainForm_Shown(object? sender, EventArgs e)
     {
-        _samplePath = await SampleData.EnsureFileAsync("paris_tab.zip", "paris_tab", "paris.tab", "Paris TAB", this, CreateSampleProgress());
+        viewerControl.ActiveTool = GeoKernelViewerTool.Pan;
+        var path = await SampleData.EnsureFileAsync("paris_tab.zip", "paris_tab", "paris.tab",
+            "Paris TAB", this, CreateSampleProgress());
         downloadProgressBar.Visible = false;
-        if (string.IsNullOrEmpty(_samplePath))
+        if (string.IsNullOrEmpty(path))
+        {
+            statusLabel.Text = "MapInfo TAB sample data could not be prepared.";
             return;
-        LoadSample();
-    }
+        }
 
-    private void secondaryButton_Click(object? sender, EventArgs e) => viewerControl.FullExtent();
-
-    private void LoadSample()
-    {
-        viewerControl.ClearLayers();
-        var details = new List<string> { "TabLoad sample", "", "API", ApiText(), "" };
         try
         {
-            RunSample(details);
-            details.Add("");
-            details.Add("Layers");
-            foreach (var layer in viewerControl.GetLayersInfo())
-                details.Add($"#{layer.Index}: {layer.Name} | features: {layer.FeatureCount} | type: {layer.ShapeType}");
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "TabLoad loaded.";
+            if (!viewerControl.AddLayerFile(path))
+                throw new InvalidOperationException($"MapInfo TAB could not be opened: {path}");
+            viewerControl.SetLayerStyle(0, TabStyle());
+            PopulateDetails(path);
+            viewerControl.FullExtent();
         }
         catch (Exception ex)
         {
-            details.Add(ex.Message);
-            detailsTextBox.Text = string.Join(Environment.NewLine, details);
-            statusLabel.Text = "TabLoad failed.";
-            MessageBox.Show(this, ex.Message, "TabLoad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            statusLabel.Text = "MapInfo TAB could not be opened.";
+            MessageBox.Show(this, $"MapInfo TAB could not be opened:{Environment.NewLine}{ex.Message}",
+                "TabLoad", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private void RunSample(List<string> details)
+    private void PopulateDetails(string path)
     {
-        switch (SampleKind)
+        const int index = 0;
+        var layer = viewerControl.GetLayerInfo(index)
+            ?? throw new InvalidOperationException("Loaded layer metadata is unavailable.");
+        var definitions = viewerControl.GetLayerAttributeDefinitions(index);
+        var stem = Path.Combine(Path.GetDirectoryName(path)!, Path.GetFileNameWithoutExtension(path));
+        detailsTextBox.Text = string.Join(Environment.NewLine,
+            "TabLoad sample", "", "API", "GisLayerTAB(path)", "layer.open()",
+            "layer.attributeDefinitions()", "layer.attributesForRow(row)", "",
+            "Loaded MapInfo TAB", path, "", "Layer", $"Name: {layer.Name}",
+            $"Shape type: {layer.ShapeType}", $"Memory shape count: {layer.FeatureCount}",
+            "Provider-backed TAB files can render features while memory shape count remains 0.",
+            $"Field count: {definitions.Count}", $"Extent: {layer.ProjectedExtent}", "",
+            "Sidecars", SidecarLine(".tab", path), SidecarLine(".dat", stem + ".dat"),
+            SidecarLine(".map", stem + ".map"), SidecarLine(".id", stem + ".id"),
+            SidecarLine(".dbf", stem + ".dbf"));
+
+        schemaGrid.Rows.Clear();
+        foreach (var definition in definitions)
+            schemaGrid.Rows.Add(definition.Name, definition.Type, definition.Length, definition.DecimalCount);
+
+        attributesGrid.Columns.Clear();
+        attributesGrid.Columns.Add("row", "#");
+        foreach (var definition in definitions) attributesGrid.Columns.Add(definition.Name, definition.Name);
+        attributesGrid.Rows.Clear();
+        var rowCount = Math.Min(12, layer.FeatureCount);
+        for (var row = 0; row < rowCount; ++row)
         {
-            case "osm":
-                viewerControl.AddOpenStreetMapLayer();
-                viewerControl.ViewExtent = EuropeExtent3857();
-                details.Add("viewer.AddOpenStreetMapLayer()");
-                break;
-            case "xyz":
-                AddXyz(details);
-                break;
-            case "rasterOverview":
-                AddRaster(details, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true, RasterOverviewMinimumPixels = 0 });
-                break;
-            case "rasterTileCache":
-                AddRaster(details, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true, RasterTileCachePixelBudget = 64 * 1024 * 1024 });
-                break;
-            case "labelCollision":
-                AddLabelCollision(details);
-                break;
-            default:
-                AddFile(details, "paris.tab", null);
-                break;
+            var attributes = viewerControl.GetLayerFeatureAttributes(index, row);
+            attributesGrid.Rows.Add(new object[] { row }.Concat(definitions.Select(definition =>
+                attributes.TryGetValue(definition.Name, out var value)
+                    ? value?.ToString() ?? string.Empty : string.Empty)).ToArray());
         }
+        if (rowCount == 0) attributesGrid.Rows.Add("No attribute rows returned.");
+        statusLabel.Text = $"GisLayerTAB opened {layer.FeatureCount} memory features and {definitions.Count} fields.";
     }
 
-    private static string ApiText() => SampleKind switch
+    private static string SidecarLine(string label, string path)
     {
-        "osm" => "AddOpenStreetMapLayer()",
-        "xyz" => "AddXyzLayer(name, urlTemplate, minZoom, maxZoom, tileSize, attribution, localCacheEnabled)",
-        "rasterOverview" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { PrepareRasterOverviews = true })",
-        "rasterTileCache" => "AddLayerFile(path, new GeoKernelLayerLoadOptions { RasterTileCacheEnabled = true })",
-        "labelCollision" => "SetLayerStyle(index, new GeoKernelLayerStyle { LabelAllowOverlap = ... })",
-        _ => "AddLayerFile(path); GetLayerInfo(index); GetLayerAttributeDefinitions(index)"
+        var info = new FileInfo(path);
+        return $"{label}: {(info.Exists ? info.Length : 0)} bytes ({(info.Exists ? "exists" : "missing")})";
+    }
+
+    private static GeoKernelLayerStyle TabStyle() => new()
+    {
+        FillColor = "#D7E5DF", FillOpacity = 184, LineColor = "#6D8C86", LineWidth = 1.1,
+        PointColor = "#D95D39", PointSize = 7.0
     };
 
-    private void AddXyz(List<string> details)
-    {
-        var index = SampleName switch
+    private IProgress<SampleDataProgress> CreateSampleProgress() =>
+        new ControlProgress<SampleDataProgress>(this, value =>
         {
-            "XyzCustomUrl" => viewerControl.AddXyzLayer("Custom OSM", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzLocalCache" => viewerControl.AddXyzLayer("OSM cached", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors", localCacheEnabled: true, cacheDirectory: Path.Combine(AppContext.BaseDirectory, "XyzLocalCache")),
-            "XyzTileSize" => viewerControl.AddXyzLayer("OSM 512 tile request", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", tileSize: 512, attribution: "OpenStreetMap contributors"),
-            "XyzMinMaxZoom" => viewerControl.AddXyzLayer("OSM min/max zoom", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", minZoom: 2, maxZoom: 12, attribution: "OpenStreetMap contributors"),
-            "XyzAttribution" => viewerControl.AddXyzLayer("OSM attribution", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            "XyzDiagnostics" => viewerControl.AddXyzLayer("OSM diagnostics", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors"),
-            _ => viewerControl.AddXyzLayer("OSM preset", "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "OpenStreetMap contributors")
-        };
-        if (index < 0)
-            throw new InvalidOperationException("XYZ layer could not be added.");
-        viewerControl.ViewExtent = EuropeExtent3857();
-        details.Add("XYZ layer index: " + index);
-        if (SampleName == "XyzDiagnostics")
-        {
-            details.Add("");
-            details.Add("Render backend diagnostics");
-            details.Add(viewerControl.RenderBackendDiagnostics);
-        }
-    }
-
-    private void AddRaster(List<string> details, GeoKernelLayerLoadOptions options)
-    {
-        AddFile(details, "world_8km.tif", options);
-        details.Add("");
-        details.Add("Raster options");
-        details.Add($"PrepareRasterOverviews: {options.PrepareRasterOverviews}");
-        details.Add($"RasterTileCacheEnabled: {options.RasterTileCacheEnabled}");
-        details.Add($"RasterTileCachePixelBudget: {options.RasterTileCachePixelBudget}");
-    }
-
-    private void AddLabelCollision(List<string> details)
-    {
-        AddFile(details, "world_4326.shp", null);
-        AddFile(details, "cities_4326.shp", null, zoom: false);
-        var style = new GeoKernelLayerStyle
-        {
-            PointColor = "#2E86AB",
-            PointSize = 4,
-            ShowLabels = true,
-            LabelField = "CITY_NAME",
-            LabelColor = "#1F2933",
-            LabelFontSize = 8,
-            LabelHaloEnabled = true,
-            LabelHaloColor = "#FFFFFF",
-            LabelHaloWidth = 1.5,
-            LabelAllowOverlap = true
-        };
-        viewerControl.SetLayerStyle(1, style);
-        viewerControl.ViewExtent = new GeoKernelExtent(-1500000, 3500000, 5200000, 8200000);
-        details.Add("Cities labels use labelAllowOverlap = true.");
-    }
-
-    private void AddFile(List<string> details, string relativePath, GeoKernelLayerLoadOptions? options, bool zoom = true)
-    {
-        var path = DataPath(relativePath);
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Sample data file could not be found.", path);
-        var ok = options is null ? viewerControl.AddLayerFile(path) : viewerControl.AddLayerFile(path, options);
-        if (!ok)
-            throw new InvalidOperationException($"Layer could not be loaded: {path}");
-        if (zoom)
-            viewerControl.FullExtent();
-        details.Add("Loaded: " + path);
-    }
-
-    private static GeoKernelExtent EuropeExtent3857() => new(-1400000.0, 4100000.0, 4200000.0, 7800000.0);
-    private string DataPath(string relativePath) => relativePath.Equals(Path.GetFileName(_samplePath), StringComparison.OrdinalIgnoreCase) ? _samplePath : relativePath;
-    private IProgress<SampleDataProgress> CreateSampleProgress() => new ControlProgress<SampleDataProgress>(this, value =>
-    {
-        statusLabel.Text = value.Message;
-        downloadProgressBar.Visible = true;
-        downloadProgressBar.Style = value.Percentage.HasValue ? ProgressBarStyle.Blocks : ProgressBarStyle.Marquee;
-        if (value.Percentage.HasValue)
-            downloadProgressBar.Value = Math.Clamp(value.Percentage.Value, 0, 100);
-    });
-
-    private static string FindRepositoryRoot()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null)
-        {
-            if (Directory.Exists(Path.Combine(directory.FullName, "assets", "data")))
-                return directory.FullName;
-            directory = directory.Parent;
-        }
-        return AppContext.BaseDirectory;
-    }
+            statusLabel.Text = value.Message;
+            downloadProgressBar.Visible = true;
+            downloadProgressBar.Style = value.Percentage.HasValue ? ProgressBarStyle.Blocks : ProgressBarStyle.Marquee;
+            if (value.Percentage.HasValue) downloadProgressBar.Value = Math.Clamp(value.Percentage.Value, 0, 100);
+        });
 }

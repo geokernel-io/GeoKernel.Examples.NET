@@ -4,158 +4,185 @@ namespace GeoKernel.GeoJsonWrite.Winforms;
 
 public sealed partial class MainForm : Form
 {
-    private static readonly GeoKernelPoint Point = new(-122.4194, 37.7749);
-
-    private static readonly GeoKernelPoint[] Polyline =
-    [
-        new(-123.00, 37.10),
-        new(-122.55, 37.65),
-        new(-122.05, 37.30),
-        new(-121.55, 38.10),
-        new(-120.90, 37.55)
-    ];
-
-    private static readonly GeoKernelPoint[] Polygon =
-    [
-        new(-123.25, 37.15),
-        new(-122.15, 36.95),
-        new(-121.55, 37.65),
-        new(-122.05, 38.35),
-        new(-123.05, 38.15),
-        new(-123.25, 37.15)
-    ];
-
-    private bool _loaded;
+    private const string LayerName = "Drawn Polygon";
+    private int _polygonLayerIndex = -1;
+    private bool _drawingSketch;
 
     public MainForm()
     {
         InitializeComponent();
-        geometryComboBox.SelectedIndex = 0;
     }
 
     private void MainForm_Shown(object? sender, EventArgs e)
-    {        
-        _loaded = true;
-        RenderSelectedGeometry();
-    }
-
-    private void geometryComboBox_SelectedIndexChanged(object? sender, EventArgs e)
     {
-        if (_loaded)
-            RenderSelectedGeometry();
-    }
-
-    private void resetButton_Click(object? sender, EventArgs e) => RenderSelectedGeometry();
-
-    private void RenderSelectedGeometry()
-    {
-        geoKernelViewerControl.ClearLayers();
         geoKernelViewerControl.AddOpenStreetMapLayer();
+        _polygonLayerIndex = geoKernelViewerControl.AddEmptyVectorLayer(
+            LayerName,
+            GeoKernelShapeType.Polygon,
+            PolygonStyle());
+        if (_polygonLayerIndex >= 0)
+            geoKernelViewerControl.SetLayerCoordinateSystemPreset(
+                _polygonLayerIndex,
+                GeoKernelCoordinateSystemPreset.Wgs84);
 
-        var mode = (GeometryMode)geometryComboBox.SelectedIndex;
-        string apiName;
-        string geoJson;
-        GeoKernelExtent viewExtent;
+        geoKernelViewerControl.LayerEditStateChanged += Viewer_LayerEditStateChanged;
+        geoKernelViewerControl.MapMouseDown += Viewer_MapMouseDown;
+        ActivatePolygonTool();
+        geoKernelViewerControl.ViewExtent = InitialViewExtent();
+    }
 
-        switch (mode)
+    private void clearButton_Click(object? sender, EventArgs e)
+    {
+        _drawingSketch = false;
+        ClearLayer();
+        ShowInitialDetails();
+        ActivatePolygonTool();
+        statusLabel.Text = "Polygon cleared.";
+    }
+
+    private void Viewer_MapMouseDown(object? sender, GeoKernelMapMouseEventArgs e)
+    {
+        const int leftButton = 1;
+        if ((e.ButtonOrButtons & leftButton) == 0 ||
+            e.Tool != GeoKernelViewerTool.AddPolygon ||
+            _drawingSketch)
+            return;
+
+        if (geoKernelViewerControl.GetLayerFeatureCount(_polygonLayerIndex) > 0)
         {
-            case GeometryMode.Point:
-                apiName = "GisGeoJsonWriter::writePointString(shape)";
-                geoJson = geoKernelViewerControl.WriteGeoJsonPoint(Point);
-                var webPoint = ToWebMercator(Point);
-                geoKernelViewerControl.AddPointLayer("GeoJSON Point", [webPoint], PointStyle());
-                viewExtent = PaddedExtent([webPoint]);
-                break;
-            case GeometryMode.Polyline:
-                apiName = "GisGeoJsonWriter::writePolylineString(shape)";
-                geoJson = geoKernelViewerControl.WriteGeoJsonLineString(Polyline);
-                var webLine = Polyline.Select(ToWebMercator).ToArray();
-                geoKernelViewerControl.AddPolylineLayer("GeoJSON Polyline", webLine, LineStyle());
-                viewExtent = PaddedExtent(webLine);
-                break;
-            default:
-                apiName = "GisGeoJsonWriter::writePolygonString(shape)";
-                geoJson = geoKernelViewerControl.WriteGeoJsonPolygon(Polygon);
-                var webRing = Polygon.Select(ToWebMercator).ToArray();
-                geoKernelViewerControl.AddPolygonLayer("GeoJSON Polygon", webRing, PolygonStyle());
-                viewExtent = PaddedExtent(webRing);
-                break;
+            ClearLayer();
+            detailsTextBox.Clear();
+            ActivatePolygonTool();
         }
 
-        geoKernelViewerControl.ViewExtent = viewExtent;
-        detailsTextBox.Text = DetailsText(mode, apiName, geoJson);
-        statusLabel.Text = $"{apiName} wrote {geometryComboBox.Text} GeoJSON.";
+        _drawingSketch = true;
     }
 
-    private static string DetailsText(GeometryMode mode, string apiName, string geoJson) =>
-        string.Join(
+    private void Viewer_LayerEditStateChanged(object? sender, GeoKernelLayerEventArgs e)
+    {
+        if (e.LayerIndex != _polygonLayerIndex)
+            return;
+
+        _drawingSketch = false;
+        RefreshMap();
+        WriteGeoJson();
+    }
+
+    private void ActivatePolygonTool()
+    {
+        if (_polygonLayerIndex < 0)
+        {
+            statusLabel.Text = "Editable polygon layer is not in the viewer.";
+            return;
+        }
+
+        if (!geoKernelViewerControl.IsLayerEditing(_polygonLayerIndex) &&
+            !geoKernelViewerControl.BeginEditLayer(_polygonLayerIndex))
+        {
+            statusLabel.Text = "Polygon layer could not enter edit mode.";
+            return;
+        }
+
+        if (!geoKernelViewerControl.SetActiveEditLayerIndex(_polygonLayerIndex))
+        {
+            statusLabel.Text = "Polygon layer could not be activated.";
+            return;
+        }
+
+        geoKernelViewerControl.ActiveTool = GeoKernelViewerTool.AddPolygon;
+        statusLabel.Text = "Add Polygon active. Finish with Enter or double-click.";
+    }
+
+    private void ClearLayer()
+    {
+        if (_polygonLayerIndex < 0)
+            return;
+
+        geoKernelViewerControl.RollbackEditLayer(_polygonLayerIndex);
+        geoKernelViewerControl.BeginEditLayer(_polygonLayerIndex);
+        RefreshMap();
+    }
+
+    private void WriteGeoJson()
+    {
+        var wkt = geoKernelViewerControl.WriteLayerLastShapeWkt(_polygonLayerIndex);
+        if (string.IsNullOrWhiteSpace(wkt))
+        {
+            ShowEmptyDetails();
+            return;
+        }
+
+        var rings = geoKernelViewerControl.ReadWktPolygon(wkt);
+        var geoJson = geoKernelViewerControl.WriteGeoJsonPolygon(rings);
+        var points = rings.SelectMany(ring => ring).ToArray();
+        var extent = new GeoKernelExtent(
+            points.Min(point => point.X),
+            points.Min(point => point.Y),
+            points.Max(point => point.X),
+            points.Max(point => point.Y));
+
+        detailsTextBox.Text = string.Join(
             Environment.NewLine,
             "GeoJsonWrite sample",
             "",
             "API",
-            apiName,
+            "GisGeoJsonWriter::writePolygonString(shape)",
             "",
-            "Geometry",
-            mode,
+            "Drawn polygon",
+            $"Rings: {rings.Count}",
+            $"Vertices: {points.Length}",
+            $"Lon/lat extent: {extent}",
             "",
             "Output GeoJSON",
             geoJson,
             "",
             "Workflow",
-            "1. Choose a geometry type.",
-            "2. The sample creates a GeoKernel shape.",
-            "3. The wrapper calls the native GisGeoJsonWriter.",
-            "4. The generated GeoJSON is shown here.");
+            "1. Click polygon vertices on the map.",
+            "2. Press Enter or double-click to finish.",
+            "3. GeoJSON is written automatically.");
+        statusLabel.Text = "GisGeoJsonWriter::writePolygonString wrote polygon GeoJSON.";
+    }
 
-    private static GeoKernelLayerStyle PointStyle() => new()
-    {
-        PointColor = "#D95D39",
-        LineColor = "#8C321D",
-        PointSize = 13.0,
-        LineWidth = 1.4
-    };
+    private void ShowInitialDetails() => detailsTextBox.Text = string.Join(
+        Environment.NewLine,
+        "GisGeoJsonWriter::writePolygonString(shape)",
+        "",
+        "Draw a polygon on the map. The GeoJSON string will appear here.");
 
-    private static GeoKernelLayerStyle LineStyle() => new()
+    private void ShowEmptyDetails() => detailsTextBox.Text = string.Join(
+        Environment.NewLine,
+        "GisGeoJsonWriter::writePolygonString(shape)",
+        "",
+        "Draw a polygon first. GeoJSON will be written automatically.");
+
+    private void RefreshMap()
     {
-        LineColor = "#E4572E",
-        LineWidth = 3.4,
-        PointColor = "#F3A712",
-        PointSize = 7.0
-    };
+        geoKernelViewerControl.InvalidateRenderCache(true, true);
+        geoKernelViewerControl.RefreshLayers();
+    }
+
+    private static GeoKernelExtent InitialViewExtent()
+    {
+        var min = ToWebMercator(new GeoKernelPoint(-124.8, 32.0));
+        var max = ToWebMercator(new GeoKernelPoint(-114.0, 42.5));
+        return new GeoKernelExtent(min.X, min.Y, max.X, max.Y);
+    }
+
+    private static GeoKernelPoint ToWebMercator(GeoKernelPoint point)
+    {
+        const double originShift = 20037508.342789244;
+        var latitude = Math.Clamp(point.Y, -85.05112878, 85.05112878);
+        return new GeoKernelPoint(
+            point.X * originShift / 180.0,
+            Math.Log(Math.Tan((90.0 + latitude) * Math.PI / 360.0)) *
+            originShift / Math.PI);
+    }
 
     private static GeoKernelLayerStyle PolygonStyle() => new()
     {
         FillColor = "#88D18A",
-        FillOpacity = 130,
+        FillOpacity = 128,
         LineColor = "#1F7A4D",
         LineWidth = 2.4
     };
-
-    private static GeoKernelPoint ToWebMercator(GeoKernelPoint lonLat)
-    {
-        const double originShift = 20037508.342789244;
-        var lon = Math.Clamp(lonLat.X, -180.0, 180.0);
-        var lat = Math.Clamp(lonLat.Y, -85.05112878, 85.05112878);
-        var x = lon * originShift / 180.0;
-        var y = Math.Log(Math.Tan((90.0 + lat) * Math.PI / 360.0)) * originShift / Math.PI;
-        return new GeoKernelPoint(x, y);
-    }
-
-    private static GeoKernelExtent PaddedExtent(IReadOnlyList<GeoKernelPoint> points)
-    {
-        var xMin = points.Min(point => point.X);
-        var yMin = points.Min(point => point.Y);
-        var xMax = points.Max(point => point.X);
-        var yMax = points.Max(point => point.Y);
-        var paddingX = Math.Max(350_000.0, (xMax - xMin) * 0.45);
-        var paddingY = Math.Max(350_000.0, (yMax - yMin) * 0.45);
-        return new GeoKernelExtent(xMin - paddingX, yMin - paddingY, xMax + paddingX, yMax + paddingY);
-    }
-
-    private enum GeometryMode
-    {
-        Point,
-        Polyline,
-        Polygon
-    }
 }
