@@ -5,6 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="GeoKernel.NET" Version="*" />
+    <PackageVersion Include="GeoKernel.NET" Version="1.2.5" />
   </ItemGroup>
 </Project>
