@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><Nullable>enable</Nullable><UseWindowsForms>true</UseWindowsForms><ImplicitUsings>enable</ImplicitUsings><PlatformTarget>x64</PlatformTarget><AssemblyName>CloudPmTilesLoad</AssemblyName><ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon></PropertyGroup>
+  <ItemGroup><PackageReference Include="GeoKernel.NET" VersionOverride="1.4.2" /></ItemGroup>
+  <ItemGroup><Content Include="..\Images\GeoKernelAppIcon.ico"><Link>resources\GeoKernelAppIcon.ico</Link><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content></ItemGroup>
+</Project>
