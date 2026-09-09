@@ -1,0 +1,76 @@
+<Window x:Class="GeoKernel.UndoRedo.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="UndoRedo"
+        Width="1200"
+        Height="800"
+        MinWidth="900"
+        MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Background="#F4F6F5"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <Style x:Key="ToolbarButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Background" Value="#F1F1F1" />
+            <Setter Property="BorderBrush" Value="#D0D0D0" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style x:Key="ToolbarToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#F1F1F1">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton x:Name="addPointButton" Style="{StaticResource ToolbarToggleStyle}" IsChecked="True" Click="AddPoint_Click" Content="Add Point" />
+                <ToggleButton x:Name="panButton" Style="{StaticResource ToolbarToggleStyle}" Click="Pan_Click" Content="Pan" />
+                <Button x:Name="undoButton" Style="{StaticResource ToolbarButtonStyle}" Click="Undo_Click" Content="Undo" />
+                <Button x:Name="redoButton" Style="{StaticResource ToolbarButtonStyle}" Click="Redo_Click" Content="Redo" />
+                <Button x:Name="undoFiveButton" Style="{StaticResource ToolbarButtonStyle}" Click="UndoFive_Click" Content="Undo 5" />
+                <Button x:Name="redoFiveButton" Style="{StaticResource ToolbarButtonStyle}" Click="RedoFive_Click" Content="Redo 5" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="Reset_Click" Content="Reset" />
+                <Button Style="{StaticResource ToolbarButtonStyle}" Click="FullExtent_Click" Content="Full Extent" />
+                <Border Width="1" Height="24" Margin="4,4" Background="#C8C8C8" />
+                <TextBlock x:Name="stateText" Margin="10,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold" Text="Points: 0 | Undo: no | Redo: no" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="infoTextBox"
+                     Grid.Column="0"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto" />
+
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="1"
+                                       ActiveTool="AddPoint" />
+        </Grid>
+
+        <StatusBar Grid.Row="2">
+            <TextBlock x:Name="statusText" Text="Ready" />
+        </StatusBar>
+    </Grid>
+</Window>

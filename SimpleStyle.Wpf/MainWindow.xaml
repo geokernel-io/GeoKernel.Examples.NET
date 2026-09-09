@@ -1,0 +1,69 @@
+<Window x:Class="GeoKernel.SimpleStyle.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="SimpleStyle"
+        Width="1100"
+        Height="720"
+        MinWidth="720"
+        MinHeight="480"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <Style x:Key="ColorButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="26" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="BorderBrush" Value="#7F8C8D" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <Style x:Key="InputStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+                Background="#EFEFEF"
+                Padding="10">
+            <StackPanel>
+                <TextBlock Text="Fill Color" Margin="0,0,0,8" />
+                <Button x:Name="fillColorButton"
+                        Style="{StaticResource ColorButtonStyle}"
+                        Click="FillColorButton_Click" />
+
+                <TextBlock Text="Line Color" Margin="0,0,0,8" />
+                <Button x:Name="lineColorButton"
+                        Style="{StaticResource ColorButtonStyle}"
+                        Click="LineColorButton_Click" />
+
+                <TextBlock Text="Line Width" Margin="0,0,0,8" />
+                <TextBox x:Name="lineWidthTextBox"
+                         Style="{StaticResource InputStyle}"
+                         Text="2.0"
+                         TextChanged="StyleTextBox_TextChanged" />
+
+                <TextBlock Text="Point Size" Margin="0,0,0,8" />
+                <TextBox x:Name="pointSizeTextBox"
+                         Style="{StaticResource InputStyle}"
+                         Text="10.0"
+                         TextChanged="StyleTextBox_TextChanged" />
+
+                <Button x:Name="resetStyleButton"
+                        Height="26"
+                        Content="Reset Style"
+                        Click="ResetStyleButton_Click" />
+            </StackPanel>
+        </Border>
+
+        <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                   Grid.Column="1" />
+    </Grid>
+</Window>

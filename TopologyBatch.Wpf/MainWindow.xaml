@@ -1,0 +1,46 @@
+<Window x:Class="GeoKernel.TopologyBatch.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="TopologyBatch"
+        Width="1040"
+        Height="680"
+        MinWidth="760"
+        MinHeight="500"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Full Extent"
+                    Click="FullExtent_Click" />
+            <Separator />
+            <TextBlock Text="Batch: CheckShape + UnionOnList"
+                       VerticalAlignment="Center"
+                       Margin="6,0" />
+            <Separator />
+            <Button Content="Run Batch"
+                    Click="RunBatch_Click" />
+        </ToolBar>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="statusText" />
+        </StatusBar>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="360" />
+            </Grid.ColumnDefinitions>
+
+            <gk:GeoKernelViewerControl x:Name="viewerControl"
+                                       Grid.Column="0" />
+
+            <TextBox x:Name="detailsTextBox"
+                     Grid.Column="1"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto" />
+        </Grid>
+    </DockPanel>
+</Window>

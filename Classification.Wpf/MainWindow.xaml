@@ -1,0 +1,53 @@
+<Window x:Class="GeoKernel.Classification.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="Classification"
+        Width="1280"
+        Height="820"
+        MinWidth="1050"
+        MinHeight="650"
+        WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Padding="8,6" Background="#F3F3F3" BorderBrush="#D0D0D0" BorderThickness="0,0,0,1">
+            <WrapPanel x:Name="controlsPanel" IsEnabled="False" VerticalAlignment="Center">
+                <TextBlock Margin="4,6,3,0" Text="Renderer" />
+                <ComboBox x:Name="rendererComboBox" Width="130" Margin="0,2,8,2" SelectionChanged="Renderer_SelectionChanged" />
+                <TextBlock Margin="4,6,3,0" Text="Field" />
+                <ComboBox x:Name="fieldComboBox" Width="145" Margin="0,2,8,2" />
+                <TextBlock Margin="4,6,3,0" Text="Method" />
+                <ComboBox x:Name="methodComboBox" Width="190" Margin="0,2,8,2" SelectionChanged="Method_SelectionChanged" />
+                <TextBlock x:Name="classCountLabel" Margin="4,6,3,0" Text="Classes" />
+                <TextBox x:Name="classCountTextBox" Width="55" Margin="0,2,8,2" Text="15" VerticalContentAlignment="Center" />
+                <TextBlock x:Name="intervalLabel" Margin="4,6,3,0" Text="Interval" />
+                <TextBox x:Name="intervalTextBox" Width="90" Margin="0,2,8,2" Text="100000" VerticalContentAlignment="Center" />
+                <TextBlock x:Name="manualBreaksLabel" Margin="4,6,3,0" Text="Manual breaks" />
+                <TextBox x:Name="manualBreaksTextBox" Width="340" Margin="0,2,8,2" Text="0, 100000, 500000, 1000000, 5000000, 10000000" VerticalContentAlignment="Center" />
+                <TextBlock Margin="4,6,3,0" Text="Ramp" />
+                <ComboBox x:Name="rampComboBox" Width="135" Margin="0,2,8,2" />
+                <TextBlock Margin="4,6,3,0" Text="Ramp mode" />
+                <ComboBox x:Name="rampModeComboBox" Width="120" Margin="0,2,8,2" />
+                <TextBlock Margin="4,6,3,0" Text="Render by" />
+                <ComboBox x:Name="targetComboBox" Width="135" Margin="0,2,8,2" />
+                <CheckBox x:Name="reverseCheckBox" Margin="6,6,10,2" Content="Reverse" />
+                <Button Margin="2" Padding="18,3" Content="Apply" Click="Apply_Click" />
+                <Button Margin="2" Padding="18,3" Content="Clear" Click="Clear_Click" />
+                <Button Margin="2" Padding="18,3" Content="Full Extent" Click="FullExtent_Click" />
+            </WrapPanel>
+        </Border>
+
+        <gk:GeoKernelViewerControl x:Name="viewerControl" Grid.Row="1" />
+
+        <StatusBar Grid.Row="2">
+            <TextBlock x:Name="statusText" Text="Ready" />
+        </StatusBar>
+    </Grid>
+</Window>

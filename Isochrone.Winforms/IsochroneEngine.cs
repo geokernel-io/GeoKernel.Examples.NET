@@ -1,0 +1,28 @@
+namespace GeoKernel.Isochrone.Winforms;
+
+internal readonly record struct RoutePoint(double X, double Y);
+internal sealed record RouteNode(int Id, RoutePoint Position);
+internal sealed record RouteEdge(int Id, int FromId, int ToId, double Distance, double SpeedKmh, IReadOnlyList<RoutePoint> Geometry);
+internal sealed record SnappedNode(RouteNode Node, double Distance);
+internal sealed record IsochroneBand(IReadOnlyList<IReadOnlyList<RoutePoint>> Lines, int CumulativeNodes, int EdgeCount);
+internal sealed record IsochroneResult(IReadOnlyList<IsochroneBand> Bands);
+
+internal sealed class IsochroneEngine
+{
+    private const double EarthRadius = 6371008.8, MercatorLimit = 20037508.342789244;
+    private readonly Dictionary<int, RouteNode> _nodes; private readonly List<RouteEdge> _edges; private readonly Dictionary<int, List<RouteEdge>> _out;
+    public IsochroneEngine(IEnumerable<RouteNode> nodes, IEnumerable<RouteEdge> edges) { _nodes = nodes.ToDictionary(x => x.Id); _edges = edges.ToList(); _out = _edges.GroupBy(x => x.FromId).ToDictionary(x => x.Key, x => x.ToList()); }
+    public IReadOnlySet<int> LargestComponent() { var visited = new HashSet<int>(); var largest = new HashSet<int>(); foreach (var seed in _nodes.Keys) { if (!visited.Add(seed)) continue; var set = new HashSet<int> { seed }; var q = new Queue<int>(); q.Enqueue(seed); while (q.Count > 0) foreach (var edge in _out.GetValueOrDefault(q.Dequeue()) ?? []) if (visited.Add(edge.ToId)) { set.Add(edge.ToId); q.Enqueue(edge.ToId); } if (set.Count > largest.Count) largest = set; } return largest; }
+    public SnappedNode? Nearest(IReadOnlySet<int> candidates, RoutePoint point, double maximum) { RouteNode? found = null; var best = maximum; foreach (var id in candidates) if (_nodes.TryGetValue(id, out var node)) { var d = Distance(point, node.Position); if (d < best) { best = d; found = node; } } return found is null ? null : new(found, best); }
+    public IsochroneResult Calculate(int origin)
+    {
+        var costs = new Dictionary<int, double> { [origin] = 0 }; var q = new PriorityQueue<int, double>(); q.Enqueue(origin, 0);
+        while (q.TryDequeue(out var node, out var cost)) { if (cost > costs.GetValueOrDefault(node, double.PositiveInfinity) || cost > 900) continue; foreach (var edge in _out.GetValueOrDefault(node) ?? []) { var speed = edge.SpeedKmh > 0 ? edge.SpeedKmh : 50; var candidate = cost + edge.Distance / (speed * 1000 / 3600); if (candidate > 900 || candidate >= costs.GetValueOrDefault(edge.ToId, double.PositiveInfinity)) continue; costs[edge.ToId] = candidate; q.Enqueue(edge.ToId, candidate); } }
+        var lines = new[] { new List<IReadOnlyList<RoutePoint>>(), new List<IReadOnlyList<RoutePoint>>(), new List<IReadOnlyList<RoutePoint>>() }; var drawn = new[] { new HashSet<(int, int)>(), new HashSet<(int, int)>(), new HashSet<(int, int)>() }; var edgeCounts = new int[3];
+        foreach (var edge in _edges) { if (!costs.TryGetValue(edge.FromId, out var a) || !costs.TryGetValue(edge.ToId, out var b) || edge.Geometry.Count < 2) continue; var value = Math.Max(a, b); var band = value <= 300 ? 0 : value <= 600 ? 1 : value <= 900 ? 2 : -1; if (band < 0) continue; edgeCounts[band]++; var key = (Math.Min(edge.FromId, edge.ToId), Math.Max(edge.FromId, edge.ToId)); if (drawn[band].Add(key)) lines[band].Add(edge.Geometry.Select(ToWebMercator).ToArray()); }
+        var limits = new[] { 300d, 600d, 900d }; return new(lines.Select((x, i) => new IsochroneBand(x, costs.Values.Count(v => v <= limits[i]), edgeCounts[i])).ToArray());
+    }
+    public static RoutePoint ToWgs84(RoutePoint p) => new(p.X / MercatorLimit * 180, Math.Atan(Math.Exp(p.Y / MercatorLimit * Math.PI)) * 360 / Math.PI - 90);
+    public static RoutePoint ToWebMercator(RoutePoint p) { var latitude = Math.Clamp(p.Y, -85.05112878, 85.05112878); return new(p.X * MercatorLimit / 180, Math.Log(Math.Tan((90 + latitude) * Math.PI / 360)) * MercatorLimit / Math.PI); }
+    private static double Distance(RoutePoint a, RoutePoint b) { var lat1 = a.Y * Math.PI / 180; var lat2 = b.Y * Math.PI / 180; var dlat = lat2 - lat1; var dlon = (b.X - a.X) * Math.PI / 180; var v = Math.Pow(Math.Sin(dlat / 2), 2) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Pow(Math.Sin(dlon / 2), 2); return EarthRadius * 2 * Math.Atan2(Math.Sqrt(v), Math.Sqrt(1 - v)); }
+}
