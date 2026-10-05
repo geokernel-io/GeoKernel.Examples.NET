@@ -1,0 +1,62 @@
+<Window x:Class="GeoKernel.Measurement3D.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="Measurement3D — GeoKernel" Width="1300" Height="850"
+        MinWidth="700" MinHeight="500" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closed="Window_Closed" PreviewKeyDown="Window_KeyDown">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusText" Text="Preparing sample…" />
+            <ProgressBar x:Name="Progress" Width="160" Height="15" IsIndeterminate="True" Margin="12,0" />
+        </StatusBar>
+        <ScrollViewer DockPanel.Dock="Left" Width="335" VerticalScrollBarVisibility="Auto" Background="#F0F0F0">
+            <StackPanel Margin="12">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Margin" Value="0,8,0,6" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="6" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Sagrada Família — terrain measurements" FontWeight="SemiBold" />
+                <Button x:Name="ReloadButton" Content="Reload sample" Click="Reload_Click" />
+                <Button x:Name="CancelButton" Content="Cancel loading" IsEnabled="False" Click="Cancel_Click" />
+                <CheckBox x:Name="Imagery" Content="Show orthophoto" IsChecked="True" IsEnabled="False"
+                          Margin="0,12" Checked="Imagery_Changed" Unchecked="Imagery_Changed" />
+                <TextBlock Text="Enable Add points, then click terrain. Dragging still navigates. Area closes automatically after three points." />
+                <ComboBox x:Name="Mode" SelectedIndex="0" IsEnabled="False" SelectionChanged="Mode_Changed">
+                    <ComboBoxItem Content="Distance / polyline" />
+                    <ComboBoxItem Content="Area / polygon" />
+                </ComboBox>
+                <CheckBox x:Name="Capture" Content="Add points on click" IsChecked="True" IsEnabled="False"
+                          Margin="0,12" Checked="Capture_Changed" Unchecked="Capture_Changed" />
+                <Button x:Name="FinishButton" Content="Finish measurement" IsEnabled="False" Click="Finish_Click" />
+                <Button x:Name="UndoButton" Content="Undo last point (Backspace)" IsEnabled="False" Click="Undo_Click" />
+                <Button x:Name="ClearButton" Content="Clear measurement (Esc)" IsEnabled="False" Click="Clear_Click" />
+                <TextBlock x:Name="ResultText" Text="Load terrain to start measuring." />
+                <DataGrid x:Name="Points" Height="220" IsReadOnly="True" AutoGenerateColumns="False"
+                          CanUserAddRows="False" CanUserDeleteRows="False" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="East (m)" Binding="{Binding East, StringFormat=F2}" Width="*" />
+                        <DataGridTextColumn Header="North (m)" Binding="{Binding North, StringFormat=F2}" Width="*" />
+                        <DataGridTextColumn Header="Up (m)" Binding="{Binding Up, StringFormat=F2}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <TextBlock Text="Vertical exaggeration" />
+                <Slider x:Name="HeightScale" Minimum="0.25" Maximum="10" Value="1"
+                        TickFrequency="0.25" IsSnapToTickEnabled="True" ValueChanged="Height_Changed" />
+                <TextBlock Text="{Binding ElementName=HeightScale, Path=Value, StringFormat={}{0:F2} ×}" />
+                <Button Content="Reset view" Click="Reset_Click" />
+                <TextBlock Text="Local ENU metres. 3D length joins points with straight segments, not along the terrain. Area is horizontal plan area, not terrain surface area. Exaggeration does not change results. DEM datum is unverified." />
+                <TextBlock Text="Left drag: pan&#10;Wheel/right drag: zoom&#10;Middle/Ctrl+left drag: orbit" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Background="#090F16">
+            <gk:GeoKernelViewer3DControl x:Name="Viewer" />
+        </Border>
+    </DockPanel>
+</Window>

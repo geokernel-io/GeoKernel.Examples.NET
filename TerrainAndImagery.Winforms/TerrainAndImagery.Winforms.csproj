@@ -10,13 +10,6 @@
     <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <!-- Runtime dependencies remain downloaded from NuGet. The new imagery API is local until the next release. -->
-    <PackageReference Include="GeoKernel.NET" VersionOverride="1.5.30" ExcludeAssets="compile" />
-    <ProjectReference Include="..\..\GeoKernel.NET\GeoKernel.NET.WinForms.Controls\GeoKernel.NET.WinForms.Controls.csproj" />
+    <PackageReference Include="GeoKernel.NET" VersionOverride="1.5.32" />
   </ItemGroup>
-  <Target Name="CopyImageryRuntime" AfterTargets="GeoKernelCopyNativeRuntime">
-    <Error Condition="!Exists('..\..\GeoKernel\outputs\build\$(Configuration)\GeoKernel.Viewer3D.dll')" Text="Build the local GeoKernel.Viewer3D target first; the imagery interop API is not in 1.5.30." />
-    <Copy SourceFiles="..\..\GeoKernel\outputs\build\$(Configuration)\GeoKernel.Viewer3D.dll" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="..\..\GeoKernel\outputs\build\$(Configuration)\GeoKernel.Viewer3D.dll" DestinationFolder="$(OutDir)runtimes\win-x64\native\" />
-  </Target>
 </Project>

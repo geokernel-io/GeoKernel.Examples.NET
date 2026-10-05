@@ -1,0 +1,60 @@
+<Window x:Class="GeoKernel.Buildings3D.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="Buildings3D — GeoKernel" Width="1200" Height="800"
+        MinWidth="700" MinHeight="500" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusText" Text="Preparing terrain…" />
+            <ProgressBar x:Name="Progress" Width="160" Height="15" IsIndeterminate="True" Margin="12,0" />
+        </StatusBar>
+        <ScrollViewer DockPanel.Dock="Left" Width="260" VerticalScrollBarVisibility="Auto"
+                      Background="#F0F0F0">
+            <StackPanel Margin="12">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Margin" Value="0,8,0,6" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="6" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Sagrada Família — terrain, orthophoto and buildings" FontWeight="SemiBold" />
+                <TextBlock Text="Terrain mesh" />
+                <ComboBox x:Name="Quality" SelectedIndex="1">
+                    <ComboBoxItem Content="256 — Fast" />
+                    <ComboBoxItem Content="512 — Balanced" />
+                    <ComboBoxItem Content="1024 — Detailed" />
+                </ComboBox>
+                <TextBlock Text="Default building height (m)" />
+                <Slider x:Name="BuildingHeight" Minimum="1" Maximum="300" Value="9"
+                        TickFrequency="1" IsSnapToTickEnabled="True" />
+                <TextBlock Text="{Binding ElementName=BuildingHeight, Path=Value, StringFormat={}{0:F0} m}" />
+                <TextBlock Text="Illustrative height: this dataset has no measured building heights. Apply height / Reload sample after changing it." />
+                <Button x:Name="ReloadButton" Content="Apply height / Reload sample" Click="Reload_Click" />
+                <Button x:Name="CancelButton" Content="Cancel loading" IsEnabled="False" Click="Cancel_Click" />
+                <CheckBox x:Name="Imagery" Content="Show orthophoto" IsChecked="True" IsEnabled="False" Margin="0,12" Checked="Imagery_Changed" Unchecked="Imagery_Changed" />
+                <CheckBox x:Name="Buildings" Content="Show buildings" IsChecked="True" IsEnabled="False" Margin="0,8" Checked="BuildingStyle_Changed" Unchecked="BuildingStyle_Changed" />
+                <Button x:Name="BuildingColorButton" Content="Building color" IsEnabled="False" Click="BuildingColor_Click" />
+                <TextBlock Text="Building opacity" />
+                <Slider x:Name="BuildingOpacity" Minimum="0" Maximum="100" Value="100" IsEnabled="False" ValueChanged="BuildingOpacity_Changed" />
+                <TextBlock Text="{Binding ElementName=BuildingOpacity, Path=Value, StringFormat={}{0:F0}%}" />
+                <TextBlock Text="Vertical exaggeration" />
+                <Slider x:Name="HeightScale" Minimum="0.25" Maximum="10" Value="1"
+                        TickFrequency="0.25" IsSnapToTickEnabled="True" ValueChanged="Height_Changed" />
+                <TextBlock Text="{Binding ElementName=HeightScale, Path=Value, StringFormat={}{0:F2} ×}" />
+                <TextBlock Text="DEM heights are treated as metres; the vertical datum is unverified." />
+                <TextBlock Text="Left drag: pan&#10;Wheel / right drag: zoom&#10;Middle / Ctrl + left drag: orbit" />
+                <Button Content="Reset view" Click="Reset_Click" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Background="#090F16">
+            <gk:GeoKernelViewer3DControl x:Name="Viewer" />
+        </Border>
+    </DockPanel>
+</Window>
+

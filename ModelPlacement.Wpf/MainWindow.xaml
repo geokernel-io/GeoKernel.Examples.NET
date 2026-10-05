@@ -1,0 +1,51 @@
+<Window x:Class="GeoKernel.ModelPlacement.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="ModelPlacement — GeoKernel" Width="1280" Height="850"
+        MinWidth="700" MinHeight="500" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusText" Text="Preparing sample…" />
+            <ProgressBar x:Name="Progress" Width="140" Height="15" IsIndeterminate="True" Margin="12,0" />
+        </StatusBar>
+        <ScrollViewer DockPanel.Dock="Left" Width="275" VerticalScrollBarVisibility="Auto" Background="#F0F0F0">
+            <StackPanel Margin="12">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Margin" Value="0,8,0,6" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="6" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Sagrada Família — textured model" FontWeight="SemiBold" />
+                <StackPanel x:Name="PlacementFields">
+                    <TextBlock Text="Longitude" /><TextBox x:Name="Longitude" Text="2.174401283" />
+                    <TextBlock Text="Latitude" /><TextBox x:Name="Latitude" Text="41.403605046" />
+                    <TextBlock Text="Above terrain (m)" /><TextBox x:Name="Offset" Text="2.938" />
+                    <TextBlock Text="Heading (degrees)" /><TextBox x:Name="Heading" Text="0.2373346" />
+                    <TextBlock Text="Pitch (degrees)" /><TextBox x:Name="Pitch" Text="0" />
+                    <TextBlock Text="Roll (degrees)" /><TextBox x:Name="Roll" Text="0" />
+                    <TextBlock Text="Scale" /><TextBox x:Name="Scale" Text="0.958139" />
+                </StackPanel>
+                <Button x:Name="ApplyButton" Content="Apply placement / Reload" Click="Apply_Click" />
+                <Button x:Name="CancelButton" Content="Cancel loading" IsEnabled="False" Click="Cancel_Click" />
+                <Button x:Name="FocusButton" Content="Focus model" IsEnabled="False" Click="Focus_Click" />
+                <Button Content="Reset scene view" Click="Reset_Click" />
+                <CheckBox x:Name="ModelVisible" Content="Show model" IsChecked="True" IsEnabled="False" Margin="0,8" Checked="Model_Changed" Unchecked="Model_Changed" />
+                <CheckBox x:Name="Imagery" Content="Show orthophoto" IsChecked="True" IsEnabled="False" Margin="0,8" Checked="Imagery_Changed" Unchecked="Imagery_Changed" />
+                <TextBlock Text="Vertical exaggeration" />
+                <Slider x:Name="HeightScale" Minimum="0.25" Maximum="10" Value="1" TickFrequency="0.25" IsSnapToTickEnabled="True" ValueChanged="Height_Changed" />
+                <TextBlock Text="{Binding ElementName=HeightScale, Path=Value, StringFormat={}{0:F2} ×}" />
+                <TextBlock Text="Approximate demo placement; not a surveyed fit. Height is an offset above terrain at the model anchor. DEM uses EGM08D595 geoid correction. Textures are retained." />
+                <TextBlock Text="Model: PeeJaa — La Sagrada Familia. Source and license: downloaded model/license.txt." />
+                <TextBlock Text="Left drag: pan&#10;Wheel / right drag: zoom&#10;Middle / Ctrl + left drag: orbit" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Background="#090F16"><gk:GeoKernelViewer3DControl x:Name="Viewer" /></Border>
+    </DockPanel>
+</Window>

@@ -1,0 +1,73 @@
+<Window x:Class="GeoKernel.ViewshedAnalysis.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:GeoKernel.ViewshedAnalysis.Wpf"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="ViewshedAnalysis — GeoKernel" Width="1400" Height="900"
+        MinWidth="800" MinHeight="550" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusText" Text="Preparing sample…" />
+            <ProgressBar x:Name="LoadProgress" Width="160" Height="15" IsIndeterminate="True" Margin="12,0" />
+        </StatusBar>
+        <ScrollViewer DockPanel.Dock="Right" Width="365" VerticalScrollBarVisibility="Auto" Background="#F0F0F0">
+            <StackPanel Margin="12">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Margin" Value="0,8,0,6" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="6" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Sagrada Família — viewshed analysis" FontWeight="SemiBold" />
+                <Button x:Name="ReloadButton" Content="Reload sample" Click="Reload_Click" />
+                <Button x:Name="CancelButton" Content="Cancel loading" IsEnabled="False" Click="Cancel_Click" />
+                <CheckBox x:Name="Imagery" Content="Show orthophoto" IsChecked="True" IsEnabled="False"
+                          Checked="Imagery_Changed" Unchecked="Imagery_Changed" Margin="0,10" />
+                <TextBlock Text="Select observer, then click terrain. The marker shows eye height." />
+                <CheckBox x:Name="Pick" Content="Select observer on terrain" IsChecked="True" IsEnabled="False"
+                          Checked="Pick_Changed" Unchecked="Pick_Changed" />
+                <TextBlock x:Name="LocationText" Text="No observer selected." />
+                <TextBlock Text="Observer above terrain (m)" />
+                <Slider x:Name="Eye" Minimum="0.1" Maximum="100" Value="1.7" SmallChange="0.1" ValueChanged="Settings_Changed" />
+                <TextBlock Text="{Binding ElementName=Eye, Path=Value, StringFormat={}{0:F2} m}" />
+                <TextBlock Text="Target above terrain (m)" />
+                <Slider x:Name="Target" Minimum="0" Maximum="100" Value="1.7" SmallChange="0.1" ValueChanged="Settings_Changed" />
+                <TextBlock Text="{Binding ElementName=Target, Path=Value, StringFormat={}{0:F2} m}" />
+                <TextBlock Text="Radius (m)" />
+                <Slider x:Name="Radius" Minimum="10" Maximum="2000" Value="300" SmallChange="10" ValueChanged="Settings_Changed" />
+                <TextBlock Text="{Binding ElementName=Radius, Path=Value, StringFormat={}{0:F2} m}" />
+                <TextBlock Text="Ray sample spacing (m)" />
+                <Slider x:Name="Spacing" Minimum="1" Maximum="50" Value="5" SmallChange="1" ValueChanged="Settings_Changed" />
+                <TextBlock Text="{Binding ElementName=Spacing, Path=Value, StringFormat={}{0:F2} m}" />
+                <TextBlock Text="Grid" />
+                <ComboBox x:Name="GridSize" SelectedIndex="1" SelectionChanged="Grid_Changed">
+                    <ComboBoxItem Content="17 × 17 — fast" />
+                    <ComboBoxItem Content="33 × 33 — balanced" />
+                    <ComboBoxItem Content="65 × 65 — detailed" />
+                </ComboBox>
+                <Button x:Name="CalculateButton" Content="Calculate" Click="Calculate_Click" IsEnabled="False" />
+                <Button x:Name="PauseButton" Content="Pause calculation" Click="Pause_Click" IsEnabled="False" />
+                <Button x:Name="ClearButton" Content="Clear observer and result" Click="Clear_Click" IsEnabled="False" />
+                <ProgressBar x:Name="AnalysisProgress" Height="18" Maximum="100" Margin="0,8" />
+                <local:ViewshedMap x:Name="Map" Height="280" />
+                <CheckBox x:Name="Overlay" Content="Show result on terrain" IsChecked="True" IsEnabled="False"
+                          Checked="Overlay_Changed" Unchecked="Overlay_Changed" />
+                <TextBlock><Run Foreground="#239b56" Text="■ Visible  " /><Run Foreground="#d35445" Text="■ Blocked" /><LineBreak />
+                    <Run Foreground="#858585" Text="■ Unknown / NoData  " /><Run Foreground="#8795a6" Text="■ Pending" /></TextBlock>
+                <TextBlock x:Name="ResultText" Text="Load terrain to begin." />
+                <TextBlock Text="Vertical exaggeration" />
+                <Slider x:Name="HeightScale" Minimum="0.25" Maximum="10" Value="1" TickFrequency="0.25"
+                        IsSnapToTickEnabled="True" ValueChanged="Height_Changed" />
+                <TextBlock Text="{Binding ElementName=HeightScale, Path=Value, StringFormat={}{0:F2} ×}" />
+                <Button Content="Reset view" Click="Reset_Click" />
+                <TextBlock Text="Terrain-only sampled visibility; buildings, vegetation and atmospheric refraction are excluded. The DEM mesh has 512 samples per side. Small obstacles between samples may be missed. Vertical datum is unverified. Exaggeration changes only the view." />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Background="#090F16"><gk:GeoKernelViewer3DControl x:Name="Viewer" /></Border>
+    </DockPanel>
+</Window>

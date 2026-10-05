@@ -1,0 +1,54 @@
+<Window x:Class="GeoKernel.TerrainAnalysis.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="TerrainAnalysis — GeoKernel" Width="1200" Height="800"
+        MinWidth="700" MinHeight="500" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock x:Name="StatusText" Text="Preparing terrain…" />
+            <ProgressBar x:Name="Progress" Width="160" Height="15" IsIndeterminate="True" Visibility="Collapsed" Margin="12,0" />
+        </StatusBar>
+        <ScrollViewer DockPanel.Dock="Left" Width="315" VerticalScrollBarVisibility="Auto" Background="#F0F0F0">
+            <StackPanel Margin="12">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                        <Setter Property="Margin" Value="0,8,0,6" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="0,4" />
+                        <Setter Property="Padding" Value="6" />
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="Sagrada Família — sample terrain" FontWeight="SemiBold" />
+                <TextBlock Text="Slope and aspect describe the loaded terrain mesh, not an exported analysis raster. Mesh resolution affects results. Heights have an unverified vertical reference." />
+                <Button x:Name="ReloadButton" Content="Reload sample" Click="Reload_Click" />
+                <Button x:Name="CancelButton" Content="Cancel loading" IsEnabled="False" Click="Cancel_Click" />
+                <TextBlock Text="Mesh samples per side" />
+                <ComboBox x:Name="Quality" SelectedIndex="1">
+                    <ComboBoxItem Content="256 — Fast" />
+                    <ComboBoxItem Content="512 — Balanced" />
+                    <ComboBoxItem Content="1024 — Detailed" />
+                </ComboBox>
+                <TextBlock Text="Display" />
+                <ComboBox x:Name="DisplayMode" SelectedIndex="1" SelectionChanged="Mode_Changed">
+                    <ComboBoxItem Content="Terrain relief" />
+                    <ComboBoxItem Content="Slope (degrees)" />
+                    <ComboBoxItem Content="Aspect (downhill direction)" />
+                </ComboBox>
+                <StackPanel x:Name="Legend" Margin="0,8" />
+                <TextBlock Text="Analysis uses terrain mesh faces before vertical exaggeration. Aspect is clockwise from north in the local ENU frame." />
+                <TextBlock Text="Vertical exaggeration" />
+                <Slider x:Name="Exaggeration" Minimum="0.25" Maximum="10" Value="1"
+                        TickFrequency="0.25" IsSnapToTickEnabled="True" ValueChanged="Height_Changed" />
+                <TextBlock Text="{Binding ElementName=Exaggeration, Path=Value, StringFormat={}{0:F2} ×}" />
+                <TextBlock x:Name="Info" Text="No terrain loaded." />
+                <Button Content="Reset view" Click="Reset_Click" />
+                <TextBlock Text="Left drag: pan&#10;Wheel/right drag: zoom&#10;Middle/Ctrl+left drag: orbit&#10;Shift+left drag: look" />
+            </StackPanel>
+        </ScrollViewer>
+        <Border Background="#090F16"><gk:GeoKernelViewer3DControl x:Name="Viewer" /></Border>
+    </DockPanel>
+</Window>
