@@ -1,0 +1,34 @@
+<Window x:Class="GeoKernel.GlobeModelPlacement.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="GeoKernel — Sagrada Familia Model" Width="1200" Height="800"
+        MinWidth="1000" MinHeight="480" WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+        <ToolBar x:Name="Toolbar" IsEnabled="False" ToolBarTray.IsLocked="True">
+            <Button Content="Zoom to model" Click="ZoomToModel" />
+            <Button x:Name="Rotate" Content="Rotate 30°" Click="RotateModel" />
+            <TextBlock Text="Scale:" VerticalAlignment="Center" Margin="4,0" />
+            <TextBox x:Name="ModelScale" Width="55" ToolTip="Scale: 0.01 to 10" />
+            <TextBlock Text="Anchor height (m):" VerticalAlignment="Center" Margin="4,0" />
+            <TextBox x:Name="ModelHeight" Width="75" ToolTip="Ellipsoidal height: -100 to 10000 metres" />
+            <Button x:Name="Apply" Content="Apply" Click="ApplyPlacement" />
+            <Button x:Name="Remove" Content="Remove" Click="RemoveModel" />
+            <Button x:Name="Restore" Content="Restore" IsEnabled="False" Click="RestoreModel" />
+            <ToggleButton x:Name="Atmosphere" Content="Atmosphere" IsChecked="True" Click="ToggleAtmosphere" />
+            <ToggleButton x:Name="Esri" Content="Esri" IsChecked="True" Click="ToggleEsri" />
+        </ToolBar>
+        <gk:GeoKernelGlobeControl x:Name="GlobeView" Grid.Row="1" GlobeReady="GlobeReady" />
+        <Border Grid.Row="2" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+            <TextBlock x:Name="Status" Text="Preparing globe…" Margin="6,0"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+        </Border>
+    </Grid>
+</Window>

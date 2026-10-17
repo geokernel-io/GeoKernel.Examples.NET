@@ -1,0 +1,34 @@
+<Window x:Class="GeoKernel.GlobeBuildings.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:gk="clr-namespace:GeoKernel.NET.Wpf.Controls;assembly=GeoKernel.NET.Wpf.Controls"
+        Title="GeoKernel — Sagrada Familia Buildings" Width="1200" Height="800"
+        MinWidth="720" MinHeight="480" WindowStartupLocation="CenterScreen"
+        Icon="Images/GeoKernelAppIcon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="24" />
+        </Grid.RowDefinitions>
+        <ToolBar x:Name="Toolbar" IsEnabled="False" ToolBarTray.IsLocked="True">
+            <ToggleButton x:Name="Extrude" Content="Extrude" Click="ToggleExtrusion" />
+            <TextBlock Text="Display height (m):" VerticalAlignment="Center" Margin="4,0" />
+            <Slider x:Name="DisplayHeight" Minimum="1" Maximum="300" Value="18"
+                    TickFrequency="1" IsSnapToTickEnabled="True" Width="130"
+                    VerticalAlignment="Center"
+                    ToolTip="Display height; this source has no measured building heights." />
+            <TextBlock Text="{Binding Value, ElementName=DisplayHeight, StringFormat=F0}"
+                       MinWidth="26" VerticalAlignment="Center" Margin="4,0" />
+            <Button Content="Zoom to buildings" Click="ZoomToBuildings" />
+            <ToggleButton x:Name="Atmosphere" Content="Atmosphere" IsChecked="True" Click="ToggleAtmosphere" />
+            <ToggleButton x:Name="Esri" Content="Esri" IsChecked="True" Click="ToggleEsri" />
+        </ToolBar>
+        <gk:GeoKernelGlobeControl x:Name="GlobeView" Grid.Row="1" GlobeReady="GlobeReady" />
+        <Border Grid.Row="2" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+            <TextBlock x:Name="Status" Text="Preparing globe…" Margin="6,0"
+                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                       ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}" />
+        </Border>
+    </Grid>
+</Window>
