@@ -4,7 +4,7 @@ IBM/NASA Prithvi EO 2.0 300M-TL Sen1Floods11 water/flood mapping on the India Se
 
 ## SDK and launch
 
-Uses the published **GeoKernel.NET 1.5.38** NuGet package, including the managed controls and native Windows x64 runtime. No sibling SDK source checkout, native build or preparation script is required.
+Uses the published **GeoKernel.NET 1.5.39** NuGet package, including the managed controls and native Windows x64 runtime. No sibling SDK source checkout, native build or preparation script is required.
 
 From this example directory:
 

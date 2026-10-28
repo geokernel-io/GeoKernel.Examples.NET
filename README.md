@@ -18,6 +18,18 @@ Choose a WPF or Windows Forms example directory, open its project file, restore 
 - [GlobeHello.Winforms](GlobeHello.Winforms/README.md): embedded Vulkan globe with atmosphere, Esri satellite imagery, online DEM and sunlight controls. Restores the published GeoKernel.NET 1.5.35 package automatically.
 - [GlobeHello.Wpf](GlobeHello.Wpf/README.md): the same GlobeHello controls in WPF, using the published 1.5.35 SDK and a fixed-height status bar.
 
+## GeoAI examples (published GeoKernel.NET 1.5.39)
+
+- [DynamicWorldInference.Winforms](DynamicWorldInference.Winforms/README.md) and [DynamicWorldInference.Wpf](DynamicWorldInference.Wpf/README.md): Sentinel-2 land cover, output opacity and Shapefile export.
+- [HotosmBuildingFootprints.Winforms](HotosmBuildingFootprints.Winforms/README.md) and [HotosmBuildingFootprints.Wpf](HotosmBuildingFootprints.Wpf/README.md): one RGB building raster, threshold 0.50, session-only footprints and Shapefile export.
+- [GeoAiUsaBuildingFootprints.Winforms](GeoAiUsaBuildingFootprints.Winforms/README.md) and [GeoAiUsaBuildingFootprints.Wpf](GeoAiUsaBuildingFootprints.Wpf/README.md): Mask R-CNN on the same RGB building raster, confidence 0.50 and explicit Shapefile export.
+- [PrithviFloodAnalysis.Winforms](PrithviFloodAnalysis.Winforms/README.md) and [PrithviFloodAnalysis.Wpf](PrithviFloodAnalysis.Wpf/README.md): Sentinel-2 water/flood mapping, a separate RGB source display, output opacity and water-only Shapefile export.
+- [PrueFieldBoundaries.Winforms](PrueFieldBoundaries.Winforms/README.md) and [PrueFieldBoundaries.Wpf](PrueFieldBoundaries.Wpf/README.md): two-period Sentinel-2 field segmentation, three-class overlay and field-interior Shapefile export.
+- [Sam3SegmentationInference.Winforms](Sam3SegmentationInference.Winforms/README.md) and [Sam3SegmentationInference.Wpf](Sam3SegmentationInference.Wpf/README.md): text/point/box prompting, visible map selections, draft Accept/Discard and accepted Shapefile/GeoTIFF exports.
+- [Sen2srSuperResolution.Winforms](Sen2srSuperResolution.Winforms/README.md) and [Sen2srSuperResolution.Wpf](Sen2srSuperResolution.Wpf/README.md): 4× RGBN super-resolution, source/result blending and scientific Float32 GeoTIFF export.
+
+These examples use `Common/GeoAi` and the published GeoKernel.NET 1.5.39 NuGet package with its native runtime. Run `dotnet run -c Release` in an example directory; no sibling SDK checkout or native build is needed.
+
 ## Resources
 
 - [GeoKernel Website](https://geokernel.io)

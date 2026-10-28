@@ -1,0 +1,8 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Include="GeoKernel.NET" VersionOverride="$(GeoKernelSdkVersion)" />
+  </ItemGroup>
+  <Target Name="RemoveObsoleteLocalSdkHint" AfterTargets="Build">
+    <Delete Files="$(TargetDir)local-sdk-path.txt" />
+  </Target>
+</Project>

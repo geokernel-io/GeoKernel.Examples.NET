@@ -4,7 +4,7 @@ GeoAI USA Mask R-CNN ResNet50 FPN building footprint extraction on the single bu
 
 ## SDK and launch
 
-Uses the published **GeoKernel.NET 1.5.38** NuGet package, including the managed controls and native Windows x64 runtime. No sibling SDK source checkout, native build or preparation script is required.
+Uses the published **GeoKernel.NET 1.5.39** NuGet package, including the managed controls and native Windows x64 runtime. No sibling SDK source checkout, native build or preparation script is required.
 
 From this example directory:
 

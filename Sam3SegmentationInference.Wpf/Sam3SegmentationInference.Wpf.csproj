@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\GeoAi\GeoAiExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);GEOAI_WPF</DefineConstants>
+    <GeoKernelControlsFlavor>Wpf</GeoKernelControlsFlavor>
+  </PropertyGroup>
+  <Import Project="..\Common\GeoAi\GeoAiExample.targets" />
+</Project>
