@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\GeoAi\GeoAiExample.props" />
+  <PropertyGroup><UseWindowsForms>true</UseWindowsForms><GeoKernelControlsFlavor>WinForms</GeoKernelControlsFlavor></PropertyGroup>
+  <ItemGroup><Compile Include="..\Common\BuildingChange\*.cs" Link="Common\%(Filename)%(Extension)" /></ItemGroup>
+  <Import Project="..\Common\GeoAi\GeoAiExample.targets" />
+</Project>

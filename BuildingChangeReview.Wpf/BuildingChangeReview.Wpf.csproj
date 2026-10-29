@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\GeoAi\GeoAiExample.props" />
+  <PropertyGroup><UseWPF>true</UseWPF><GeoKernelControlsFlavor>Wpf</GeoKernelControlsFlavor><DefineConstants>$(DefineConstants);GEOAI_WPF</DefineConstants></PropertyGroup>
+  <ItemGroup><Compile Include="..\Common\BuildingChange\*.cs" Link="Common\%(Filename)%(Extension)" /></ItemGroup>
+  <Import Project="..\Common\GeoAi\GeoAiExample.targets" />
+</Project>

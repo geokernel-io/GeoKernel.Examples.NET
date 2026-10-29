@@ -20,6 +20,7 @@ Choose a WPF or Windows Forms example directory, open its project file, restore 
 
 ## GeoAI examples (published GeoKernel.NET 1.5.39)
 
+- [BuildingChangeReview.Winforms](BuildingChangeReview.Winforms/README.md) and [BuildingChangeReview.Wpf](BuildingChangeReview.Wpf/README.md): Oosterwold 2016/2025 change candidates, synchronized maps, vertex editing, review decisions and approved-only GeoJSON export.
 - [DynamicWorldInference.Winforms](DynamicWorldInference.Winforms/README.md) and [DynamicWorldInference.Wpf](DynamicWorldInference.Wpf/README.md): Sentinel-2 land cover, output opacity and Shapefile export.
 - [HotosmBuildingFootprints.Winforms](HotosmBuildingFootprints.Winforms/README.md) and [HotosmBuildingFootprints.Wpf](HotosmBuildingFootprints.Wpf/README.md): one RGB building raster, threshold 0.50, session-only footprints and Shapefile export.
 - [GeoAiUsaBuildingFootprints.Winforms](GeoAiUsaBuildingFootprints.Winforms/README.md) and [GeoAiUsaBuildingFootprints.Wpf](GeoAiUsaBuildingFootprints.Wpf/README.md): Mask R-CNN on the same RGB building raster, confidence 0.50 and explicit Shapefile export.
