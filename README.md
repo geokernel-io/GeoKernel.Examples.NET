@@ -18,6 +18,15 @@ Choose a WPF or Windows Forms example directory, open its project file, restore 
 - [GlobeHello.Winforms](GlobeHello.Winforms/README.md): embedded Vulkan globe with atmosphere, Esri satellite imagery, online DEM and sunlight controls. Restores the published GeoKernel.NET 1.5.35 package automatically.
 - [GlobeHello.Wpf](GlobeHello.Wpf/README.md): the same GlobeHello controls in WPF, using the published 1.5.35 SDK and a fixed-height status bar.
 
+## DSM to DTM examples (published GeoKernel.NET 1.5.40)
+
+- [DsmToDtm.Winforms](DsmToDtm.Winforms/README.md) and [DsmToDtm.Wpf](DsmToDtm.Wpf/README.md): ground beneath buildings; two linked native 3D views of an original DSM and prepared classical/AI terrain, numeric height transition, fixed transect profile and reference metrics.
+- [DsmToDtmProfile.Winforms](DsmToDtmProfile.Winforms/README.md) and [DsmToDtmProfile.Wpf](DsmToDtmProfile.Wpf/README.md): draw your own A → B transect on two linked native 2D relief maps; DSM, classical, AI and reference heights on one chart, error mode, hover inspection, line RMSE/MAE and CSV export.
+- [DsmToDtmAccuracy.Winforms](DsmToDtmAccuracy.Winforms/README.md) and [DsmToDtmAccuracy.Wpf](DsmToDtmAccuracy.Wpf/README.md): three linked 2D maps of the DSM and shared-scale classical/AI reference errors; area selection and presets, RMSE/MAE/bias/P95, histogram, pixel probe and JSON report.
+- [DsmToDtmProcessing.Winforms](DsmToDtmProcessing.Winforms/README.md) and [DsmToDtmProcessing.Wpf](DsmToDtmProcessing.Wpf/README.md): run the classical multiscale-morphological + TIN conversion live with presets and six parameters; DSM, new DTM and removed-height/quality/reference-error maps, scores, pixel probe and GeoTIFF/QA/JSON export.
+- [DsmToDtmAI.Winforms](DsmToDtmAI.Winforms/README.md) and [DsmToDtmAI.Wpf](DsmToDtmAI.Wpf/README.md): run the experimental pix_grad model through GeoKernel.AI and the classical filter on the same full 1 km Zurich DSM; relief/removed-height/error maps, full-input and shared-crop scores, pixel probe and a staged comparison-folder export.
+- [DsmOrthoToDtm.Winforms](DsmOrthoToDtm.Winforms/README.md) and [DsmOrthoToDtm.Wpf](DsmOrthoToDtm.Wpf/README.md): compare classical, DSM-only pix_grad and DSM+RGB rgb_grad_fm terrain estimates on the same full Zurich DSM; orthophoto/DSM input context, four linked 2D maps, full-input and shared-crop scores, pixel probe and a staged comparison-folder export.
+
 ## GeoAI examples (published GeoKernel.NET 1.5.39)
 
 - [BuildingChangeReview.Winforms](BuildingChangeReview.Winforms/README.md) and [BuildingChangeReview.Wpf](BuildingChangeReview.Wpf/README.md): Oosterwold 2016/2025 change candidates, synchronized maps, vertex editing, review decisions and approved-only GeoJSON export.

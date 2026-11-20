@@ -1,0 +1,26 @@
+<Project>
+  <!-- Shared settings for the DSM-to-DTM examples. They use the published GeoKernel.NET
+       package and its GDAL runtime; the shared code is linked, not referenced. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
+    <GeoKernelSdkVersion Condition="'$(GeoKernelSdkVersion)' == ''">1.5.40</GeoKernelSdkVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\Images\GeoKernelAppIcon.ico" LogicalName="GeoKernel.Examples.AppIcon.ico" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\Images\FullExtent.png" LogicalName="GeoKernel.Examples.FullExtent.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\Images\ZoomIn.png" LogicalName="GeoKernel.Examples.ZoomIn.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\Images\ZoomOut.png" LogicalName="GeoKernel.Examples.ZoomOut.png" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)sample-assets.json" LogicalName="GeoKernel.Examples.DsmToDtm.sample-assets.json" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ai-model-assets.json" LogicalName="GeoKernel.Examples.DsmToDtm.ai-model-assets.json" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ai-terrain-assets.json" LogicalName="GeoKernel.Examples.DsmToDtm.ai-terrain-assets.json" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ortho-*.json" LogicalName="GeoKernel.Examples.DsmToDtm.%(Filename)%(Extension)" />
+    <Compile Include="$(MSBuildThisFileDirectory)*.cs" Link="Common\%(Filename)%(Extension)" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\GeoAi\ExampleIcon.cs" Link="Common\ExampleIcon.cs" />
+    <PackageReference Include="GeoKernel.NET" VersionOverride="$(GeoKernelSdkVersion)" />
+  </ItemGroup>
+</Project>

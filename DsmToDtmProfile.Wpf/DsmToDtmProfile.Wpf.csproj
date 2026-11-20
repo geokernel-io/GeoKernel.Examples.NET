@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\DsmToDtm\DsmExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);GEOAI_WPF</DefineConstants>
+  </PropertyGroup>
+</Project>
