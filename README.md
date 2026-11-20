@@ -18,6 +18,10 @@ Choose a WPF or Windows Forms example directory, open its project file, restore 
 - [GlobeHello.Winforms](GlobeHello.Winforms/README.md): embedded Vulkan globe with atmosphere, Esri satellite imagery, online DEM and sunlight controls. Restores the published GeoKernel.NET 1.5.35 package automatically.
 - [GlobeHello.Wpf](GlobeHello.Wpf/README.md): the same GlobeHello controls in WPF, using the published 1.5.35 SDK and a fixed-height status bar.
 
+## Agent workflows (GeoKernel.NET newer than 1.5.40)
+
+- [AgentMapAssistant.Winforms](AgentMapAssistant.Winforms/README.md) and [AgentMapAssistant.Wpf](AgentMapAssistant.Wpf/README.md): ask for map operations in plain language; an LLM (or the offline demo's prepared plans) proposes a workflow DSL v2 plan that GeoKernel validates, previews, runs after confirmation when it changes data, undoes and records with hash-chained provenance. Builds against the GeoKernel.NET sources until the agent API is published.
+
 ## DSM to DTM examples (published GeoKernel.NET 1.5.40)
 
 - [DsmToDtm.Winforms](DsmToDtm.Winforms/README.md) and [DsmToDtm.Wpf](DsmToDtm.Wpf/README.md): ground beneath buildings; two linked native 3D views of an original DSM and prepared classical/AI terrain, numeric height transition, fixed transect profile and reference metrics.
