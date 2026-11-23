@@ -21,6 +21,7 @@ Choose a WPF or Windows Forms example directory, open its project file, restore 
 ## Agent workflows (GeoKernel.NET newer than 1.5.40)
 
 - [AgentMapAssistant.Winforms](AgentMapAssistant.Winforms/README.md) and [AgentMapAssistant.Wpf](AgentMapAssistant.Wpf/README.md): ask for map operations in plain language; an LLM (or the offline demo's prepared plans) proposes a workflow DSL v2 plan that GeoKernel validates, previews, runs after confirmation when it changes data, undoes and records with hash-chained provenance. Builds against the GeoKernel.NET sources until the agent API is published.
+- [TextPromptChangeDetection.Winforms](TextPromptChangeDetection.Winforms/README.md) and [TextPromptChangeDetection.Wpf](TextPromptChangeDetection.Wpf/README.md): type what to look for ("building", "greenhouse") and see where it appeared and disappeared between two dates or over a 9-date series, with a timeline, a QA review queue and GeoPackage export (SAM 3, objects tracked from date to date). Builds against the GeoKernel.NET sources until the change task API is published.
 
 ## DSM to DTM examples (published GeoKernel.NET 1.5.40)
 

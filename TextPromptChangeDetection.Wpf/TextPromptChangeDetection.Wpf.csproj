@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\TextPromptChange\TextPromptChangeExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);CHANGE_WPF;GEOAI_WPF</DefineConstants>
+  </PropertyGroup>
+</Project>
