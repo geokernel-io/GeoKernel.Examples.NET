@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\Vlm\VlmExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);VLM_WPF;GEOAI_WPF</DefineConstants>
+  </PropertyGroup>
+</Project>
