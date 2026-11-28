@@ -1,0 +1,34 @@
+<Project>
+  <!-- Shared settings for the AgentPlannerBasics examples. The agent workflow API ships after
+       GeoKernel.NET 1.5.40. Until the next release, build against the GeoKernel.NET sources:
+         dotnet build -p:GeoKernelNetSource=D:\projects\GeoKernel.NET
+       and put a native GeoKernel runtime with the agent API on PATH. After the release, pass
+       -p:GeoKernelSdkVersion=<version> (or set it here) to use the NuGet package. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>..\Images\GeoKernelAppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\Images\GeoKernelAppIcon.ico" LogicalName="GeoKernel.Examples.AppIcon.ico" />
+    <Compile Include="$(MSBuildThisFileDirectory)*.cs" Link="Common\%(Filename)%(Extension)" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\GeoAi\ExampleIcon.cs" Link="Common\ExampleIcon.cs" />
+    <None Include="$(MSBuildThisFileDirectory)lesson-data\*" Link="data\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(GeoKernelNetSource)' == '' and '$(GeoKernelSdkVersion)' != ''">
+    <PackageReference Include="GeoKernel.NET" VersionOverride="$(GeoKernelSdkVersion)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(GeoKernelNetSource)' != '' and '$(UseWPF)' == 'true'">
+    <ProjectReference Include="$(GeoKernelNetSource)\GeoKernel.NET.Wpf.Controls\GeoKernel.NET.Wpf.Controls.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(GeoKernelNetSource)' != '' and '$(UseWPF)' != 'true'">
+    <ProjectReference Include="$(GeoKernelNetSource)\GeoKernel.NET.WinForms.Controls\GeoKernel.NET.WinForms.Controls.csproj" />
+  </ItemGroup>
+  <Target Name="RequireGeoKernelAgentApi" BeforeTargets="CollectPackageReferences;ResolveProjectReferences"
+          Condition="'$(GeoKernelNetSource)' == '' and '$(GeoKernelSdkVersion)' == ''">
+    <Error Text="AgentPlannerBasics needs GeoKernel.NET with the agent API (newer than 1.5.40). Build with -p:GeoKernelNetSource=&lt;GeoKernel.NET sources&gt; or -p:GeoKernelSdkVersion=&lt;a published version with the agent API&gt;." />
+  </Target>
+</Project>

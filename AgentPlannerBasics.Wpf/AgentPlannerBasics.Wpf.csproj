@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\AgentPlanner\AgentPlannerExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);AGENT_WPF;GEOAI_WPF</DefineConstants>
+  </PropertyGroup>
+</Project>
