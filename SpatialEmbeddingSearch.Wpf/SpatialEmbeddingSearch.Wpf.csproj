@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Common\EmbeddingSearch\EmbeddingSearchExample.props" />
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);SEARCH_WPF;GEOAI_WPF</DefineConstants>
+  </PropertyGroup>
+</Project>
